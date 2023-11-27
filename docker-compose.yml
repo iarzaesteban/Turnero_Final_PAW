@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: turnero_unlu
+      POSTGRES_USER: turnero_user
+      POSTGRES_PASSWORD: turnero_password
+    ports:
+      - "5432:5432"
+    networks:
+      - turnero_network
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  php:
+    image: php:7.4-apache
+    volumes:
+      - ./html:/var/www/html
+    ports:
+      - "8080:80"
+    networks:
+      - turnero_network
+
+networks:
+  turnero_network:
