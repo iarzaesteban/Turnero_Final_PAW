@@ -1,7 +1,10 @@
-version: '3.8'
+version: '3.3'
+
+networks:
+  turnero_network:
 
 services:
-  postgres:
+  db_postgres:
     image: postgres:latest
     environment:
       POSTGRES_DB: turnero_unlu
@@ -14,14 +17,13 @@ services:
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
 
-  php:
-    image: php:7.4-apache
+  app:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
     volumes:
-      - ./html:/var/www/html
+      - ./src:/var/www/html
     ports:
       - "8080:80"
     networks:
       - turnero_network
-
-networks:
-  turnero_network:

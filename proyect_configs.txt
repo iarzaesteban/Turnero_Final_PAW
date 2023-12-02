@@ -1,0 +1,43 @@
+URL to google mashup to login
+https://console.cloud.google.com/projectcreate?previousPage=%2Fprojectselector2%2Fapis%2Fdashboard%3Fpli%3D1%26supportedpurview%3Dproject&supportedpurview=project
+
+Creamos el proyecto para hacer el mashup de plogin con google.
+
+Proyect name: TP final PAW
+
+Proyect created: https://console.cloud.google.com/apis/dashboard?project=tp-final-paw&supportedpurview=project
+
+Credential : credential-for-paw@tp-final-paw.iam.gserviceaccount.com
+
+
+URL de redireccionamiento:
+
+http://localhost:8080/loginGoogle/perfil.php
+
+
+
+
+Identificación del cliente: 26181589147-1kaqrtobg06kbkg64ip58al22piljnpl.apps.googleusercontent.com
+
+
+secreto del cliente: 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
+
+Fecha de creacion: 1 de diciembre de 2023 a las 20:59:35 GMT-3
+
+## DATABASE:
+
+Ingresamos a la shell de postgres:
+
+docker-compose exec db_postgres psql -U turnero_user -d turnero_unlu
+
+cree un user--->
+
+user: estenam
+pass: 1234
+
+O
+
+esteban
+123456
+
+
