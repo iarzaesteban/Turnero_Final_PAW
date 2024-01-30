@@ -11,7 +11,7 @@ if (isset($_GET['code'])) {
     $userData = $oauthService->userinfo->get();
     
     $email = $userData->email;
-    $email = $userData->name;
+    $name = $userData->name;
     
 }
 

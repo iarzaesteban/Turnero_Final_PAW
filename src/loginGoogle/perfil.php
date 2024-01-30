@@ -33,6 +33,7 @@
     <img src="imagenes/foto.png" alt="">
     <h2>Bienvenido <?php echo $name ?></h2>
     <h3><?php echo $email?></h3>
+    <h3><?php echo $userData?></h3>
   </div>
 </body>
 </html>
