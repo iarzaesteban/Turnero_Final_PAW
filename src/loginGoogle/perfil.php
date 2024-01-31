@@ -2,38 +2,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfil</title>
+  <title>Bienvenido</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/header.css">
 </head>
-<style>
-
-  .perfil {
-    width: 40%;
-    margin: auto;
-    text-align: center;
-  }
-  .perfil img{
-    width: 200px;
-  }
-  body{
-    background-color:#9b9c9a;
-  }
-  h2,h3{
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-    color: #fff;
-  }
-  
-</style>
 <body>
    <?php
   require_once ('../login-with-google.php');
 ?>
- 
-  <div class="perfil">
+  <?php include '../includes/header.php'; ?>
+  <div>
     <img src="imagenes/foto.png" alt="">
     <h2>Bienvenido <?php echo $name ?></h2>
     <h3><?php echo $email?></h3>
-    <h3><?php echo $userData?></h3>
   </div>
 </body>
 </html>

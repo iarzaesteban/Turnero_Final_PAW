@@ -40,13 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-container">
         <form action="login.php" method="post">
-            <label for="username">Username:</label>
+            <label for="usuario">Usuario:</label>
             <input type="text" id="username" name="username" required>
             <br>
-            <label for="password">Password:</label>
+            <label for="password">Clave:</label>
             <input type="password" id="password" name="password" required>
             <br>
-            <button type="submit">Login</button>
+            <button type="submit">Loginss</button>
         </form>
 
         <a href="login-with-google.php">Iniciar sesión con Google</a>

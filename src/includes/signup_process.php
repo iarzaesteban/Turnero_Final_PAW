@@ -5,6 +5,7 @@ require_once BASE_PATH . 'db/db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $re_password = password_hash($_POST['re-password'], PASSWORD_BCRYPT);
     $id_localidad = $_POST['provincia'];
 
     try {
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Le asignamos un 3 al final indicando que vamos a dar de alta un cliente
         $stmt->execute([$id_persona, $username, $password, 0, 3]);
 
-        header('Location: ../login.php');
+        header('Location: ../index.php');
         exit();
     } catch (PDOException $e) {
         die("Error: " . $e->getMessage());

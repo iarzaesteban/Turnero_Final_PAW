@@ -4,7 +4,8 @@ require_once '../db/db.php';
 try {
     $stmt = $db->query('SELECT id_provincia, nombre FROM provincia');
     $provincias = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    echo '<option value="' . 0 . '">'
+             . "". '</option>';
     foreach ($provincias as $provincia) {
         echo '<option value="' . $provincia['id_provincia'] . '">'
              . $provincia['nombre'] . '</option>';
