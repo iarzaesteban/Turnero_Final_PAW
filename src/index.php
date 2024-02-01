@@ -1,5 +1,6 @@
 <?php
-require_once 'includes/login_process.php';
+    require_once 'includes/login_process.php';
+    require_once 'login-with-google.php';
 ?>
 
 <!DOCTYPE html>
@@ -28,13 +29,18 @@ require_once 'includes/login_process.php';
                 </span> 
                 <br>
                 <button type="submit">Login</button>
-                <?php require ('login-with-google.php') ?>
                 <section class="login-container-form-footer">
-                    <a href="<?php echo $client->createAuthUrl() ?>" >Iniciar sesión con Google</a>
+                        <a href="<?php echo $client->createAuthUrl() ?>" >
+                            <img src="static/images/google-icon.png" alt=""> 
+                            Iniciar sesión con Google
+                        </a>
                     <a href="signup.php">Crear Usuario</a>
                 </section>
-                <?php if (isset($error_message)) : ?>
-                    <p class="error"><?php echo $error_message; ?></p>
+                <?php if (!empty($error_message) || !empty($_GET['error_message'])): ?>
+                    <p class="error"><?php echo !empty($error_message) ? 
+                                $error_message : 
+                                htmlspecialchars($_GET['error_message']); ?>
+                    </p>
                 <?php endif; ?>
             </form>
         </section>

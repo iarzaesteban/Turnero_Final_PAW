@@ -48,7 +48,7 @@ CREATE TABLE Usuario (
     id_usuario SERIAL PRIMARY KEY,
     id_persona INT REFERENCES Persona(id_persona),
     username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255),
     loggin BOOLEAN DEFAULT FALSE,
     id_rol INT REFERENCES Rol(id_rol)
 );

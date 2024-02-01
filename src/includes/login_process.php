@@ -22,6 +22,7 @@ function loginUser($username, $password, $db) {
 
     if ($user && !$user['loggin'] && password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['id_usuario'];
+        $_SESSION['username'] = $user['username'];
 
         $updateStmt = $db->prepare("UPDATE Usuario SET loggin = TRUE WHERE id_usuario = ?");
         $updateStmt->execute([$user['id_usuario']]);
