@@ -1,56 +1,79 @@
+#container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
 #calendar {
-    width: 30vw;
-    height: 80vh;
+    display: flex;
+    width: 20rem;
+    height: 50%;
+    border: solid 0.1rem;
+    border-radius: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    font-size: .5rem;
+}
+
+#calendar h2{
+    font-size: 1rem;
 }
 
 #calendar-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: .5rem;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #000;
     border: none;
     color: white;
-    padding: 10px 15px;
+    padding: .1rem .8rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: .1rem;
+    margin: .3rem;
 }
 
 button:hover {
-    background-color: #45a049;
+    opacity: 0.7;
 }
 
 select {
-    padding: 10px;
-    font-size: 16px;
+    margin: .1rem;
 }
+
 .calendar-controls-select{
-    width: 10rem;
+    width: 5rem;
 }
 
 #calendario {
-    border: 1px solid #ddd;
+    border: .1rem solid #ddd;
+    font-size: .5rem;
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: .1rem solid #ddd;
     text-align: center;
-    padding: 8px;
+    font-size: .8rem;    
 }
 
 th {
     background-color: #f2f2f2;
+    width: 2rem;
+    height: 1rem;   
 }
 
 td {
     cursor: pointer;
+}
+
+table {
+    margin-bottom: .5rem;
 }
 
 .anterior {
@@ -64,3 +87,70 @@ td {
 .posterior {
     background-color: rgba(0, 255, 0, 0.3);
 }
+
+.selected {
+    background-color: rgb(8, 67, 8);
+    color: white;
+}
+
+#info-section {
+    display: flex;
+    width: 40rem;
+    height: 50%;
+    border: solid 0.1rem;
+    border-radius: 0.5rem;
+    flex-direction: column;
+}
+
+#current-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+#current-date p{
+    margin: inherit;
+    margin-left: .5rem;
+    font-weight: bold;
+}
+
+#current-date #current-date-day{
+    font-size: 2rem;
+    font-weight: bold;
+    padding-bottom: .3rem;
+    color: rgb(22, 118, 22);
+}
+
+
+#info-subtitle {
+    font-style: italic;
+    padding: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider-line {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+    margin: 1rem;
+}
+
+#selected-day-schedule {
+    overflow-y: scroll;
+    /* thin=Nos muestra la barra O none= No nos muestra la barra */
+    scrollbar-width: none; 
+    /* Para Internet Explorer */
+    -ms-overflow-style: none; 
+}
+
+/* Si necesitamos que tenga la barra de scroll vertical
+#selected-day-schedule::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+#selected-day-schedule::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+}
+ */

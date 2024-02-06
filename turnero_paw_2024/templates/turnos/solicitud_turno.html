@@ -11,32 +11,43 @@
         <h1>Sistemas de turnos de Autoridad de Registro UNLu.</h1>
     </header>
 
-    
-    <section id=calendar>
-        <h2>Seleccione el día y después el horario.</h2>
-        <section id="calendar-controls">
-            <button id="prevMonth" onclick="cambiarMes(-1)">&lt;</button>
-            <select id="selectMes" class="calendar-controls-select" onchange="cambiarMes(0)">
-            </select>
-            <select id="selectAnio" class="calendar-controls-select" onchange="cambiarMes(0)">
-            </select>
-            <button id="nextMonth" onclick="cambiarMes(1)">&gt;</button>
+    <section id="container">
+        <section id="calendar">
+            <h2>Seleccione el día y después el horario.</h2>
+            <section id="calendar-controls">
+                <button id="prevMonth" onclick="changeMonth(-1)">&lt;</button>
+                <select id="selectMes" class="calendar-controls-select" onchange="changeMonth(0)">
+                </select>
+                <select id="selectAnio" class="calendar-controls-select" onchange="changeMonth(0)">
+                </select>
+                <button id="nextMonth" onclick="changeMonth(1)">&gt;</button>
+            </section>
+            <table id="calendario">
+                <thead>
+                    <tr>
+                        <th>Dom.</th>
+                        <th>Lun.</th>
+                        <th>Mar.</th>
+                        <th>Mie.</th>
+                        <th>Jue.</th>
+                        <th>Vie.</th>
+                        <th>Sab.</th>
+                    </tr>
+                </thead>
+                <tbody id="calendario-cuerpo">
+                </tbody>
+            </table>
         </section>
-        <table id="calendario">
-            <thead>
-                <tr>
-                    <th>Domingo</th>
-                    <th>Lunes</th>
-                    <th>Martes</th>
-                    <th>Miércoles</th>
-                    <th>Jueves</th>
-                    <th>Viernes</th>
-                    <th>Sábado</th>
-                </tr>
-            </thead>
-            <tbody id="calendario-cuerpo">
-            </tbody>
-        </table>
+        <section id="info-section">
+            <section id="current-date">
+                <p id="current-date-day">
+                </p>
+                <p id="current-date-date">
+                </p>
+            </section>
+            <p id="info-subtitle">Al elegir el día se mostrarán los horarios disponibles</p>
+            <section id="selected-day-schedule"></section>
+        </section>
     </section>
     <script src="{% static 'js/calendario.js' %}"></script>
 </body>

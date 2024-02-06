@@ -80,27 +80,8 @@ def get_google_calendar_events():
 
 def solicitud_turno(request):
     google_calendar_events = get_google_calendar_events()
-    mounths = ["Eenro", "Febrero", "Marzo",
-               "Abril", "Mayo", "Junio", 
-               "Julio", "Agosto", "Septiembre", 
-               "Octubre", "Noviembre", "Diciembre"]
-    days = ["Lunes", "Martes", "Miercoles", "Jueves",
-             "Viernes", "Sabado", "Domingo"]
-    today = datetime.now()
-    days_in_current_month = calendar.monthrange(today.year, today.month)[1]
-    days_in_next_month = calendar.monthrange(today.year, today.month+1)[1]
-    days_in_two_month = calendar.monthrange(today.year, today.month+2)[1]
-    day_names = list(calendar.day_name)
-    start_day_name = day_names[datetime(today.year, today.month, 1).weekday()]
 
-    return render(request, 'turnos/solicitud_turno.html', {'events': google_calendar_events,
-                                                           'mounths': mounths,
-                                                           'days': days,
-                                                           'today': today,
-                                                           'days_in_current_month': days_in_current_month,
-                                                           'days_in_next_month': days_in_next_month,
-                                                           'days_in_two_month': days_in_two_month,
-                                                           'start_day_name': start_day_name})
+    return render(request, 'turnos/solicitud_turno.html', {'events': google_calendar_events})
 
 
 class IndexView(TemplateView):
