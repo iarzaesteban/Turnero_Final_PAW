@@ -1,0 +1,29 @@
+version: '3.3'
+
+networks:
+  turnero_network:
+
+services:
+  db_postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: turnero_unlu
+      POSTGRES_USER: turnero_user
+      POSTGRES_PASSWORD: turnero_password
+    ports:
+      - "5432:5432"
+    networks:
+      - turnero_network
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  web:
+    build: 
+      context: .
+      dockerfile: deploy/Docker/Dockerfile
+    ports:
+     - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    network_mode: "host"

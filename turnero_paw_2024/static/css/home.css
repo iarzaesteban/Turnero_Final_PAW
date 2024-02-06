@@ -1,0 +1,66 @@
+#calendar {
+    width: 30vw;
+    height: 80vh;
+}
+
+#calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+}
+.calendar-controls-select{
+    width: 10rem;
+}
+
+#calendario {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td {
+    cursor: pointer;
+}
+
+.anterior {
+    background-color: rgba(255, 0, 0, 0.3); 
+}
+
+.actual {
+    background-color: yellow;
+}
+
+.posterior {
+    background-color: rgba(0, 255, 0, 0.3);
+}

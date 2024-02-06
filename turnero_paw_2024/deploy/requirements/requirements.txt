@@ -1,0 +1,7 @@
+Django==4.2.9
+SpeechRecognition
+pyttsx3
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+python-dateutil

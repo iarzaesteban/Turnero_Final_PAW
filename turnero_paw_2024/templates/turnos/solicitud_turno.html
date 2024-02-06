@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitud de Turno</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Sistemas de turnos de Autoridad de Registro UNLu.</h1>
+    </header>
+
+    
+    <section id=calendar>
+        <h2>Seleccione el día y después el horario.</h2>
+        <section id="calendar-controls">
+            <button id="prevMonth" onclick="cambiarMes(-1)">&lt;</button>
+            <select id="selectMes" class="calendar-controls-select" onchange="cambiarMes(0)">
+            </select>
+            <select id="selectAnio" class="calendar-controls-select" onchange="cambiarMes(0)">
+            </select>
+            <button id="nextMonth" onclick="cambiarMes(1)">&gt;</button>
+        </section>
+        <table id="calendario">
+            <thead>
+                <tr>
+                    <th>Domingo</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody id="calendario-cuerpo">
+            </tbody>
+        </table>
+    </section>
+    <script src="{% static 'js/calendario.js' %}"></script>
+</body>
+</html>
