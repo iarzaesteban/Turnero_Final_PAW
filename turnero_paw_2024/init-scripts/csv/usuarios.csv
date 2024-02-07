@@ -1,2 +1,2 @@
-id_persona,username,password_hash,loggin,rol
-1,admin,$2a$12$wK/fZ.WMqkh5R5ZI9pHX/eWu13XqGJnsbInslsmziWl4A5xxAG6t6,0,1
+id_person,username,password_hash,loggin
+1,admin,$2a$12$wK/fZ.WMqkh5R5ZI9pHX/eWu13XqGJnsbInslsmziWl4A5xxAG6t6,0

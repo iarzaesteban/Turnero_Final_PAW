@@ -1,2 +1,2 @@
-nombre, apellido, correo, telefono, dni, id_localidad
-admin, admin, admin@gmail.com, 12345567, 12345678,1
+first_name,last_name,email
+admin,admin,admin@gmail.com

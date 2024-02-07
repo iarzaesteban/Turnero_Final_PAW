@@ -49,6 +49,7 @@
             <section id="selected-day-schedule"></section>
         </section>
     </section>
-    <script src="{% static 'js/calendario.js' %}"></script>
+    <script src="{% static 'js/calendario.js' %}" defer></script>
+    {{ events|json_script }}
 </body>
 </html>

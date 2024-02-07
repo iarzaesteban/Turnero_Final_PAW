@@ -19,7 +19,11 @@ INSTALLED_APPS = [
     #MY APPS
     'applications.user',
     'applications.tests',
-    'applications.turnos',
+    'applications.person',
+    'applications.role',
+    'applications.aditional_information',
+    'applications.shift',
+    'applications.state',
 ]
 
 MIDDLEWARE = [

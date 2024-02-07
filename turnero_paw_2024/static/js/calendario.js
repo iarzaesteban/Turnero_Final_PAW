@@ -19,9 +19,15 @@ let calendarBody = document.getElementById("calendario-cuerpo");
 let monthSelected = document.getElementById("selectMes");
 let yearSelected = document.getElementById("selectAnio");
 
-const startHourWork = 8
-const finishHourWork = 17
-const minutesIterator = 30
+let responseEvents = [];
+const startHourWork = 8;
+const finishHourWork = 17;
+const minutesIterator = 30;
+
+// const eventsData = JSON.parse(
+//     document.currentScript.nextElementSibling.textContent
+//   );
+  
 // Generamos/Regeneramos el calendario
 function generateCalendar() {
     let day = 1;
@@ -67,7 +73,9 @@ function setCurrentDay(){
     const currentDateDay = document.getElementById('current-date-day');
     const currentDateDate = document.getElementById('current-date-date');
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
-    const dayOfWeek = selectedDate.toLocaleDateString('es-ES', { weekday: 'long' });
+    const dayOfWeek = selectedDate.toLocaleDateString
+                                        ('es-ES', { weekday: 'long' }).
+                                            replace(/^\w/, (c) => c.toUpperCase());
 
     currentDateDay.textContent = `${currentDay}  ${dayOfWeek}`;
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
@@ -81,27 +89,34 @@ function generateSchedules() {
     // Ocultamos el párrafo 'info-subtitle'
     const infoSubtitle = document.getElementById('info-subtitle');
     infoSubtitle.style.display = 'none';
-
+    console.log("responseEvents",responseEvents);
     // Creamos nuevos elementos p para cada horario
     for (let hour = startHourWork; hour <= finishHourWork; hour++) {
         for (let minute = 0; minute < 60; minute += minutesIterator) {
             if (hour < finishHourWork || (hour == finishHourWork && minute === 0)) {
-                const scheduleElement = document.createElement('p');
                 const formattedHour = hour.toString().padStart(2, '0');
                 const formattedMinute = minute.toString().padStart(2, '0');
-                
-                scheduleElement.textContent = `${formattedHour}:${formattedMinute}`;
-                scheduleElement.classList.add('schedule-item');
-                
-                // Agregamos un evento de clic a cada horario
-                scheduleElement.addEventListener('click', () => {
-                    alert(`Horario seleccionado: ${formattedHour}:${formattedMinute}`);
-                });
+                const formattedTime = `${formattedHour}:${formattedMinute}`;
 
-                scheduleElement.classList.add('divider-line');
+                // Verificamos si el horario está en responseEvents
+                const isEventScheduled = responseEvents.some(event => event.formatted_start.includes(formattedTime));
 
-                // Agregamos el elemento p al contenedor
-                selectedDaySchedule.appendChild(scheduleElement);
+                // Si no está en responseEvents, lo agregamos al contenedor
+                if (!isEventScheduled) {
+                    const scheduleElement = document.createElement('p');
+                    scheduleElement.textContent = `${formattedHour}:${formattedMinute}`;
+                    scheduleElement.classList.add('schedule-item');
+
+                    // Agregamos un evento de clic a cada horario
+                    scheduleElement.addEventListener('click', () => {
+                        alert(`Horario seleccionado: ${formattedHour}:${formattedMinute}`);
+                    });
+
+                    scheduleElement.classList.add('divider-line');
+
+                    // Agregamos el elemento p al contenedor
+                    selectedDaySchedule.appendChild(scheduleElement);
+                }
             }
         }
     }
@@ -110,7 +125,8 @@ function generateSchedules() {
     const currentDateDate = document.getElementById('current-date-date');
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
     const dayOfWeek = selectedDate.toLocaleDateString
-                                        ('es-ES', { weekday: 'long' }).replace(/^\w/, (c) => c.toUpperCase());
+                                        ('es-ES', { weekday: 'long' }).
+                                            replace(/^\w/, (c) => c.toUpperCase());
 
     currentDateDay.textContent = `${currentDay}  ${dayOfWeek}`;
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
@@ -131,7 +147,7 @@ function createClickHandler(dia) {
         currentDay = dia;
         // Marcamos el día seleccionado
         this.classList.add('selected');
-        generateSchedules();
+        getGoogleCalendarEvents();
     };
 }
 
@@ -213,6 +229,28 @@ function getMonthName(indice) {
                     "Noviembre", "Diciembre"];
 
     return meses[indice];
+}
+
+function getGoogleCalendarEvents() {
+    const selectedDate = new Date(currentYear, currentMonth, currentDay);
+    const formattedDate = selectedDate.toISOString();
+    fetch('/get_google_calendar_events/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({ date: formattedDate}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.events);  
+        responseEvents = data.events;
+        generateSchedules();
+    })
+    .catch(error => {
+        console.error('Error fetching Google Calendar events:', error);
+    });
 }
 
 generateCalendar();
