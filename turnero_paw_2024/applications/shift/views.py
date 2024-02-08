@@ -76,7 +76,7 @@ def get_google_calendar_events(selected_date):
         
         for event in events:
             start = event["start"].get("dateTime", event["start"].get("date"))
-            formatted_start = parser.parse(start).strftime("%Y-%m-%d %H:%M:%S %Z")
+            formatted_start = parser.parse(start).strftime("%Y-%m-%d %H:%M:%S %p %Z")
             event_data = {
                 "event": event["summary"],
                 "formatted_start": formatted_start

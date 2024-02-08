@@ -1,0 +1,54 @@
+#info-section {
+    display: flex;
+    width: 40rem;
+    height: 50%;
+    border: solid 0.1rem;
+    border-radius: 0.5rem;
+    flex-direction: column;
+}
+
+#current-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+#current-date p{
+    margin: inherit;
+    margin-left: .5rem;
+    font-weight: bold;
+}
+
+#current-date #current-date-day{
+    font-size: 2rem;
+    font-weight: bold;
+    padding-bottom: .3rem;
+    color: rgb(22, 118, 22);
+}
+
+
+#info-subtitle {
+    font-style: italic;
+    padding: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider-line {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+    margin: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+
+#selected-day-schedule {
+    overflow-y: scroll;
+    /* thin=Nos muestra la barra O none= No nos muestra la barra */
+    scrollbar-width: none; 
+    /* Para Internet Explorer */
+    -ms-overflow-style: none; 
+}

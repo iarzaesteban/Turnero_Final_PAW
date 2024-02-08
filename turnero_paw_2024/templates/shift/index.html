@@ -3,52 +3,28 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Author: Esteban Iarza, estudiante de la UNLu.">
     <title>Solicitud de Turno</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="preload" href="{% static 'css/home.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/modal_select_shift.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/calendar.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/calendar_info_section.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="{% static 'css/home.css' %}">
+        <link rel="stylesheet" href="{% static 'css/modal_select_shift.css' %}">
+        <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+        <link rel="stylesheet" href="{% static 'css/calendar_info_section.css' %}">
+    </noscript>
 </head>
 <body>
     <header>
         <h1>Sistemas de turnos de Autoridad de Registro UNLu.</h1>
     </header>
-    <section id="container">
-        <section id="calendar">
-            <h2>Seleccione el día y después el horario.</h2>
-            <section id="calendar-controls">
-                <button id="prevMonth" onclick="changeMonth(-1)">&lt;</button>
-                <select id="selectMes" class="calendar-controls-select" onchange="changeMonth(0)">
-                </select>
-                <select id="selectAnio" class="calendar-controls-select" onchange="changeMonth(0)">
-                </select>
-                <button id="nextMonth" onclick="changeMonth(1)">&gt;</button>
-            </section>
-            <table id="calendario">
-                <thead>
-                    <tr>
-                        <th>Dom.</th>
-                        <th>Lun.</th>
-                        <th>Mar.</th>
-                        <th>Mie.</th>
-                        <th>Jue.</th>
-                        <th>Vie.</th>
-                        <th>Sab.</th>
-                    </tr>
-                </thead>
-                <tbody id="calendario-cuerpo">
-                </tbody>
-            </table>
-        </section>
-        <section id="info-section">
-            <section id="current-date">
-                <p id="current-date-day">
-                </p>
-                <p id="current-date-date">
-                </p>
-            </section>
-            <p id="info-subtitle">Al elegir el día se mostrarán los horarios disponibles</p>
-            <section id="selected-day-schedule"></section>
-        </section>
-    </section>
+    {% include 'shift/calendar.html' %}
+    {% include 'shift/modal_select_shift.html' %}
     <script src="{% static 'js/calendario.js' %}" ></script>
+
 </body>
 </html>
 

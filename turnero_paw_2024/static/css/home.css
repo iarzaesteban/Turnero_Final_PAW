@@ -135,6 +135,9 @@ table {
     border-bottom: 1px solid #ccc;
     padding-bottom: 1rem;
     margin: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+
 }
 
 #selected-day-schedule {

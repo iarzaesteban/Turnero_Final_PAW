@@ -1,3 +1,8 @@
+// import {
+//     cleanSelectors,
+//     updateSelectors
+// } from './selectors.js';
+
 let date = new Date();
 
 const thisYear = date.getFullYear();
@@ -45,7 +50,7 @@ function generateCalendar() {
                 cell.textContent = day;
                 cell.classList.add(getClassDay(day));
 
-                if (day >= currentDay) {
+                if (day >= thisDay || currentMonth != thisMonth ) {
                     cell.addEventListener("click", createClickHandler(day));
                 }
                     
@@ -90,6 +95,14 @@ function generateSchedules() {
     const infoSubtitle = document.getElementById('info-subtitle');
     infoSubtitle.style.display = 'none';
     console.log("responseEvents",responseEvents);
+
+    const currentDateDay = document.getElementById('current-date-day');
+    const currentDateDate = document.getElementById('current-date-date');
+    const selectedDate = new Date(currentYear, currentMonth, currentDay);
+    const dayOfWeek = selectedDate.toLocaleDateString
+                                        ('es-ES', { weekday: 'long' }).
+                                            replace(/^\w/, (c) => c.toUpperCase());
+
     // Creamos nuevos elementos p para cada horario
     for (let hour = startHourWork; hour <= finishHourWork; hour++) {
         for (let minute = 0; minute < 60; minute += minutesIterator) {
@@ -98,18 +111,18 @@ function generateSchedules() {
                 const formattedMinute = minute.toString().padStart(2, '0');
                 const formattedTime = `${formattedHour}:${formattedMinute}`;
 
-                // Verificamos si el horario está en responseEvents
                 const isEventScheduled = responseEvents.some(event => event.formatted_start.includes(formattedTime));
 
-                // Si no está en responseEvents, lo agregamos al contenedor
                 if (!isEventScheduled) {
                     const scheduleElement = document.createElement('p');
-                    scheduleElement.textContent = `${formattedHour}:${formattedMinute}`;
+                    scheduleElement.textContent = `${formattedHour}:${formattedMinute}  - Solicitar`;
                     scheduleElement.classList.add('schedule-item');
 
                     // Agregamos un evento de clic a cada horario
                     scheduleElement.addEventListener('click', () => {
-                        alert(`Horario seleccionado: ${formattedHour}:${formattedMinute}`);
+                        openModal(`${formattedHour}:${formattedMinute}hs`, `${dayOfWeek} 
+                                        ${currentDay} de ${getMonthName(currentMonth)} 
+                                            de ${currentYear}`);
                     });
 
                     scheduleElement.classList.add('divider-line');
@@ -119,24 +132,29 @@ function generateSchedules() {
                 }
             }
         }
-    }
-
-    const currentDateDay = document.getElementById('current-date-day');
-    const currentDateDate = document.getElementById('current-date-date');
-    const selectedDate = new Date(currentYear, currentMonth, currentDay);
-    const dayOfWeek = selectedDate.toLocaleDateString
-                                        ('es-ES', { weekday: 'long' }).
-                                            replace(/^\w/, (c) => c.toUpperCase());
+    }    
 
     currentDateDay.textContent = `${currentDay}  ${dayOfWeek}`;
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
 
     selectedDaySchedule.style.maxHeight = '30rem'; 
-    // Mostramos la sección de información y los horarios
     const infoSection = document.getElementById('info-section');
     infoSection.style.display = 'block';
 }
 
+function openModal(selectedTime, selectedDate) {
+    const modal = document.getElementById('appointmentModal');
+    const timeParagraph = document.getElementById('selectedTime');
+    const dateParagraph = document.getElementById('selectedDate');
+    timeParagraph.textContent = selectedTime;
+    dateParagraph.textContent = selectedDate;
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    const modal = document.getElementById('appointmentModal');
+    modal.style.display = 'none';
+}
 
 function createClickHandler(dia) {
     return function() {

@@ -1,0 +1,29 @@
+<section id="container">
+    <section id="calendar">
+        <h2>Seleccione el día y después el horario.</h2>
+        <section id="calendar-controls">
+            <button id="prevMonth" aria-label="<" onclick="changeMonth(-1)"> < </button>
+                <select id="selectMes" class="calendar-controls-select" aria-label="select-month" onchange="changeMonth(0)">
+                </select>
+                <select id="selectAnio" class="calendar-controls-select" aria-label="select-month" onchange="changeMonth(0)">
+                </select>
+            <button id="nextMonth" aria-label=">" onclick="changeMonth(1)"> > </button>
+        </section>
+        <table id="calendario">
+            <thead>
+                <tr>
+                    <th>Dom.</th>
+                    <th>Lun.</th>
+                    <th>Mar.</th>
+                    <th>Mie.</th>
+                    <th>Jue.</th>
+                    <th>Vie.</th>
+                    <th>Sab.</th>
+                </tr>
+            </thead>
+            <tbody id="calendario-cuerpo" tabindex="-1">
+            </tbody>
+        </table>
+    </section>
+{% include 'shift/calendar_info_section.html' %}
+</section>

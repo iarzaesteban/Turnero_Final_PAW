@@ -1,0 +1,26 @@
+<section id="appointmentModal" class="modal">
+    <section class="modal-content">
+        <h2 class="modal-title">Solicitud de Turno</h2>
+        <p id="selectedTime" tabindex="-1"></p>
+        <p id="selectedDate" tabindex="-1"></p>
+        <section class="modal-form-content">
+            <label class="modal-label" for="emailInput">Ingrese su email:</label>
+            <input type="text" class="modal-input" id="emailInput" placeholder="Email">
+            
+            
+            <label class="modal-label" for="apellidoInput">Ingrese su apellido:</label>
+            <input type="text" class="modal-input" id="apellidoInput" placeholder="Apellido">
+            
+
+            <label class="modal-label" for="nombreInput">Ingrese su nombre:</label>
+            <input type="text" class="modal-input" id="nombreInput" placeholder="Nombre">
+            
+            <button id="solicitarTurnoBtn" class="modal-form-content-btn-cancel" onclick="closeModal()">
+                Cancelar
+            </button>
+            <button id="close-btn" class="modal-form-content-btn-confirm" disabled onclick="solicitarTurno()">
+                Solicitar Turno
+            </button>
+        </section>
+    </section>
+</section>
