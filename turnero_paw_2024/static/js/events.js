@@ -1,3 +1,14 @@
+import {
+    currentYear,
+    currentMonth,
+    currentDay,
+    setResponseEvents,
+} from './index.js';
+
+import {
+    generateSchedules
+} from './helpers.js';
+
 export function getGoogleCalendarEvents() {
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
     const formattedDate = selectedDate.toISOString();
@@ -12,7 +23,7 @@ export function getGoogleCalendarEvents() {
     .then(response => response.json())
     .then(data => {
         console.log(data.events);  
-        responseEvents = data.events;
+        setResponseEvents(data.events);
         generateSchedules();
     })
     .catch(error => {

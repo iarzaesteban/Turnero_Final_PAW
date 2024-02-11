@@ -1,8 +1,28 @@
 import {
+    thisMonth,
+    lastMonthShow,
+    currentYear,
+    currentMonth,
+    currentDay,
+    setCurrentDay,
+    firstDayMonth,
+    lastDayMonth,
+    daysWeek,
+    firstDayWeek,
+    monthSelected,
+    yearSelected,
+    calendarBody
+} from './index.js';
+
+import {
     getClassDay
 } from './helpers.js';
 
-export function generateCalendar(calendarBody, firstDayWeek, daysWeek, currentDay, thisMonth) {
+import {
+    getGoogleCalendarEvents
+} from './events.js';
+
+export function generateCalendar() {
     let day = 1;
     for (let i = 0; i < 6; i++) { 
         const row = calendarBody.insertRow();
@@ -28,6 +48,17 @@ export function generateCalendar(calendarBody, firstDayWeek, daysWeek, currentDa
     }
 }
 
+function createClickHandler(day) {
+    return function() {
+        const days = document.querySelectorAll('td');
+        days.forEach(d => d.classList.remove('selected'));
+
+        setCurrentDay(day);
+        this.classList.add('selected');
+        getGoogleCalendarEvents();
+    };
+}
+
 export function updateAtributesDate(){
     if(currentMonth == thisMonth){
         currentDay = date.getDate();
@@ -37,6 +68,13 @@ export function updateAtributesDate(){
     daysWeek = lastDayMonth.getDate();
     firstDayWeek = firstDayMonth.getDay();
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const closeButton = document.getElementById('modal-form-content-close-btn');
+    if (closeButton) {
+        closeButton.addEventListener('click', closeModal);
+    }
+});
 
 export function changeMonth(value) {
     const changeMonth = currentMonth + value;

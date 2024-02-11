@@ -1,56 +1,47 @@
 let date = new Date();
 
-const thisYear = date.getFullYear();
-const thisMonth = date.getMonth();
-const lastMonthShow = thisMonth + 2;
-const thisDay = date.getDate();
+export const thisYear = date.getFullYear();
+export const thisMonth = date.getMonth();
+export const lastMonthShow = thisMonth + 2;
+export const thisDay = date.getDate();
 
-let currentYear = date.getFullYear();
-let currentMonth = date.getMonth();
-let currentDay = date.getDate();
+export let currentYear = date.getFullYear();
+export let currentMonth = date.getMonth();
+export let currentDay = date.getDate();
 
-let firstDayMonth = new Date(currentYear, currentMonth, 1);
-let lastDayMonth = new Date(currentYear, currentMonth + 1, 0);
+export let firstDayMonth = new Date(currentYear, currentMonth, 1);
+export let lastDayMonth = new Date(currentYear, currentMonth + 1, 0);
 
-let daysWeek = lastDayMonth.getDate();
-let firstDayWeek = firstDayMonth.getDay();
+export let daysWeek = lastDayMonth.getDate();
+export let firstDayWeek = firstDayMonth.getDay();
 
-let calendarBody = document.getElementById("calendario-cuerpo");
-let monthSelected = document.getElementById("selectMes");
-let yearSelected = document.getElementById("selectAnio");
+export let calendarBody = document.getElementById("calendario-cuerpo");
+export let monthSelected = document.getElementById("selectMonth");
+export let yearSelected = document.getElementById("selectYear");
 
-let responseEvents = [];
-const startHourWork = 8;
-const finishHourWork = 17;
-const minutesIterator = 30;
+export let responseEvents = [];
+
+export function setCurrentDay(newDay) {
+    currentDay = newDay;
+}
+export function setResponseEvents(rspEvent) {
+    responseEvents = rspEvent;
+}
 
 import {
     generateCalendar,
-    updateAtributesDate,
-    changeMonth
 } from './calendar.js';
 
 import {
-    openModal,
-    closeModal
-} from './modal.js';
-
-import {
-    cleanSelectors,
     updateSelectors
 } from './selectors.js';
 
 import {
-    getGoogleCalendarEvents
-} from './events.js';
-
-import {
-    getMonthName,
-    setCurrentDay
+    setCurrentDate
 } from './helpers.js';
 
-generateCalendar(calendarBody, firstDayWeek, daysWeek, currentDay,thisMonth);
+generateCalendar();
 
-updateSelectors(monthSelected, yearSelected, thisMonth, currentYear);
+updateSelectors();
 
-setCurrentDay(currentYear, currentMonth, currentDay);
+setCurrentDate();

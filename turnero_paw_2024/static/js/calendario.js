@@ -1,8 +1,3 @@
-// import {
-//     cleanSelectors,
-//     updateSelectors
-// } from './selectors.js';
-
 let date = new Date();
 
 const thisYear = date.getFullYear();
@@ -152,6 +147,14 @@ function openModal(selectedTime, selectedDate) {
 }
 
 function closeModal() {
+    const emailInput = document.getElementById("emailInput");
+    const apellidoInput = document.getElementById("apellidoInput");
+    const nombreInput = document.getElementById("nombreInput");
+    const solicitarTurnoBtn = document.getElementById("close-btn");
+    solicitarTurnoBtn.disabled = true;
+    emailInput.value = "";
+    apellidoInput.value = "";
+    nombreInput.value = "";
     const modal = document.getElementById('appointmentModal');
     modal.style.display = 'none';
 }
@@ -168,6 +171,36 @@ function createClickHandler(dia) {
         getGoogleCalendarEvents();
     };
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const emailInput = document.getElementById("emailInput");
+    const apellidoInput = document.getElementById("apellidoInput");
+    const nombreInput = document.getElementById("nombreInput");
+    const solicitarTurnoBtn = document.getElementById("close-btn");
+
+    // Agregar oyentes a los campos de entrada
+    emailInput.addEventListener("input", validarCampos);
+    apellidoInput.addEventListener("input", validarCampos);
+    nombreInput.addEventListener("input", validarCampos);
+
+    function validarCampos() {
+        const email = emailInput.value.trim();
+        const apellido = apellidoInput.value.trim();
+        const nombre = nombreInput.value.trim();
+
+        // Validar formato de correo electrónico
+        const formatoEmailValido = validarFormatoEmail(email);
+
+        // Habilitar o deshabilitar el botón según la validación de campos
+        solicitarTurnoBtn.disabled = !(email && apellido && nombre && formatoEmailValido);
+    }
+
+    function validarFormatoEmail(email) {
+        // Utilizar una expresión regular para validar el formato del correo electrónico
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regexEmail.test(email);
+    }
+});
 
 function updateAtributesDate(){
     if(currentMonth == thisMonth){
@@ -250,6 +283,7 @@ function getMonthName(indice) {
 }
 
 function getGoogleCalendarEvents() {
+    console.log("getGoogleCalendarEvents es ");
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
     const formattedDate = selectedDate.toISOString();
     fetch('/get_google_calendar_events/', {
@@ -264,6 +298,7 @@ function getGoogleCalendarEvents() {
     .then(data => {
         console.log(data.events);  
         responseEvents = data.events;
+        console.log("getGoogleCalendarEvents es ");
         generateSchedules();
     })
     .catch(error => {

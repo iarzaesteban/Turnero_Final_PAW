@@ -1,26 +1,31 @@
 import {
+    thisMonth,
+    currentYear,
+    currentMonth,
+    monthSelected,
+    yearSelected,
+} from './index.js';
+
+import {
     getMonthName
 } from './helpers.js';
 
-export function cleanSelectors(monthSelected, yearSelected){
+function cleanSelectors(){
     monthSelected.innerHTML = "";
     yearSelected.innerHTML = "";
 }
 
-export function updateSelectors(monthSelected, yearSelected, thisMonth, currentYear) {
-    // Limpiamos los selectores
-    cleanSelectors(monthSelected, yearSelected);
+export function updateSelectors() {
+    cleanSelectors();
     const option = document.createElement("option");
     option.value = 0;
     monthSelected.add(option);
-    // Generamos options para el selector de mes
     for (let i = thisMonth; i < thisMonth + 3; i++) {
         const option = document.createElement("option");
         option.value = i;
         option.text = getMonthName(i);
         monthSelected.add(option);
     }
-    // Establecemos el mes actual como seleccionado
     monthSelected.selectedIndex = currentMonth;
 
     const yearOption = document.createElement("option");
@@ -33,7 +38,6 @@ export function updateSelectors(monthSelected, yearSelected, thisMonth, currentY
         yearOption.text = currentYear + 1;
         yearSelected.add(yearOption);
     }
-
-    // Establecemos el año actual como seleccionado
+    
     yearSelected.selectedIndex = 0;
 }
