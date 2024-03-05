@@ -9,7 +9,7 @@ class Shift(models.Model):
     date = models.DateField()
     hour = models.TimeField()
     id_person = models.ForeignKey(Person, on_delete=models.CASCADE)
-    id_user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    id_user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
     id_state = models.ForeignKey(State, on_delete=models.CASCADE)
     confirmation_code = models.CharField(max_length=50)
     confirmation_url = models.URLField(max_length=255)

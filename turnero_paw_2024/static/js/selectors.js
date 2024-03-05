@@ -26,7 +26,7 @@ export function updateSelectors() {
         option.text = getMonthName(i);
         monthSelected.add(option);
     }
-    monthSelected.selectedIndex = currentMonth;
+    monthSelected.value = currentMonth;
 
     const yearOption = document.createElement("option");
     yearOption.value = 0;

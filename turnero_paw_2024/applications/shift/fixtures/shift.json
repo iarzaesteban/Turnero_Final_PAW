@@ -1,0 +1,30 @@
+[
+    {
+      "model": "shift.Shift",
+      "pk": 1,
+      "fields": {
+        "date": "",
+        "hour": "",
+        "id_person": "",
+        "id_user": "",
+        "id_state": "",
+        "confirmation_code": "",
+        "confirmation_url": "",
+        "last_updated": ""
+      }
+    },
+    {
+        "model": "shift.Shift",
+        "pk": 2,
+        "fields": {
+          "date": "",
+          "hour": "",
+          "id_person": "",
+          "id_user": "",
+          "id_state": "",
+          "confirmation_code": "",
+          "confirmation_url": "",
+          "last_updated": ""
+        }
+    }    
+]

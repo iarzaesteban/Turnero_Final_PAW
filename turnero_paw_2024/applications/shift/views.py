@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
 from dateutil import parser
+from django.urls import reverse
 
 from datetime import timedelta
 
@@ -13,10 +14,12 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-
+from .helpers import client_exists, create_client, create_shift, generate_confirmation_code
 import datetime as dt
 import os.path
 import json
+
+from applications.shift.models import Shift
 
 @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(TemplateView):
@@ -51,6 +54,7 @@ def get_google_calendar_events(selected_date):
         response = []
         service = build("calendar", "v3", credentials=creds)
 
+        print("selected_date {}".format(selected_date),flush=True)
         next_day = dt.datetime.strptime(selected_date, "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(days=1)
         next_day_str = next_day.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
@@ -101,7 +105,36 @@ def get_list_dates(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
-#def solicitud_turno(request):
-    # google_calendar_events = get_google_calendar_events()
 
-    # return render(request, 'turnos/solicitud_turno.html', {'events': google_calendar_events})
+@csrf_exempt
+def confirm_shift(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        first_name = data.get('name')
+        last_name = data.get('last_name')
+        selected_date_time = data.get('dateTime')
+        if not client_exists(email):
+            create_client(email, first_name, last_name)
+
+        confirmation_code = generate_confirmation_code()
+        #cancelation_date = parser.parse(selected_date).date() - timedelta(days=2)
+        cancelation_url = request.build_absolute_uri(reverse('cancel_shift')) + f'?confirmation_code={confirmation_code}'
+        create_shift(selected_date_time, email, confirmation_code, cancelation_url)
+
+        return JsonResponse({'events': "ok"})
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+from django.shortcuts import get_object_or_404
+
+@csrf_exempt
+def cancel_shift(request):
+    if request.method == 'GET':
+        confirmation_code = request.GET.get('confirmation_code')
+        shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
+        # Realiza cualquier lógica necesaria para cancelar el turno aquí
+        shift.delete()  # Por ejemplo, aquí simplemente eliminamos el turno
+        return JsonResponse({'message': 'Turno cancelado exitosamente'})
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

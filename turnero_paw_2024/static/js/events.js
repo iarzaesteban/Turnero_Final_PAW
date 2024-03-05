@@ -11,8 +11,10 @@ import {
 
 export function getGoogleCalendarEvents() {
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
+    console.log("selectedDate", selectedDate);
     const formattedDate = selectedDate.toISOString();
-    fetch('/get_google_calendar_events/', {
+    console.log("formattedDate", formattedDate);
+    fetch('/shift/get_google_calendar_events/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

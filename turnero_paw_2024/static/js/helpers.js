@@ -3,9 +3,17 @@ import {
     currentYear,
     currentMonth,
     currentDay,
+    setCurrentDay,
     firstDayMonth,
+    setFirstDayMonth,
     lastDayMonth,
+    setlastDayMonth,
+    lastMonthShow,
+    setDaysWeek,
+    setnFirstDayWeek,
     responseEvents,
+    setCurrentMonth,
+    setCurrentYear,
     calendarBody
 } from './index.js';
 
@@ -26,11 +34,13 @@ let date = new Date();
 const startHourWork = 8;
 const finishHourWork = 17;
 const minutesIterator = 30;
+let monthSelected = document.getElementById("selectMonth");
+let yearSelected = document.getElementById("selectYear");
 
 export function generateSchedules() {
     const selectedDaySchedule = document.getElementById('selected-day-schedule');
     selectedDaySchedule.innerHTML = '';
-    
+
     const infoSubtitle = document.getElementById('info-subtitle');
     infoSubtitle.style.display = 'none';
     console.log("responseEvents",responseEvents);
@@ -48,7 +58,6 @@ export function generateSchedules() {
                 const formattedHour = hour.toString().padStart(2, '0');
                 const formattedMinute = minute.toString().padStart(2, '0');
                 const formattedTime = `${formattedHour}:${formattedMinute}`;
-
                 const isEventScheduled = responseEvents.some(event => event.formatted_start.includes(formattedTime));
 
                 if (!isEventScheduled) {
@@ -57,9 +66,9 @@ export function generateSchedules() {
                     scheduleElement.classList.add('schedule-item');
 
                     scheduleElement.addEventListener('click', () => {
-                        openModal(`${formattedHour}:${formattedMinute}hs`, `${dayOfWeek} 
-                                        ${currentDay} de ${getMonthName(currentMonth)} 
-                                            de ${currentYear}`);
+                        openModal(formattedHour, formattedMinute, 
+                                        dayOfWeek, 
+                                        getMonthName(currentMonth), currentYear);
                     });
 
                     scheduleElement.classList.add('divider-line');
@@ -93,13 +102,13 @@ export function getClassDay(day) {
 
 export function updateAtributesDate(){
     if(currentMonth == thisMonth){
-        currentDay = date.getDate();
+        setCurrentDay(date.getDate());
     }
     
-    firstDayMonth = new Date(currentYear, currentMonth, 1);
-    lastDayMonth = new Date(currentYear, currentMonth + 1, 0);
-    daysWeek = lastDayMonth.getDate();
-    firstDayWeek = firstDayMonth.getDay();
+    setFirstDayMonth(new Date(currentYear, currentMonth, 1));
+    setlastDayMonth(new Date(currentYear, currentMonth + 1, 0));
+    setDaysWeek(lastDayMonth.getDate());
+    setnFirstDayWeek(firstDayMonth.getDay());
 }
 
 export function setCurrentDate(){
@@ -118,38 +127,33 @@ export function getMonthName(indice) {
                     "Abril", "Mayo", "Junio", 
                     "Julio", "Agosto", "Septiembre", "Octubre", 
                     "Noviembre", "Diciembre"];
-
     return meses[indice];
 }
 
-
-
 export function changeMonth(value) {
-    const thisMonth = date.getMonth();
-    currentDay = date.getDate();
-    const lastMonthShow = thisMonth + 2;
-
-    let monthSelected = document.getElementById("selectMonth");
-    let yearSelected = document.getElementById("selectYear");
-    const changeMonth = monthSelected.selectedIndex + value;
-    const changeYear = yearSelected.selectedIndex;
+    
+    const changeMonth = currentMonth + value;
+    console.log("currentMonth",currentMonth);
+    console.log("changeMonth",changeMonth);
+    
     if (changeMonth == currentMonth){
-        currentMonth = monthSelected.selectedIndex;
+        setCurrentMonth(monthSelected.selectedIndex);
     }else if (changeMonth < 0 && changeMonth < thisMonth) {
-        changeMonth = 11;
-        changeYear--;
+        setCurrentMonth(11);
+        currentYear--;
     } else if (changeMonth > 11 ) {
-        changeMonth = 0;
-        changeYear++;
+        setCurrentMonth(0);
+        currentYear++;
     } else if (changeMonth < thisMonth || changeMonth >= lastMonthShow) {
-        changeMonth = (changeMonth < thisMonth) ? thisMonth : lastMonthShow;
+        setCurrentMonth((changeMonth < thisMonth) ? thisMonth : lastMonthShow);
+    } else {
+        setCurrentMonth(changeMonth);
     }
 
-    console.log("changeMonth es ", changeMonth);
     calendarBody.innerHTML = "";
     updateAtributesDate();
     generateCalendar();
     updateSelectors();
-    monthSelected.selectedIndex = changeMonth;
+    monthSelected.value = currentMonth;
     yearSelected.selectedIndex = 0;
 }

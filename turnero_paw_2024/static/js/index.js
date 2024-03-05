@@ -24,8 +24,33 @@ export let responseEvents = [];
 export function setCurrentDay(newDay) {
     currentDay = newDay;
 }
+
 export function setResponseEvents(rspEvent) {
     responseEvents = rspEvent;
+}
+
+export function setFirstDayMonth(newFirstDay) {
+    firstDayMonth = newFirstDay;
+}
+
+export function setlastDayMonth(newLastDayMonth) {
+    lastDayMonth = newLastDayMonth;
+}
+
+export function setDaysWeek(newDaysWeek) {
+    daysWeek = newDaysWeek;
+}
+
+export function setnFirstDayWeek(newFirstDayWeek) {
+    firstDayWeek = newFirstDayWeek;
+}
+
+export function setCurrentMonth(newCurrentMonth) {
+    currentMonth = newCurrentMonth;
+}
+
+export function setCurrentYear(newCurrentYear) {
+    currentYear = newCurrentYear;
 }
 
 import {
@@ -37,8 +62,29 @@ import {
 } from './selectors.js';
 
 import {
-    setCurrentDate
+    setCurrentDate,
+    changeMonth
 } from './helpers.js';
+
+const prevMonthButton = document.getElementById('prevMonth');
+const nextMonthButton = document.getElementById('nextMonth');
+const selectMonth = document.getElementById('selectMonth');
+const selectYear = document.getElementById('selectYear');
+
+prevMonthButton.addEventListener('click', () => changeMonth(-1));
+nextMonthButton.addEventListener('click', () => changeMonth(1));
+
+selectMonth.addEventListener('change', () => {
+    console.log("Selecting month",selectMonth.value)
+    const selectedMonthIndex = selectMonth.value;
+    changeMonth(selectedMonthIndex - currentMonth);
+});
+
+selectYear.addEventListener('change', () => {
+    const selectedYear = selectYear.value;
+    setCurrentYear(selectedYear);
+    generateCalendar();
+});
 
 generateCalendar();
 

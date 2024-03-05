@@ -1,29 +1,43 @@
+import {
+    currentYear,
+    currentMonth,
+    currentDay,
+} from './index.js';
+
 const emailInput = document.getElementById("emailInput");
-const apellidoInput = document.getElementById("apellidoInput");
-const nombreInput = document.getElementById("nombreInput");
-const solicitarTurnoBtn = document.getElementById("modal-form-content-request-shift-btn");
+const lastNameInput = document.getElementById("apellidoInput");
+const nameInput = document.getElementById("nombreInput");
+const requestShiftBtn = document.getElementById("modal-form-content-request-shift-btn");
 const modalErrorText = document.getElementById('modal-email-error-text');
 const modalContent = document.getElementById('modal-content');
+const timeParagraph = document.getElementById('selectedTime');
+const dateParagraph = document.getElementById('selectedDate');
+let hourShift = "";
+let minutesShift = "";
 
-export function openModal(selectedTime, selectedDate) {
+export function openModal(formattedHour, formattedMinute, 
+                            dayOfWeek, stringMonth, currentYear) {
     const modal = document.getElementById('appointmentModal');
-    const timeParagraph = document.getElementById('selectedTime');
-    const dateParagraph = document.getElementById('selectedDate');
-    timeParagraph.textContent = selectedTime;
-    dateParagraph.textContent = selectedDate;
+    const shiftTime = `${formattedHour}:${formattedMinute}hs`;
+    const shiftDate =  `${dayOfWeek} ${currentDay} de ${stringMonth} 
+                                            de ${currentYear}`
+    hourShift =  formattedHour;
+    minutesShift =  formattedMinute;                                   
+    timeParagraph.textContent = shiftTime;
+    dateParagraph.textContent = shiftDate;
     modal.style.display = 'flex';
 }
 
 export function closeModal() {
     emailInput.value = "";
-    apellidoInput.value = "";
-    nombreInput.value = "";
+    lastNameInput.value = "";
+    nameInput.value = "";
     const modal = document.getElementById('appointmentModal');
     modal.style.display = 'none';
     emailInput.classList.remove('input-error');
     modalErrorText.classList.remove('modal-email-error-text-show');
     modalContent.style.height = '';
-    solicitarTurnoBtn.disabled = true;
+    requestShiftBtn.disabled = true;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -42,9 +56,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function formattedDate(selectedDate){
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(selectedDate.getDate()).padStart(2, '0');
+    const hours = String(selectedDate.getHours()).padStart(2, '0');
+    const minutes = String(selectedDate.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`
+}
+
 export function requestShift() {
     if (validarFormatoEmail(emailInput.value.trim())){
-        alert("por solicitar el turno")
+        const selectedDate = new Date(currentYear, currentMonth, currentDay, hourShift, minutesShift);
+        console.log("selectedDate", selectedDate);
+
+        const formatDate = formattedDate(selectedDate);
+        console.log("formattedDate", formatDate);
+        fetch('/confirm_shift/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            
+            body: JSON.stringify({ email: emailInput.value,
+                                    dateTime: formatDate,
+                                    name: nameInput.value,
+                                    last_name: lastNameInput.value}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.events);  
+        })
+        .catch(error => {
+            console.error('Error fetching Google Calendar events:', error);
+        });
     }else{
         emailInput.classList.add('input-error');
         showErrorMessage();
@@ -63,15 +108,15 @@ function validarFormatoEmail(email) {
 
 function validarCampos() {
     const email = emailInput.value.trim();
-    const apellido = apellidoInput.value.trim();
-    const nombre = nombreInput.value.trim();
-    solicitarTurnoBtn.disabled = !(email && apellido && nombre);
+    const apellido = lastNameInput.value.trim();
+    const nombre = nameInput.value.trim();
+    requestShiftBtn.disabled = !(email && apellido && nombre);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     emailInput.addEventListener("input", validarCampos);
-    apellidoInput.addEventListener("input", validarCampos);
-    nombreInput.addEventListener("input", validarCampos);
+    lastNameInput.addEventListener("input", validarCampos);
+    nameInput.addEventListener("input", validarCampos);
 
     
 });

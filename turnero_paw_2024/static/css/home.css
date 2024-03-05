@@ -1,152 +1,30 @@
+#header{
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    align-items: center;
+
+}
+#header a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.5rem;
+}
+
 #container {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
-}
-
-#calendar {
-    display: flex;
-    width: 20rem;
-    height: 50%;
-    border: solid 0.1rem;
-    border-radius: 0.5rem;
-    flex-direction: column;
-    align-items: center;
-    font-size: .5rem;
-}
-
-#calendar h2{
-    font-size: 1rem;
-}
-
-#calendar-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: .5rem;
-}
-
-button {
-    background-color: #000;
-    border: none;
-    color: white;
-    padding: .1rem .8rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: .1rem;
-    margin: .3rem;
-}
-
-button:hover {
-    opacity: 0.7;
-}
-
-select {
-    margin: .1rem;
-}
-
-.calendar-controls-select{
-    width: 5rem;
-}
-
-#calendario {
-    border: .1rem solid #ddd;
-    font-size: .5rem;
-}
-
-th, td {
-    border: .1rem solid #ddd;
-    text-align: center;
-    font-size: .8rem;    
-}
-
-th {
-    background-color: #f2f2f2;
-    width: 2rem;
-    height: 1rem;   
-}
-
-td {
-    cursor: pointer;
-}
-
-table {
-    margin-bottom: .5rem;
-}
-
-.anterior {
-    background-color: rgba(255, 0, 0, 0.3); 
-}
-
-.actual {
-    background-color: yellow;
-}
-
-.posterior {
-    background-color: rgba(0, 255, 0, 0.3);
-}
-
-.selected {
-    background-color: rgb(8, 67, 8);
-    color: white;
-}
-
-#info-section {
-    display: flex;
-    width: 40rem;
-    height: 50%;
-    border: solid 0.1rem;
-    border-radius: 0.5rem;
-    flex-direction: column;
-}
-
-#current-date {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
-}
-
-#current-date p{
-    margin: inherit;
-    margin-left: .5rem;
-    font-weight: bold;
-}
-
-#current-date #current-date-day{
-    font-size: 2rem;
-    font-weight: bold;
-    padding-bottom: .3rem;
-    color: rgb(22, 118, 22);
-}
-
-
-#info-subtitle {
-    font-style: italic;
-    padding: 5rem;
-    display: flex;
-    align-items: center;
+    gap: 3rem;
+    height: 35rem;
     justify-content: center;
+    align-items: center;
 }
 
-.divider-line {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 1rem;
-    margin: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-
+#title{
+    padding: 0 16rem;
 }
 
-#selected-day-schedule {
-    overflow-y: scroll;
-    /* thin=Nos muestra la barra O none= No nos muestra la barra */
-    scrollbar-width: none; 
-    /* Para Internet Explorer */
-    -ms-overflow-style: none; 
-}
 
 /* Si necesitamos que tenga la barra de scroll vertical
 #selected-day-schedule::-webkit-scrollbar {

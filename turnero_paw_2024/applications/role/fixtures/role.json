@@ -1,0 +1,17 @@
+[
+    {
+      "model": "role.Role",
+      "pk": 1,
+      "fields": {
+        "description": "admin"
+      }
+    },
+    {
+        "model": "role.Role",
+        "pk": 2,
+        "fields": {
+          "description": "cliente"
+        }
+    }    
+]
+  

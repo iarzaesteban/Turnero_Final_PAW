@@ -1,0 +1,11 @@
+[
+    {
+      "model": "person.Person",
+      "pk": 1,
+      "fields": {
+        "first_name": "admin",
+        "last_name": "admin",
+        "email": "admin@gmail.com"
+      }
+    }    
+  ]

@@ -10,7 +10,7 @@ class Users(models.Model):
     loggin = models.BooleanField(default=False)
     start_time_attention = models.DateField(null=True, blank=True)
     end_time_attention = models.DateField(null=True, blank=True)
-    picture = models.BinaryField()
+    picture = models.BinaryField(null=True)
 
     def __str__(self):
         return self.username

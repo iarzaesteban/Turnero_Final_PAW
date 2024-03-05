@@ -1,9 +1,10 @@
 #calendar {
     display: flex;
-    width: 20rem;
-    height: 50%;
-    border: solid 0.1rem;
-    border-radius: 0.5rem;
+    width: 25rem;
+    height: 20rem;
+    border: .2rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     flex-direction: column;
     align-items: center;
     font-size: .5rem;
@@ -11,26 +12,29 @@
 
 #calendar h2{
     font-size: 1rem;
+    margin-bottom: 2rem;
 }
 
 #calendar-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: .5rem;
+    margin-bottom: 1rem;
+    width: 20rem;
 }
 
 button {
     background-color: #000;
-    border: none;
     color: white;
     padding: .1rem .8rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
-    border-radius: .1rem;
     margin: .3rem;
+    border: .2rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
@@ -38,6 +42,9 @@ button:hover {
 }
 
 select {
+    border: .2rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     margin: .1rem;
 }
 
@@ -46,18 +53,25 @@ select {
 }
 
 #calendario {
-    border: .1rem solid #ddd;
+    border: .2rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     font-size: .5rem;
+    width: 20rem;
 }
 
 th, td {
-    border: .1rem solid #ddd;
+    border: .2rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     text-align: center;
     font-size: .8rem;    
 }
 
 th {
-    background-color: #f2f2f2;
+    border: .2rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     width: 2rem;
     height: 1rem;   
 }

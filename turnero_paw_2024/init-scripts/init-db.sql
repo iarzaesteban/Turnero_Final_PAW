@@ -53,7 +53,7 @@ CREATE TABLE Shift (
     date DATE,
     hour TIME,
     id_person INT REFERENCES Person(id_person),
-    id_user INT REFERENCES Users(id_user),
+    id_user INT REFERENCES Users(id_user) NULL,
     id_state INT REFERENCES State(id_state),
     confirmation_code VARCHAR(50),
     confirmation_url VARCHAR(255),

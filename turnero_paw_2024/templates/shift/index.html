@@ -18,9 +18,7 @@
     </noscript>
 </head>
 <body>
-    <header>
-        <h1>Sistemas de turnos de Autoridad de Registro UNLu.</h1>
-    </header>
+    {% include 'includes/header.html' %}
     {% include 'shift/calendar.html' %}
     {% include 'shift/modal_select_shift.html' %}
     <script type="module" src="{% static 'js/index.js' %}" ></script>

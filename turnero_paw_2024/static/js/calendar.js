@@ -1,17 +1,11 @@
 import {
     thisMonth,
-    lastMonthShow,
-    currentYear,
-    currentMonth,
     currentDay,
     setCurrentDay,
-    firstDayMonth,
-    lastDayMonth,
     daysWeek,
     firstDayWeek,
-    monthSelected,
-    yearSelected,
-    calendarBody
+    calendarBody,
+    currentMonth
 } from './index.js';
 
 import {
@@ -38,7 +32,7 @@ export function generateCalendar() {
                 cell.textContent = day;
                 cell.classList.add(getClassDay(day, thisMonth));
 
-                if (day >= currentDay) {
+                if (day >= currentDay || thisMonth != currentMonth) {
                     cell.addEventListener("click", createClickHandler(day));
                 }
                     
@@ -59,44 +53,4 @@ function createClickHandler(day) {
     };
 }
 
-export function updateAtributesDate(){
-    if(currentMonth == thisMonth){
-        currentDay = date.getDate();
-    }
-    firstDayMonth = new Date(currentYear, currentMonth, 1);
-    lastDayMonth = new Date(currentYear, currentMonth + 1, 0);
-    daysWeek = lastDayMonth.getDate();
-    firstDayWeek = firstDayMonth.getDay();
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    const closeButton = document.getElementById('modal-form-content-close-btn');
-    if (closeButton) {
-        closeButton.addEventListener('click', closeModal);
-    }
-});
-
-export function changeMonth(value) {
-    const changeMonth = currentMonth + value;
-    if (changeMonth == currentMonth){
-        currentMonth = monthSelected.selectedIndex;
-    }else if (changeMonth < 0 && changeMonth < thisMonth) {
-        currentMonth = 11;
-        currentYear--;
-    } else if (changeMonth > 11 ) {
-        currentMonth = 0;
-        currentYear++;
-    } else if (changeMonth < thisMonth || changeMonth >= lastMonthShow) {
-        currentMonth = (changeMonth < thisMonth) ? thisMonth : lastMonthShow;
-    } else {
-        currentMonth = changeMonth;
-    }
-
-    console.log("currentMonth es ", currentMonth);
-    calendarBody.innerHTML = "";
-    updateAtributesDate();
-    generateCalendar();
-    updateSelectors();
-    monthSelected.selectedIndex = currentMonth;
-    yearSelected.selectedIndex = 0;
-}

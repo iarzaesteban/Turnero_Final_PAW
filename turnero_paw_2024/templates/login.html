@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" href="{% static 'css/home.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/login.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="{% static 'css/home.css' %}">
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </noscript>
+    <title>Login</title>
+</head>
+<body>
+    {% include 'includes/header.html' with show_index_link=True %}
+    <form id="form-login" method="post">
+        {% csrf_token %}
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+        {% for m in messages%}
+            <p>{{ m }}</p>
+        {% endfor %}
+    </form>
+</body>
+</html>
