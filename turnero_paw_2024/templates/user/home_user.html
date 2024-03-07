@@ -9,6 +9,10 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <h1>HOME PERRAS</h1>
+        
+        <h1>Home Usuario</h1>
+        <h1>Bienvenido: {{ user }}</h1>
+        <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
+        <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
     </body>
 </html>

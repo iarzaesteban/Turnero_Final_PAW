@@ -3,20 +3,16 @@
       "model": "user.Users",
       "pk": 1,
       "fields": {
-        "id_person": "1",
         "username": "admin",
-        "password_hash": "cb89da734fb030bf88a327b236a3055fda6a3a2255c04ade5c37700713c89c7b",
-        "loggin": "0"
+        "password": "cb89da734fb030bf88a327b236a3055fda6a3a2255c04ade5c37700713c89c7b"
       }
     },
     {
       "model": "user.Users",
       "pk": 2,
       "fields": {
-        "id_person": "1",
         "username": "esteban",
-        "password_hash": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
-        "loggin": "0"
+        "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"
       }
     }    
 ]

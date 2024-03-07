@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <h1>HOME PERRAS</h1>
+        <h1>Login</h1>
+        <form id="form-login" method="post">
+            {% csrf_token %}
+            {{ form.as_p}}
+            <button type="submit">Iniciar Sesion</button>
+        </form>
     </body>
 </html>

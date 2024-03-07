@@ -1,4 +1,5 @@
 from .base import *
+import os
 
 DEBUG = True
 
@@ -8,9 +9,9 @@ ALLOWED_HOSTS = []
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'turnero_unlu',
-        'USER': 'turnero_user',
-        'PASSWORD': 'turnero_password',
+        'NAME': get_secret('DB_NAME'),
+        'USER': get_secret('DB_USER'),
+        'PASSWORD': get_secret('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }

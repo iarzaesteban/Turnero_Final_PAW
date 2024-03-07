@@ -1,11 +1,23 @@
 from pathlib import Path
+import json
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!ezfzbu20(j_gk@%029uvb3^&k$)xcz+&fk%1!dprl24tjd#j2'
+with open("secret.json") as f:
+    secret = json.loads(f.read())
+
+def get_secret(secret_name, secrets=secret):
+    try:
+        return secrets[secret_name]
+    except:
+        msg = "La variable %s no existe" %  secret_name
+        raise ImportError
+
+
+SECRET_KEY = get_secret('SECRET_KEY')
 
 # Application definition
 
@@ -27,6 +39,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'applications.user.middleware.SessionTimeoutMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -36,7 +49,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_COOKIE_AGE = 60 * 1
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 ROOT_URLCONF = 'app.urls'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 TEMPLATES = [
     {
@@ -75,7 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'user.Users'
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -91,3 +111,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Mail settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = get_secret('MAIL')
+EMAIL_HOST_PASSWORD = get_secret('PASSWORD_MAIL')
+EMAIL_PORT = 587
