@@ -26,20 +26,21 @@ class UserRegisterView(FormView):
     success_url = '/register/'
 
     def form_valid(self, form):
+        verification_code = generate_confirmation_code()
         user = Users.objects.create_user(
             form.cleaned_data['username'],
             form.cleaned_data['password'],
             picture=form.cleaned_data['picture'],
             start_time_attention=form.cleaned_data['start_time_attention'],
             end_time_attention=form.cleaned_data['end_time_attention'],
-            code_verification=generate_confirmation_code()
+            code_verification=verification_code
         )
         date = datetime.datetime.now()
         date_str = date.strftime('%Y-%m-%d %H:%M:%S') 
         asunto = "Confirmacion de mail"
         message = "El codigo de verificacion es " \
-                        + generate_confirmation_code() + \
-                            "la hora es " + date_str
+                        + verification_code + \
+                            " la hora es " + date_str
         email_remitente = "banckington@gmail.com"
          
         send_mail(asunto, message, email_remitente, ['iarzaesteban94@gmail.com',])
@@ -57,8 +58,8 @@ class LoginView(View):
         return render(request, self.template_name)
 
     def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         message = "Usuario o contraseña incorrecta."
         try:
             user = Users.objects.filter(username=username).first()
@@ -67,10 +68,10 @@ class LoginView(View):
                     user.save()
                     return redirect('home')
             else:
-                messages.error(request, message)
+                messages.add_message(request=request, level=message.ERROR, message=message)
 
         except Users.DoesNotExist:
-            messages.error(request, message)
+            messages.add_message(request=request, level=message.ERROR, message=message)
 
         return render(request, self.template_name, {'username': username})
 
@@ -80,13 +81,16 @@ class LoginUser(FormView):
     success_url = '/home-user/'
 
     def form_valid(self, form):
-        user = authenticate(username=form.cleaned_data['username'],
-                            password=form.cleaned_data['password'])
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
         
-        if user:
+        if user is not None:
             login(self.request, user)
-            
-        return super(LoginUser, self).form_valid(form)
+            return super(LoginUser, self).form_valid(form)
+        else:
+            messages.error(self.request, "Usuario o contraseña incorrectos")
+            return self.form_invalid(form)
     
 class LogoutView(View):
     def get(self, request, *args, **kargs):
@@ -117,7 +121,7 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
 class CodeVerificationView(FormView):
     template_name = 'user/user_verification.html'
     form_class = VerificationForm
-    success_url = '/user-login/'
+    success_url = '/'
 
     def get_form_kwargs(self):
         kwargs = super(CodeVerificationView, self).get_form_kwargs()

@@ -53,7 +53,7 @@ class LoginForm(forms.Form):
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
         if not authenticate(username=username, password=password):
-            raise forms.ValidationError("Usuario o contraseña incorrectos")
+            raise forms.ValidationError("Usuario o contraseña incorrectos.")
         return self.cleaned_data
 
 

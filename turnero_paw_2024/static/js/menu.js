@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     //     // menu.classList.toggle('show-menu');
     //     menu.classList.add("show-menu");
     // });
-    // _toggle.onclick = () => {
-    //     console.log("click")
-    //     _items.classList.toggle("open");
-    // }
+    _toggle.onclick = () => {
+        console.log("click")
+        _items.classList.toggle("open");
+        _toggle.classList.toggle("close");
+    }
 });

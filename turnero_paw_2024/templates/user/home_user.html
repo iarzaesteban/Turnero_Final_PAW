@@ -7,9 +7,8 @@
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_logout_link=True%}
-    <h1>Bienvenido: {{ user }}</h1>
-    <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
+    <p id="user-text"> {{ user }}</p>
     
     {% include 'includes/footer.html' %}
-    <script type="module" src="{% static 'js/header.js' %}" ></script>
+    <script type="module" src="{% static 'js/menu.js' %}" ></script>
 {% endblock content %}
