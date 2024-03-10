@@ -75,7 +75,7 @@ class LoginView(View):
         return render(request, self.template_name, {'username': username})
 
 class LoginUser(FormView):
-    template_name = 'user/login.html'
+    template_name = 'login.html'
     form_class = LoginForm
     success_url = '/home-user/'
 

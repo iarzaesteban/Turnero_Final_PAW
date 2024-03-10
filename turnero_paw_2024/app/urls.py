@@ -24,6 +24,5 @@ urlpatterns = [
     path('tests/', include('applications.tests.urls')),
     path('roles/', include('applications.role.urls')),
     path('states/', include('applications.state.urls')),
-    path('users/', include('applications.user.urls')),
     path('persons/', include('applications.person.urls')),
 ]
