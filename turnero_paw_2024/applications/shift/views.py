@@ -1,25 +1,24 @@
-from django.shortcuts import render, redirect
+import datetime as dt
+import os.path
+import json
+from dateutil import parser
+from datetime import timedelta
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
-from dateutil import parser
 from django.urls import reverse
-
-from datetime import timedelta
-
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from .helpers import client_exists, create_client, create_shift, generate_confirmation_code
-import datetime as dt
-import os.path
-import json
+from .helpers import person_exists, create_person, create_shift, generate_confirmation_code
 
 from applications.shift.models import Shift
+from applications.state.models import State
 
 @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(TemplateView):
@@ -114,8 +113,8 @@ def confirm_shift(request):
         first_name = data.get('name')
         last_name = data.get('last_name')
         selected_date_time = data.get('dateTime')
-        if not client_exists(email):
-            create_client(email, first_name, last_name)
+        if not person_exists(email):
+            create_person(email, first_name, last_name)
 
         confirmation_code = generate_confirmation_code()
         #cancelation_date = parser.parse(selected_date).date() - timedelta(days=2)
@@ -138,3 +137,20 @@ def cancel_shift(request):
         shift.delete()  # Por ejemplo, aquí simplemente eliminamos el turno
         return JsonResponse({'message': 'Turno cancelado exitosamente'})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+class ConfirmShiftView(View):
+    def get(self, request, shift_id):
+        shift = get_object_or_404(Shift, id=shift_id)
+        confirmed_state = State.objects.get(short_description='confirmado')
+        shift.id_state = confirmed_state
+        shift.save()
+        return redirect('home-user')
+
+class CancelShiftView(View):
+    def get(self, request, shift_id):
+        shift = get_object_or_404(Shift, id=shift_id)
+        canceled_state = State.objects.get(short_description='cancelado')
+        shift.id_state = canceled_state
+        shift.save()
+        return redirect('home-user')

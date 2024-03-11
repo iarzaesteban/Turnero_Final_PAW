@@ -1,20 +1,23 @@
-<header id="header">
-    <nav id="navbar" class="navbar">
-        <section id="_items" class="nav-items">
-            <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
-            <a href="http://www.unlu.edu.ar">Ir a la Universidad</a>
-        </section>
-    </nav>
-    <nav id="_toggle" class="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </nav>
+<header id="header">    
     <h1 id="title">Sistemas de turnos de Autoridad de Registro UNLu</h1>
     {% if show_index_link %}
         <a id="request-shift" class='header-right' href="shift/home/">Solicitar Turno</a>
     {% endif %}
-    {% if show_logout_link %}
-        <a id="logout" class='header-right' href="{% url 'user-logout' %}">Cerrar Sesion</a>
+    {% if show_nav %}
+        <nav id="navbar" class="navbar">
+            <section id="_items" class="nav-items">
+                <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
+                <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
+                <a href="http://www.unlu.edu.ar">Ir a la Universidad</a>
+            </section>
+        </nav>
+        <nav id="_toggle" class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </nav>
     {% endif %}
+    {% comment %} {% if show_logout_link %}
+        <a id="logout" class='header-right' href="{% url 'user-logout' %}">Cerrar Sesion</a>
+    {% endif %} {% endcomment %}
 </header>

@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from .models import Users
+from applications.shift.models import Shift
 from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm, VerificationForm
 from .helpers import generate_confirmation_code
 
@@ -18,6 +19,12 @@ class HomePage(LoginRequiredMixin, TemplateView):
     template_name = "user/home_user.html"
     login_url = reverse_lazy('user-login')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+        context['pending_shifts'] = pending_shifts
+        return context
 
 class UserRegisterView(FormView):
     template_name = 'user/register.html'

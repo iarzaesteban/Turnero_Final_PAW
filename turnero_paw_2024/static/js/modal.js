@@ -72,7 +72,7 @@ export function requestShift() {
 
         const formatDate = formattedDate(selectedDate);
         console.log("formattedDate", formatDate);
-        fetch('/confirm_shift/', {
+        fetch('/shift/confirm_shift/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

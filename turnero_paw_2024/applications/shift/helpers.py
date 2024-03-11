@@ -5,7 +5,7 @@ from applications.person.models import Person
 from applications.shift.models import Shift
 from applications.state.models import State
 
-def client_exists(email):
+def person_exists(email):
     print("EMAIL ES {}".format(email),flush=True)
     person = Person.objects.filter(email=email)
     print("person ES {}".format(person),flush=True)
@@ -13,7 +13,7 @@ def client_exists(email):
         return True
     return False
 
-def create_client(email, first_name, last_name):
+def create_person(email, first_name, last_name):
     Person.objects.create(
         email=email,
         first_name=first_name,

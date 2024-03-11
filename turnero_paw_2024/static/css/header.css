@@ -1,6 +1,9 @@
 #header{
     font-size: .4rem;
     background-color: #3d6608;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 #header .header-right{
     font-size: .6rem;
@@ -14,20 +17,6 @@
     font-weight: bold;
     text-decoration: none;
 }
-#button-menu-toggle-hidde {
-    display: none;
-}
-.button-menu-toggle-show {
-    display: block;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: white;
-    background-color: #333;
-    border: none;
-    margin: 0 1rem;
-    padding: 0.5rem 1rem;
-    
-}
 
 .nav-items {
     position: absolute;
@@ -38,18 +27,27 @@
     flex-direction: column;
     width: 100%;
     height: auto;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     transition: 0.3s ease all;
 }
 
 .nav-items a {
     text-align: center;
+    padding: .8rem;
+    color: black;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: bold;
+    border: 2px solid #000000;
+    cursor: pointer;
 }
 
 .nav-toggle {
     display: flex !important;
     flex-direction: column;
     margin: 15px;
+    position: absolute;
+    right: 1rem;
 }
 
 .nav-toggle span {
@@ -76,8 +74,8 @@
 
 .open {
     left: 0.5rem;
-    width: 112.8rem;
-    transform: translateX(0) !important;
+    width: 20%;
+    transform: translateX(95rem) !important;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
@@ -131,21 +129,6 @@
         margin: 0 .5rem;
         font-size: 1rem;
     }
-    #button-menu-toggle-hidde {
-        display: none;
-    }
-    
-    .button-menu-toggle-show {
-        display: block;
-        font-size: 1.5em;
-        cursor: pointer;
-        color: white;
-        background-color: #333;
-        border: none;
-        margin: 0 1rem;
-        padding: 0.5rem 1rem;
-        
-    }
 
     .navbar {
         background-color: #e5a028;
@@ -163,39 +146,16 @@
     }
 
     .nav-items a{
-        padding: 1rem;
+        padding: .8rem;
         color: black;
         text-decoration: none;
-        font-size: 1rem;
+        font-size: .8rem;
         font-weight: bold;
-        border-bottom: 2px solid #000000;
+        border: 2px solid #000000;
         cursor: pointer;
     }
 
     .nav-toggle {
         display: none;
     }
-
-
-    
-    /* .menu {
-        display: none;
-    }
-
-    .show-menu {
-        display: block;
-        position: relative;
-        top: 5.5rem;
-        right: 3rem;
-    }
-    
-    .menu a {
-        display: block;
-        text-align: center;
-        padding: .5rem;
-        text-decoration: none;
-        color: black;
-        font-size: 1rem;
-        background-color: #e5a028;
-    } */
 }
