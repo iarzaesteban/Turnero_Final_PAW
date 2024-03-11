@@ -1,0 +1,10 @@
+{% if shift %}
+    <h2>Detalles del Turno</h2>
+    <h3><strong>Estado:</strong> {{ shift.id_state.description }}</h3>
+    <p><strong>Fecha:</strong> {{ shift.date }}</p>
+    <p><strong>Hora:</strong> {{ shift.hour }}</p>
+    <p><strong>Nombre:</strong> {{ shift.id_person.first_name }} {{ shift.id_person.last_name }}</p>
+
+    {% else %}
+    <p>No se encontró ningún turno con ese código de confirmación.</p>
+{% endif %}

@@ -4,7 +4,7 @@
       "pk": 1,
       "fields": {
         "short_description": "pendiente",
-        "description": "pendiente"
+        "description": "Pendiente"
       }
     },
     {
@@ -12,7 +12,7 @@
         "pk": 2,
         "fields": {
           "short_description": "confirmado",
-          "description": "confirmado"
+          "description": "Confirmado"
         }
     },
     {
@@ -20,7 +20,7 @@
         "pk": 3,
         "fields": {
           "short_description": "completado",
-          "description": "completado"
+          "description": "Completado"
         }
     },
     {
@@ -28,7 +28,7 @@
         "pk": 4,
         "fields": {
           "short_description": "cancelado",
-          "description": "cancelado"
+          "description": "Cancelado"
         }
     }
 ]

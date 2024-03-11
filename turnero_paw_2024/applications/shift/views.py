@@ -3,6 +3,7 @@ import os.path
 import json
 from dateutil import parser
 from datetime import timedelta
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -154,3 +155,10 @@ class CancelShiftView(View):
         shift.id_state = canceled_state
         shift.save()
         return redirect('home-user')
+    
+class BuscarTurnoView(View):
+    def get(self, request):
+        confirmation_code = request.GET.get('confirmation_code', '')
+        shift = Shift.objects.filter(confirmation_code=confirmation_code).first()
+        context = {'shift': shift}
+        return render(request, 'shift/turno_detalle.html', context)
