@@ -11,7 +11,10 @@ Sistema de geston de turnos AR unlu
    ```bash
     git clone https://ruta/al/repo/Turnero_Final_PAW.git
 3.  Crea un enlace simbólico:
+      ```bash
+      sudo ln -s ~/Turnero_Final_PAW/turnero_paw_2024 /opt/turnero_paw_2024
+4. Ingresamos al proyecto
    ```bash
-   sudo ln -s ~/Turnero_Final_PAW/turnero_paw_2024 /opt/turnero_paw_2024
+   cd /opt/turnero_paw_2024
 
 
