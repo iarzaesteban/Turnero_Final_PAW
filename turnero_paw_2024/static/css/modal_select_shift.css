@@ -14,7 +14,7 @@
     font-size: 2rem;
 }
 
-#modal-content {
+.modal-content {
     height: 38rem;
     width: 30rem;
     background-color: #fff;
@@ -56,16 +56,9 @@ input {
     cursor: pointer;
 }
 
-.modal-form-content-btn-cancel, #modal-form-content-close-btn{
+.modal-form-content-btn-cancel{
     margin-top: 2rem;
     background-color: #fd1c1c;
-}
-
-#modal-form-content-close-btn{
-    position: absolute;
-    right: 45rem;
-    font-size: 1rem;
-    padding: 0 2rem;
 }
 
 .modal-form-content-btn-confirm{

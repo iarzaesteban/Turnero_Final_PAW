@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search-form');
-    const turnoModal = document.getElementById('appointmentModal');
-    const turnoModalBody = document.getElementById('turno-modal-body');
-    const closeModal = document.getElementById('modal-form-content-close-btn');
+    const shiftDetailModal = document.getElementById('shift-details-modal');
+    const turnoModalBody = document.getElementById('shift-details-modal-body');
+    const closeModal = document.getElementById('shift-details-modal-content-close-btn');
 
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -30,19 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
         closeModalFunction();
     });
 
-    turnoModal.addEventListener('click', function(event) {
-        if (event.target === turnoModal) {
+    shiftDetailModal.addEventListener('click', function(event) {
+        if (event.target === shiftDetailModal) {
             closeModalFunction();
         }
     });
 
     function closeModalFunction() {
-        turnoModal.style.display = 'none';
+        shiftDetailModal.style.display = 'none';
         document.getElementById('confirmation-code').value = '';
     }
 
     function openModal(data) {
-        turnoModal.style.display = 'flex';
+        shiftDetailModal.style.display = 'flex';
         if (data.error) {
             turnoModalBody.innerHTML = `<p>${data.error}</p>`;
         } else {
