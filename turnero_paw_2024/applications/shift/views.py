@@ -54,7 +54,6 @@ def get_google_calendar_events(selected_date):
         response = []
         service = build("calendar", "v3", credentials=creds)
 
-        print("selected_date {}".format(selected_date),flush=True)
         next_day = dt.datetime.strptime(selected_date, "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(days=1)
         next_day_str = next_day.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
@@ -75,7 +74,6 @@ def get_google_calendar_events(selected_date):
 
         
         if not events:
-            print("No upcoming events found.")
             return response
         
         for event in events:
@@ -90,7 +88,6 @@ def get_google_calendar_events(selected_date):
         return response
 
     except HttpError as error:
-        print(f"An error occurred: {error}")
         return response
 
 @csrf_exempt
@@ -98,7 +95,6 @@ def get_list_dates(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         selected_date = data.get('date')
-        print("selected_date es {}".format(selected_date),flush=True)
         events = get_google_calendar_events(selected_date)
 
         return JsonResponse({'events': events})
@@ -160,5 +156,14 @@ class BuscarTurnoView(View):
     def get(self, request):
         confirmation_code = request.GET.get('confirmation_code', '')
         shift = Shift.objects.filter(confirmation_code=confirmation_code).first()
-        context = {'shift': shift}
-        return render(request, 'shift/turno_detalle.html', context)
+        if shift:
+            turno_detalle = {
+                'date': shift.date,
+                'hour': shift.hour,
+                'first_name': shift.id_person.first_name,
+                'last_name': shift.id_person.last_name,
+                'email': shift.id_person.email,
+            }
+            return JsonResponse({'turno_detalle': turno_detalle})
+        else:
+            return JsonResponse({'error': 'No se encontró ningún turno con ese código de confirmación.'})

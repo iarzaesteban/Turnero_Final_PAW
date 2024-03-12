@@ -10,5 +10,4 @@ urlpatterns = [
     path('confirmar-turno/<int:shift_id>/', views.ConfirmShiftView.as_view(), name='confirmar-turno'),
     path('cancelar-turno/<int:shift_id>/', views.CancelShiftView.as_view(), name='cancelar-turno'),
     path('buscar-turno/', views.BuscarTurnoView.as_view(), name='buscar-turno'),
-
 ]

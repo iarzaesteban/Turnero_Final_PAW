@@ -1,7 +1,11 @@
+{% include 'shift/modal_shift_datails.html' %}
+
 <section id="search-section">
-    <form id="search-form" action="{% url 'buscar-turno' %}" method="GET">
-        <label for="confirmation-code">Código de Confirmación:</label>
-        <input type="text" id="confirmation-code" name="confirmation_code" required>
+    <form id="search-form" method="GET">
+        <input 
+            type="text" id="confirmation-code" 
+            name="confirmation_code" placeholder="Código de Confirmación" required
+        >
         <button type="submit">Buscar</button>
     </form>
 </section>

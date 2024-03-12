@@ -14,7 +14,7 @@
     font-size: 2rem;
 }
 
-.modal-content {
+#modal-content {
     height: 38rem;
     width: 30rem;
     background-color: #fff;
@@ -22,6 +22,7 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
 #selectedTime{
     font-size: 3rem;
     font-weight: bold;
@@ -55,9 +56,16 @@ input {
     cursor: pointer;
 }
 
-.modal-form-content-btn-cancel{
+.modal-form-content-btn-cancel, #modal-form-content-close-btn{
     margin-top: 2rem;
     background-color: #fd1c1c;
+}
+
+#modal-form-content-close-btn{
+    position: absolute;
+    right: 45rem;
+    font-size: 1rem;
+    padding: 0 2rem;
 }
 
 .modal-form-content-btn-confirm{
