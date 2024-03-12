@@ -1,6 +1,16 @@
 # Turnero_Final_PAW
 Sistema de geston de turnos AR unlu
 
+## Tecnilogías utilizadas:
+- Python
+- Django: Framework web utilizado en el backend.
+- HTML, CSS y JavaScript: Utilizados para el frontend.
+
+
+## Requerimientos
+- Docker: Para la creación y gestión de contenedores.
+
+
 ## Instalación
 
 1. Posiciónate en la raíz de tu directorio personal:
