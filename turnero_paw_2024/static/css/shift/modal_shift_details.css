@@ -40,3 +40,17 @@
     color: white;
     background-color: #fd1c1c;;
 }
+
+#modal-error-message{
+    display: none;
+}
+
+.modal-error-message-show{
+    color: red;
+    margin-top: 0.3rem
+}
+
+.modal-message-show{
+    color: black;
+    margin-top: 0.3rem
+}

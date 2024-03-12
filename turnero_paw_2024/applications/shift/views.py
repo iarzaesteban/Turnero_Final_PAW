@@ -2,7 +2,7 @@ import datetime as dt
 import os.path
 import json
 from dateutil import parser
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
@@ -16,7 +16,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from .helpers import person_exists, create_person, create_shift, generate_confirmation_code
+from .helpers import person_exists, create_person, create_shift, generate_confirmation_code, count_pending_shifts
 
 from applications.shift.models import Shift
 from applications.state.models import State
@@ -90,6 +90,31 @@ def get_google_calendar_events(selected_date):
     except HttpError as error:
         return response
 
+def add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime):
+    event_timezone = 'America/Argentina/Buenos_Aires'
+
+    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    service = build('calendar', 'v3', credentials=creds)
+    event = {
+        'summary': event_summary,
+        'description': event_description,
+        'start': {
+            'dateTime': start_datetime.strftime('%Y-%m-%dT%H:%M:%S'),
+            'timeZone': event_timezone,
+        },
+        'end': {
+            'dateTime': end_datetime.strftime('%Y-%m-%dT%H:%M:%S'),
+            'timeZone': event_timezone,
+        },
+        'reminders': {
+            'useDefault': False,
+        },
+    }
+
+    event = service.events().insert(calendarId='primary', body=event).execute()
+    return event
+
+
 @csrf_exempt
 def get_list_dates(request):
     if request.method == 'POST':
@@ -110,20 +135,40 @@ def confirm_shift(request):
         first_name = data.get('name')
         last_name = data.get('last_name')
         selected_date_time = data.get('dateTime')
+        
+        if count_pending_shifts(email) >= 2:
+            return JsonResponse({'response': "error", "message": "La persona ya tiene más de 1 turno en estado pendiente"} )
+        
         if not person_exists(email):
             create_person(email, first_name, last_name)
 
         confirmation_code = generate_confirmation_code()
         #cancelation_date = parser.parse(selected_date).date() - timedelta(days=2)
         cancelation_url = request.build_absolute_uri(reverse('cancel_shift')) + f'?confirmation_code={confirmation_code}'
-        create_shift(selected_date_time, email, confirmation_code, cancelation_url)
+        shift = create_shift(selected_date_time, email, confirmation_code, cancelation_url)
+        
+        event_data = {
+            'shift_id': shift.id,
+            'person_name': f"{shift.id_person.last_name} {shift.id_person.first_name}"
+        }
+        event_summary = json.dumps(event_data)
+        event_description = f"Fecha: {shift.date}, Hora: {shift.hour}"
+        shift_date = datetime.strptime(shift.date, '%Y-%m-%d').date()
+        shift_time = datetime.strptime(shift.hour+":00", '%H:%M:%S').time()
+        start_datetime = datetime.combine(shift_date, shift_time)  
+        end_datetime = start_datetime + timedelta(minutes=30) 
 
-        return JsonResponse({'events': "ok"})
+        add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime)
+        shift_data = {
+            'day': shift.date,
+            'hour': shift.hour,
+            'person': shift.id_person.last_name +" "+ shift.id_person.first_name,
+        }
+        return JsonResponse({'response': "ok", "shift": shift_data})
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
-from django.shortcuts import get_object_or_404
 
 @csrf_exempt
 def cancel_shift(request):

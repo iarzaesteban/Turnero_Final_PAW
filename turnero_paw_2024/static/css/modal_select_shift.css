@@ -87,3 +87,8 @@ button:hover, button:active {
     color:  #fd1c1c;
     margin: 0 0 1rem;
 }
+
+.info-section-request-shift {
+    justify-content: center;
+    font-size: 1.5rem;
+}

@@ -29,6 +29,8 @@ export function openModal(formattedHour, formattedMinute,
 }
 
 export function closeModal() {
+    const errorMessageParagraph = document.getElementById('modal-error-message');
+    errorMessageParagraph.style.display = "none";
     emailInput.value = "";
     lastNameInput.value = "";
     nameInput.value = "";
@@ -77,29 +79,59 @@ export function requestShift() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            
-            body: JSON.stringify({ email: emailInput.value,
-                                    dateTime: formatDate,
-                                    name: nameInput.value,
-                                    last_name: lastNameInput.value}),
+            body: JSON.stringify({ 
+                email: emailInput.value,
+                dateTime: formatDate,
+                name: nameInput.value,
+                last_name: lastNameInput.value
+            }),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al solicitar turno');
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log(data.events);  
+            if (data.shift){
+                const message = `Se ha solicitado un turno para ${data.shift.person} el día ${data.shift.day}, a las ${data.shift.hour}. El turno será evaluado por un operador y se le notificará a su casilla de mail.`;
+                showSuccessMessage(message);
+            } else if (data.response == "error"){
+                showErrorMessage(data.message);
+            }
         })
         .catch(error => {
-            console.error('Error fetching Google Calendar events:', error);
+            console.error('Error al solicitar turno:', error);
+            closeModal();
+            showErrorMessage('Error al solicitar turno');
         });
-    }else{
+    } else {
         emailInput.classList.add('input-error');
-        showErrorMessage();
+        showErrorMessage('El correo electrónico ingresado es inválido');
     }
 }
 
-function showErrorMessage() {
-    modalErrorText.classList.add('modal-email-error-text-show');
-    modalContent.style.height = '40rem';
+function showSuccessMessage(message) {
+    const messageParagraph = document.getElementById('modal-error-message');
+    messageParagraph.textContent = message;
+    messageParagraph.classList.add('modal-message-show');
+    messageParagraph.style.display = 'block';
+    modalContent.style.height = '43rem';
+    requestShiftBtn.disabled = true;
 }
+
+function showErrorMessage(errorMessage) {
+    const errorMessageParagraph = document.getElementById('modal-error-message');
+    errorMessageParagraph.textContent = errorMessage;
+    errorMessageParagraph.classList.add('modal-error-message-show');
+    errorMessageParagraph.style.display = 'block';
+    modalContent.style.height = '40rem';
+    requestShiftBtn.disabled = true;
+}
+// function showErrorMessage() {
+//     modalErrorText.classList.add('modal-email-error-text-show');
+//     modalContent.style.height = '40rem';
+// }
 
 function validarFormatoEmail(email) {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
