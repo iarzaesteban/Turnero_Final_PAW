@@ -16,10 +16,13 @@ Sistema de geston de turnos AR unlu
 4. Ingresamos al proyecto
    ```bash
    cd /opt/turnero_paw_2024
-5. Levantamos el proyecto:
+5. Cambiamos branch:
+   ```bash
+   git checkout develop
+6. Levantamos el proyecto:
    ```bash
    docker-compose up
-6. Ingresamos en el navegador:
+7. Ingresamos en el navegador:
    http://localhost:8000
 
 
