@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeModalFunction() {
         shiftDetailModal.style.display = 'none';
-        document.getElementById('confirmation-code').value = '';
+        document.getElementById('input-value').value = '';
     }
 
     function openModal(data) {
