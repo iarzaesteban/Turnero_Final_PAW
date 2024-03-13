@@ -54,9 +54,17 @@
                 {% empty %}
                     <li>No hay turnos pendientes.</li>
                 {% endfor %}
+            <section id="shifts-confirm-state-section">
+                <section id="shifts-confirm-state-container">
+                </section>
+                <button type="button" id="get-shift-confirm-state-btn">
+                    Turnos Para Hoy
+                </button>
+            </section>
             
         </section>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/shift/search-shift-confirm-state.js' %}" ></script>
 {% endblock content %}

@@ -16,6 +16,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
 from . import helpers
 
 from applications.shift.models import Shift
@@ -179,6 +180,23 @@ def cancel_shift(request):
         shift.delete() 
         return JsonResponse({'message': 'Turno cancelado exitosamente'})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+def get_shifts_today(request):
+    today = datetime.now()
+    print("TODAY IS {}".format(today), flush=True)
+    shifts_today = Shift.objects.filter(date=today, id_user=request.user, id_state__short_description='confirmado')
+
+    shifts_list = []
+    for shift in shifts_today:
+        shifts_list.append({
+            'date': shift.date,
+            'hour': shift.hour,
+            'full_name': shift.id_person.last_name + " " + shift.id_person.first_name,
+            'mail': shift.id_person.email,
+            'id_person': str(shift.id_person),
+        })
+    return JsonResponse({'shifts_today': shifts_list})
 
 class ConfirmShiftView(View):
     def get(self, request, shift_id):
