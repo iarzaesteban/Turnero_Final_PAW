@@ -102,7 +102,6 @@ export function requestShift() {
         })
         .catch(error => {
             console.error('Error al solicitar turno:', error);
-            closeModal();
             showErrorMessage('Error al solicitar turno');
         });
     } else {

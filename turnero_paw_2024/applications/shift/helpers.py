@@ -1,5 +1,6 @@
 import random
 import string
+import re
 
 from applications.person.models import Person
 from applications.shift.models import Shift
@@ -43,6 +44,13 @@ def count_pending_shifts(email):
 
     return pending_shifts_count
 
+def is_mail(mail):
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    if re.match(pattern, mail):
+        return True
+    else:
+        return False    
+    
 def generate_confirmation_code(length=15):
     characters = string.ascii_letters + string.digits
     confirmation_code = ''.join(random.choice(characters) for i in range(length))

@@ -16,10 +16,11 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from .helpers import person_exists, create_person, create_shift, generate_confirmation_code, count_pending_shifts
+from . import helpers
 
 from applications.shift.models import Shift
 from applications.state.models import State
+from applications.person.models import Person
 
 @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(TemplateView):
@@ -136,16 +137,16 @@ def confirm_shift(request):
         last_name = data.get('last_name')
         selected_date_time = data.get('dateTime')
         
-        if count_pending_shifts(email) >= 2:
+        if helpers.count_pending_shifts(email) >= 2:
             return JsonResponse({'response': "error", "message": "La persona ya tiene más de 1 turno en estado pendiente"} )
         
-        if not person_exists(email):
-            create_person(email, first_name, last_name)
+        if not helpers.person_exists(email):
+            helpers.create_person(email, first_name, last_name)
 
-        confirmation_code = generate_confirmation_code()
+        confirmation_code = helpers.generate_confirmation_code()
         #cancelation_date = parser.parse(selected_date).date() - timedelta(days=2)
         cancelation_url = request.build_absolute_uri(reverse('cancel_shift')) + f'?confirmation_code={confirmation_code}'
-        shift = create_shift(selected_date_time, email, confirmation_code, cancelation_url)
+        shift = helpers.create_shift(selected_date_time, email, confirmation_code, cancelation_url)
         
         event_data = {
             'shift_id': shift.id,
@@ -199,8 +200,15 @@ class CancelShiftView(View):
     
 class BuscarTurnoView(View):
     def get(self, request):
-        confirmation_code = request.GET.get('confirmation_code', '')
-        shift = Shift.objects.filter(confirmation_code=confirmation_code).first()
+        search_value = request.GET.get('search_value', '')
+        shift = None
+        if helpers.is_mail(search_value):
+            person = Person.objects.filter(email=search_value).first()
+            if person:
+                shift = Shift.objects.filter(id_person=person.id).first()
+        else:
+            shift = Shift.objects.filter(confirmation_code=search_value).first()
+        
         if shift:
             turno_detalle = {
                 'date': shift.date,

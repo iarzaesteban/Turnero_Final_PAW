@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        const confirmationCode = document.getElementById('confirmation-code').value;
-        const url = `/shift/buscar-turno/?confirmation_code=${encodeURIComponent(confirmationCode)}`;
+        const getInputValue = document.getElementById('input-value').value;
+        const url = `/shift/buscar-turno/?search_value=${encodeURIComponent(getInputValue)}`;
 
         fetch(url, {
             method: 'GET',
