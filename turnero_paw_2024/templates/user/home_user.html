@@ -18,6 +18,9 @@
             
                 {% for shift in pending_shifts %}
                 <section id="shifts-container__list-shifts">
+                        {% if error_message %}
+                            <p class="error-message">{{ error_message }}</p>
+                        {% endif %}
                         <p>
                             <strong>
                                 Solicitado por:

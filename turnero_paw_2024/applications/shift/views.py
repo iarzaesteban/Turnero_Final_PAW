@@ -176,27 +176,45 @@ def cancel_shift(request):
     if request.method == 'GET':
         confirmation_code = request.GET.get('confirmation_code')
         shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
-        # Realiza cualquier lógica necesaria para cancelar el turno aquí
-        shift.delete()  # Por ejemplo, aquí simplemente eliminamos el turno
+        shift.delete() 
         return JsonResponse({'message': 'Turno cancelado exitosamente'})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
-
 
 class ConfirmShiftView(View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
-        confirmed_state = State.objects.get(short_description='confirmado')
-        shift.id_state = confirmed_state
-        shift.save()
-        return redirect('home-user')
+        user = self.request.user
+        try:
+            confirmed_state = State.objects.get(short_description='confirmado')
+            shift.id_state = confirmed_state
+            shift.id_user = user
+            shift.save()
+            return redirect('home-user')
+        except State.DoesNotExist:
+            pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+            error_message = 'Estado de turno no encontrado'
+            return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
+        except Exception as e:
+            error_message = str(e)
+            return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
 
 class CancelShiftView(View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
-        canceled_state = State.objects.get(short_description='cancelado')
-        shift.id_state = canceled_state
-        shift.save()
-        return redirect('home-user')
+        user = self.request.user
+        try:
+            canceled_state = State.objects.get(short_description='cancelado')
+            shift.id_state = canceled_state
+            shift.id_user = user
+            shift.save()
+            return redirect('home-user')
+        except State.DoesNotExist:
+            pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+            error_message = 'Estado de turno no encontrado'
+            return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
+        except Exception as e:
+            error_message = str(e)
+            return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
     
 class BuscarTurnoView(View):
     def get(self, request):
