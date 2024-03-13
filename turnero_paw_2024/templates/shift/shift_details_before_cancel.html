@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Turno</title>
+</head>
+<body>
+    <h1>Detalles del Turno</h1>
+    <p><strong>Solicitado por:</strong> {{ shift.id_person }}</p>
+    <p><strong>Fecha:</strong> {{ shift.date }}</p>
+    <p><strong>Hora:</strong> {{ shift.hour }}</p>
+    <form action="{% url 'cancelar-turno' shift.id %}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="Cancelar Turno">
+    </form>
+</body>
+</html>

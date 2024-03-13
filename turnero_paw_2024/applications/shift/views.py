@@ -176,8 +176,8 @@ def cancel_shift(request):
     if request.method == 'GET':
         confirmation_code = request.GET.get('confirmation_code')
         shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
-        shift.delete() 
-        return JsonResponse({'message': 'Turno cancelado exitosamente'})
+        # shift.delete() 
+        return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
