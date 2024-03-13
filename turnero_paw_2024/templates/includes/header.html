@@ -6,9 +6,11 @@
     {% if show_nav %}
         <nav id="navbar" class="navbar">
             <section id="_items" class="nav-items">
-                <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
+                <a href="{% url 'home-user' %}">Home</a>
+                <a href="{% url 'update-atention-time' %}">Modificar Horario de Atención</a>
                 <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
-                <a href="http://www.unlu.edu.ar">Ir a la Universidad</a>
+                <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
+                
             </section>
         </nav>
         <nav id="_toggle" class="nav-toggle">
@@ -17,7 +19,4 @@
             <span></span>
         </nav>
     {% endif %}
-    {% comment %} {% if show_logout_link %}
-        <a id="logout" class='header-right' href="{% url 'user-logout' %}">Cerrar Sesion</a>
-    {% endif %} {% endcomment %}
 </header>

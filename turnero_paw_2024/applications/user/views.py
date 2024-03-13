@@ -12,9 +12,40 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from .models import Users
 from applications.shift.models import Shift
-from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm, VerificationForm
+from . import forms
+# from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm, VerificationForm, UpdateAtentionTimeUserForm
 from .helpers import generate_confirmation_code
 
+
+
+
+class LoginUser(FormView):
+    template_name = 'login.html'
+    form_class = forms.LoginForm
+    success_url = '/home-user/'
+
+    def form_valid(self, form):
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            login(self.request, user)
+            if not user.has_set_attention_times:
+                return redirect('set-attention-times')
+            return super(LoginUser, self).form_valid(form)
+        else:
+            messages.error(self.request, "Usuario o contraseña incorrectos")
+            return self.form_invalid(form)
+    
+class LogoutView(View):
+    def get(self, request, *args, **kargs):
+        logout(request)
+
+        return HttpResponseRedirect(
+            reverse('user-login')
+        )
+        
 class HomePage(LoginRequiredMixin, TemplateView):
     template_name = "user/home_user.html"
     login_url = reverse_lazy('user-login')
@@ -28,8 +59,7 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
 class UserRegisterView(FormView):
     template_name = 'user/register.html'
-    
-    form_class = UserRegisterForm
+    form_class = forms.UserRegisterForm
     success_url = '/register/'
 
     def form_valid(self, form):
@@ -55,61 +85,26 @@ class UserRegisterView(FormView):
             reverse('user-verification',
                     kwargs={'pk': user.id})
         )
-        # return super(UserRegisterView, self).form_valid(form)
+
+class CodeVerificationView(FormView):
+    template_name = 'user/user_verification.html'
+    form_class = forms.VerificationForm
+    success_url = '/'
+
+    def get_form_kwargs(self):
+        kwargs = super(CodeVerificationView, self).get_form_kwargs()
+        kwargs.update({
+                        'pk': self.kwargs['pk']
+        })
+        return kwargs
     
-
-class LoginView(View):
-    template_name = 'login.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        message = "Usuario o contraseña incorrecta."
-        try:
-            user = Users.objects.filter(username=username).first()
-            if user is not None and hashlib.sha256(password.encode()).hexdigest() == user.password:
-                    user.loggin = True
-                    user.save()
-                    return redirect('home')
-            else:
-                messages.add_message(request=request, level=message.ERROR, message=message)
-
-        except Users.DoesNotExist:
-            messages.add_message(request=request, level=message.ERROR, message=message)
-
-        return render(request, self.template_name, {'username': username})
-
-class LoginUser(FormView):
-    template_name = 'login.html'
-    form_class = LoginForm
-    success_url = '/home-user/'
-
     def form_valid(self, form):
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user = authenticate(username=username, password=password)
-        
-        if user is not None:
-            login(self.request, user)
-            return super(LoginUser, self).form_valid(form)
-        else:
-            messages.error(self.request, "Usuario o contraseña incorrectos")
-            return self.form_invalid(form)
+        Users.objects.filter(id=self.kwargs['pk']).update(is_active=True)
+        return super(CodeVerificationView, self).form_valid(form)
     
-class LogoutView(View):
-    def get(self, request, *args, **kargs):
-        logout(request)
-
-        return HttpResponseRedirect(
-            reverse('user-login')
-        )
-
 class UpdatePasswordView(LoginRequiredMixin, FormView):
     template_name = 'user/update_password.html'
-    form_class = UpdatePasswordForm
+    form_class = forms.UpdatePasswordForm
     success_url = reverse_lazy('user-login')
     login_url = reverse_lazy('user-login')
     
@@ -124,24 +119,61 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
 
         logout(self.request)
         return super(UpdatePasswordView, self).form_valid(form)
-    
-class CodeVerificationView(FormView):
-    template_name = 'user/user_verification.html'
-    form_class = VerificationForm
-    success_url = '/'
 
-    def get_form_kwargs(self):
-        kwargs = super(CodeVerificationView, self).get_form_kwargs()
-        kwargs.update({
-                        'pk': self.kwargs['pk']
-        })
-        return kwargs
+
+class UpdateAtentionTimePage(LoginRequiredMixin, FormView):
+    template_name = "user/atention_time_user.html"
+    form_class = forms.UpdateAtentionTimeUserForm
+    success_url = '/update-atention-time/'
     
     def form_valid(self, form):
-        Users.objects.filter(id=self.kwargs['pk']).update(is_active=True)
-        return super(CodeVerificationView, self).form_valid(form)
+        start_time = form.cleaned_data['start_time_attention']
+        end_time = form.cleaned_data['end_time_attention']
+        
+        user = self.request.user
+        if not user.has_set_attention_times:
+            user.has_set_attention_times = True
+            user.start_time_attention = start_time
+            user.end_time_attention = end_time
+            user.save()
+            return redirect('home-user')
+        user.start_time_attention = start_time
+        user.end_time_attention = end_time
+        user.save()
 
+        messages.success(self.request, 'Horarios actualizados correctamente.')
+        return super(UpdateAtentionTimePage, self).form_valid(form)
 
+    def get_initial(self):
+        initial = super().get_initial()
+        user = self.request.user
+        initial['username'] = user.username
+        initial['start_time_attention'] = user.start_time_attention
+        initial['end_time_attention'] = user.end_time_attention
+        return initial
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error al actualizar los horarios.')
+        return super(UpdateAtentionTimePage, self).form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateAtentionTimePage, self).get_context_data(**kwargs)
+        context['messages'] = messages.get_messages(self.request)
+        return context
+    
+    # def form_valid(self, form):
+    #     current_user = self.request.user
+    #     user = authenticate(username=current_user.username,
+    #                         password=form.cleaned_data['current_password'])
+    #     if user:
+    #         new_password = form.cleaned_data['new_password']
+    #         current_user.set_password(new_password)
+    #         current_user.save()
+
+    #     logout(self.request)
+    #     return super(UpdateAtentionTimePage, self).form_valid(form)
+
+        
 # class FechaMixin(object):
 
 #     def get_context_data(self, **kwargs):

@@ -15,7 +15,7 @@ services:
     networks:
       - turnero_network
     volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./init-scripts:/init-scripts
 
   web:
     build: 

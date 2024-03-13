@@ -92,3 +92,8 @@ button:hover, button:active {
     justify-content: center;
     font-size: 1.5rem;
 }
+
+.info-section-request-shift p{
+    display: flex;
+    padding: 1rem;
+}

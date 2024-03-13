@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SESSION_COOKIE_AGE = 60 * 1
+SESSION_COOKIE_AGE = 3600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 ROOT_URLCONF = 'app.urls'
@@ -112,6 +112,8 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+USE_TZ = True
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 #Mail settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

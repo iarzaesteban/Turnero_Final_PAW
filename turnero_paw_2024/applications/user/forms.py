@@ -72,7 +72,6 @@ class UpdatePasswordForm(forms.Form):
                                         attrs={
                                             'placeholder': 'Contraseña Nueva'
                                             }))
-   
 
 
 class VerificationForm(forms.Form):
@@ -91,3 +90,18 @@ class VerificationForm(forms.Form):
                 raise forms.ValidationError("El codigo ingresado es incorrecto")
         else:
             raise forms.ValidationError("El codigo ingresado es incorrecto")
+
+class UpdateAtentionTimeUserForm(forms.Form):
+    start_time_attention = forms.TimeField(
+        label='Hora Inicio',
+        required=True,
+        widget=forms.TimeInput(attrs={'type': 'time'})
+    )
+    
+    end_time_attention = forms.TimeField(
+        label='Hora Fin',
+        required=True,
+        widget=forms.TimeInput(attrs={'type': 'time'})
+    )
+    
+    username = forms.CharField(widget=forms.HiddenInput(), required=False)

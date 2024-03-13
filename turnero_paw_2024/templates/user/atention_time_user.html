@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Actualziar Horarios Usuario{% endblock title %}
+{% block links %}
+<link rel="preload" href="{% static 'css/header.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/user-home.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">     
+{% endblock links %}
+{% block content %}
+    {% include 'includes/header.html' with show_logout_link=True show_nav=True %}
+        <section id="updates-time-user-container">
+            {% if user.has_set_attention_times %}
+                <h2>Modificar Horarios de Atención</h2>
+            {% else %}
+                <h2>Por favor cargue sus horarios de inicio y finalizacion de atención.</h2>
+            {% endif %}
+            
+            <form id="form-updates-time-user" method="post">
+                {% csrf_token %}
+
+                {% if messages %}
+                    <section id="messages">
+                        {% for message in messages %}
+                            <p class="message {% if message.tags %} {{ message.tags }} {% endif %}">
+                                {{ message }}
+                            </p>
+                        {% endfor %}
+                    </section>
+            {% endif %}
+                <label for="username">Usuario:</label>
+                <p>{{ form.username.value }}</p>
+
+                <label for="start_time_attention">Inicio Horario Atención:</label>
+                {{ form.start_time_attention }}
+    
+                <label for="end_time_attention">Fin Horario Atención:</label>
+                {{ form.end_time_attention }}
+                <section id="form-footer">
+                    <button type="submit">Actualizar</button>
+                </section>
+            </form>
+            
+        </section>
+    {% include 'includes/footer.html' %}
+    <script type="module" src="{% static 'js/menu.js' %}" ></script>
+{% endblock content %}
