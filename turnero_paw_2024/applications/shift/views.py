@@ -3,7 +3,6 @@ import os.path
 import json
 from dateutil import parser
 from datetime import datetime, timedelta
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -18,7 +17,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from . import helpers
-
+from app.settings.base import EMAIL_HOST_USER
 from applications.shift.models import Shift
 from applications.state.models import State
 from applications.person.models import Person
@@ -198,6 +197,7 @@ def get_shifts_today(request):
         })
     return JsonResponse({'shifts_today': shifts_list})
 
+
 class ConfirmShiftView(View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
@@ -207,12 +207,14 @@ class ConfirmShiftView(View):
             shift.id_state = confirmed_state
             shift.id_user = user
             shift.save()
+            helpers.send_mail_to_user(user, shift)
             return redirect('home-user')
         except State.DoesNotExist:
             pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
             error_message = 'Estado de turno no encontrado'
             return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
         except Exception as e:
+            pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
             error_message = str(e)
             return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
 
@@ -225,12 +227,14 @@ class CancelShiftView(View):
             shift.id_state = canceled_state
             shift.id_user = user
             shift.save()
+            helpers.send_mail_to_user(user, shift)
             return redirect('home-user')
         except State.DoesNotExist:
             pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
             error_message = 'Estado de turno no encontrado'
             return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
         except Exception as e:
+            pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
             error_message = str(e)
             return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
     

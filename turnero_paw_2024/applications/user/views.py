@@ -1,4 +1,3 @@
-import hashlib
 import datetime
 from django.core.mail import send_mail
 from django.views.generic import View, CreateView, TemplateView
@@ -13,9 +12,8 @@ from django.http import HttpResponseRedirect
 from .models import Users
 from applications.shift.models import Shift
 from . import forms
-# from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm, VerificationForm, UpdateAtentionTimeUserForm
 from .helpers import generate_confirmation_code
-
+from app.settings.base import EMAIL_HOST_USER
 
 
 
@@ -78,9 +76,8 @@ class UserRegisterView(FormView):
         message = "El codigo de verificacion es " \
                         + verification_code + \
                             " la hora es " + date_str
-        email_remitente = "banckington@gmail.com"
-         
-        send_mail(asunto, message, email_remitente, ['iarzaesteban94@gmail.com',])
+        print("EMAIL_HOST_USER to send {}".format(EMAIL_HOST_USER),flush=True)
+        send_mail(asunto, message, EMAIL_HOST_USER, ['iarzaesteban94@gmail.com',])
         return HttpResponseRedirect(
             reverse('user-verification',
                     kwargs={'pk': user.id})

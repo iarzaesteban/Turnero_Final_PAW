@@ -1,15 +1,13 @@
 import random
 import string
 import re
-
+from django.core.mail import send_mail
 from applications.person.models import Person
 from applications.shift.models import Shift
 from applications.state.models import State
-
+from app.settings.base import EMAIL_HOST_USER
 def person_exists(email):
-    print("EMAIL ES {}".format(email),flush=True)
     person = Person.objects.filter(email=email)
-    print("person ES {}".format(person),flush=True)
     if person:
         return True
     return False
@@ -51,6 +49,24 @@ def is_mail(mail):
     else:
         return False    
     
+def send_mail_to_user(user, shift):
+    asunto = "Respuesta de solicitud de turno."
+    message = ("Su solicitud de turno ha sido " +
+           shift.id_state.short_description +
+           " por el usuario " + user.username + ".\n\n")
+    if shift.id_state.short_description == "confirmado":
+        message += ("Su código de verificación es " + shift.confirmation_code +
+            ", podra ingresarlo en la web http://localhost:8000/shift/home/ para recordar su turno en caso de ser necesario.\n" +
+           "En caso de querer cancelar su turno, puede hacerlo ingresando al siguiente enlace:\n" +
+           shift.confirmation_url + "\n\n" +
+           "Recuerde que debe hacerlo dos días previo al turno programado.\n\n" +
+           "Gracias, saludos!")
+    else:
+        message += ("Si desea puede volver a solicitar su turno, para ello ingrese a la url http://localhost:8000.\n"+
+                    "Gracias, saludos!")
+    send_mail(asunto, message, EMAIL_HOST_USER, [shift.id_person.email,])
+    
+
 def generate_confirmation_code(length=15):
     characters = string.ascii_letters + string.digits
     confirmation_code = ''.join(random.choice(characters) for i in range(length))
