@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
 from django.urls import reverse
+from django.contrib.auth.models import AnonymousUser
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -176,6 +177,7 @@ def cancel_shift(request):
     if request.method == 'GET':
         confirmation_code = request.GET.get('confirmation_code')
         shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
+        
         # shift.delete() 
         return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
@@ -203,6 +205,13 @@ class ConfirmShiftView(View):
         shift = get_object_or_404(Shift, id=shift_id)
         user = self.request.user
         try:
+            print("shift.id_user {}".format(shift.id_user), flush=True)
+            print("user != shift.id_user {}".format(user != shift.id_user), flush=True)
+            if shift.id_user:
+                if user != shift.id_user:
+                    shift.id_user = user
+                    shift.save()
+                    return redirect('home-user')
             confirmed_state = State.objects.get(short_description='confirmado')
             shift.id_state = confirmed_state
             shift.id_user = user
@@ -221,24 +230,39 @@ class ConfirmShiftView(View):
 class CancelShiftView(View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
-        user = self.request.user
+        
         try:
+            print("ID USER ES {}".format(self.request.user),flush=True)
             canceled_state = State.objects.get(short_description='cancelado')
             shift.id_state = canceled_state
-            shift.id_user = user
+            if not isinstance(self.request.user, AnonymousUser):
+                print("Entro al user if", flush=True)
+                user = self.request.user
+                shift.id_user = user
+                shift.save()
+                helpers.send_mail_to_receiver(user, shift)
+                return redirect('home-user')
+            print("ANTES DEL SAVE",flush=True)
             shift.save()
-            helpers.send_mail_to_user(user, shift)
-            return redirect('home-user')
+            print("DESPUES DEL SAVE",flush=True)
+            person = Person.objects.get(id_user=shift.id_user)
+            print("ID PERsON ES {}".format(person),flush=True)
+            helpers.send_mail_to_operator(person.email, shift)
+            return redirect('/shift/home/')
         except State.DoesNotExist:
-            pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
-            error_message = 'Estado de turno no encontrado'
-            return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
+            if not isinstance(self.request.user, AnonymousUser):
+                pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+                error_message = 'Estado de turno no encontrado'
+                return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
+            return redirect('/shift/home/')
         except Exception as e:
-            pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
-            error_message = str(e)
-            return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
+            if not isinstance(self.request.user, AnonymousUser):
+                pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+                error_message = str(e)
+                return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
+            return redirect('/shift/home/')
     
-class BuscarTurnoView(View):
+class SearchShiftsView(View):
     def get(self, request):
         search_value = request.GET.get('search_value', '')
         shift = None
@@ -260,3 +284,4 @@ class BuscarTurnoView(View):
             return JsonResponse({'turno_detalle': turno_detalle})
         else:
             return JsonResponse({'error': 'No se encontró ningún turno con ese código de confirmación.'})
+    

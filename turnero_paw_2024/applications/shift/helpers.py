@@ -1,6 +1,8 @@
 import random
 import string
 import re
+from datetime import datetime
+
 from django.core.mail import send_mail
 from applications.person.models import Person
 from applications.shift.models import Shift
@@ -49,7 +51,7 @@ def is_mail(mail):
     else:
         return False    
     
-def send_mail_to_user(user, shift):
+def send_mail_to_receiver(user, shift):
     asunto = "Respuesta de solicitud de turno."
     message = ("Su solicitud de turno ha sido " +
            shift.id_state.short_description +
@@ -66,7 +68,15 @@ def send_mail_to_user(user, shift):
                     "Gracias, saludos!")
     send_mail(asunto, message, EMAIL_HOST_USER, [shift.id_person.email,])
     
-
+def send_mail_to_operator(user_mail, shift):
+    asunto = shift.id_person.last_name + " " + shift.id_person.first_name + " ha cancelado el turno."
+    date_str = shift.date.strftime('%d/%m/%Y')
+    hour_str = shift.hour.strftime('%H:%M:%S')
+    message = shift.id_person.last_name + " " + shift.id_person.first_name + " ha cancelado el turno" \
+            " que tenia confirmado para el dia " + date_str + " en el horario " + hour_str + "hs."
+    
+    send_mail(asunto, message, EMAIL_HOST_USER, [user_mail,])
+    
 def generate_confirmation_code(length=15):
     characters = string.ascii_letters + string.digits
     confirmation_code = ''.join(random.choice(characters) for i in range(length))

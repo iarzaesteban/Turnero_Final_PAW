@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const getInputValue = document.getElementById('input-value').value;
-        const url = `/shift/buscar-turno/?search_value=${encodeURIComponent(getInputValue)}`;
+        const url = `/shift/search-shift/?search_value=${encodeURIComponent(getInputValue)}`;
 
         fetch(url, {
             method: 'GET',

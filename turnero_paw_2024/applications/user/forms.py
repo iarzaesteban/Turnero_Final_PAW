@@ -1,8 +1,8 @@
 from django import forms
 from .models import Users
 from django.contrib.auth import authenticate
-
-
+from applications.person.models import Person
+from applications.state.models import State
 class UserRegisterForm(forms.ModelForm):
 
     password = forms.CharField(
@@ -19,6 +19,10 @@ class UserRegisterForm(forms.ModelForm):
                                     attrs={
                                         'placeholder': 'Repetir Contraseña'
                                         }))
+    first_name = forms.CharField(label='Nombre', required=True)
+    last_name = forms.CharField(label='Apellido', required=True)
+    email = forms.EmailField(label='Email', required=True)
+    
     class Meta:
         model = Users
         fields = (
@@ -91,7 +95,7 @@ class VerificationForm(forms.Form):
         else:
             raise forms.ValidationError("El codigo ingresado es incorrecto")
 
-class UpdateAtentionTimeUserForm(forms.Form):
+class UpdateAttentionTimeUserForm(forms.Form):
     start_time_attention = forms.TimeField(
         label='Hora Inicio',
         required=True,
@@ -105,3 +109,17 @@ class UpdateAtentionTimeUserForm(forms.Form):
     )
     
     username = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+
+class ShiftFilterForm(forms.Form):
+    state_choices = State.objects.values_list('short_description', 'description')
+    state_choices = [('', 'Seleccione un estado')] + list(state_choices)
+    state = forms.ChoiceField(choices=state_choices, required=True,)
+    start_date = forms.DateField(
+                        label='Fecha de inicio', 
+                        required=True,
+                        widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(
+                        label='Fecha de fin', 
+                        required=True,
+                        widget=forms.DateInput(attrs={'type': 'date'}))
