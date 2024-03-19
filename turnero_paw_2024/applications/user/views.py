@@ -1,7 +1,7 @@
 import datetime
-from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
 from django.views.generic import View, ListView, TemplateView
 from django.views.generic.edit import FormView
 from django.urls import reverse, reverse_lazy
@@ -11,12 +11,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 from .models import Users
 from applications.shift.models import Shift
 from . import forms
 from .helpers import generate_confirmation_code
 from app.settings.base import EMAIL_HOST_USER
 from applications.person.models import Person
+from applications.state.models import State
 
 
 class LoginUser(FormView):
@@ -169,103 +171,38 @@ class UpdateAttentionTimePage(LoginRequiredMixin, FormView):
     
 class ReportViews(LoginRequiredMixin, ListView):
     template_name = "user/shift_reports.html"
-    form_class = forms.ShiftFilterForm
-    model = Shift
-    paginate_by = 5
-
-    def get_queryset(self):
-        queryset = Shift.objects.filter(date=datetime.now().date(), id_state__short_description='pendiente')
-        form = self.form_class(self.request.GET)
-        
-        if form.is_valid():
-            state = form.cleaned_data.get('state')
-            start_date = form.cleaned_data.get('start_date')
-            end_date = form.cleaned_data.get('end_date')
-            filtered_queryset = Shift.objects.all()
-            
-            if state:
-                filtered_queryset = filtered_queryset.filter(id_state__short_description=state)
-
-            if start_date:
-                filtered_queryset = filtered_queryset.filter(date__gte=start_date)
-
-            if end_date:
-                end_date += timedelta(days=1)
-                filtered_queryset = filtered_queryset.filter(date__lt=end_date)
-            
-            queryset = filtered_queryset
-        
-        return queryset
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class(self.request.GET)
+        context['states'] = State.objects.all()
         return context
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(self.request.GET)
-        if form.is_valid():
-            state = form.cleaned_data.get('state')
-            start_date = form.cleaned_data.get('start_date')
-            end_date = form.cleaned_data.get('end_date')
-            filtered_queryset = Shift.objects.all()
-            
-            if state:
-                filtered_queryset = filtered_queryset.filter(id_state__short_description=state)
+    def get_queryset(self):
+        return Shift.objects.filter(id_state__short_description='confirmado', date=datetime.date.today()) 
 
-            if start_date:
-                filtered_queryset = filtered_queryset.filter(date__gte=start_date)
+    def post(self, request, *args, **kwargs):
+        start_date = request.POST.get('start-date')
+        end_date = request.POST.get('end-date')
+        state = request.POST.get('state')
 
-            if end_date:
-                end_date += timedelta(days=1)
-                filtered_queryset = filtered_queryset.filter(date__lt=end_date)
-            paginator = Paginator(filtered_queryset, self.paginate_by)
+        if state and not start_date and not end_date:
+            queryset = Shift.objects.filter(id_state__short_description=state)
 
-            page = request.GET.get('page')
-            try:
-                filtered_queryset = paginator.page(page)
-            except PageNotAnInteger:
-                filtered_queryset = paginator.page(1)
-            except EmptyPage:
-                filtered_queryset = paginator.page(paginator.num_pages)
+        elif start_date and end_date and not state:
+            queryset = Shift.objects.filter(date__range=[start_date, end_date])
 
-            
-            return self.render_to_response(filtered_queryset)
+        elif start_date and end_date and state:
+            queryset = Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date])
+
         else:
-            # Handle invalid form here
-            # You may want to provide some feedback to the user
-            return super().get(request, *args, **kwargs)
-    
-# class ReportViews(LoginRequiredMixin, ListView):
-#     template_name = "user/shift_reports.html"
-#     queryset = Shift.objects.all()
-#     paginate_by = 5
+            queryset = Shift.objects.none()
 
-#     def get_context_data(self, **kwargs):
-#         context = super(ReportViews, self).get_context_data(**kwargs)
-#         context['form'] = forms.ShiftFilterForm()
-#         form = forms.ShiftFilterForm(self.request.GET)
-#         context['object_list'] = Shift.objects.filter(date=datetime.now().date(), id_state__short_description='pendiente')
+        serialized_data = [{'date': shift.date, 
+                            'hour': shift.hour, 
+                            'id_person': str(shift.id_person),
+                            'operador': shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar'} for shift in queryset]
 
-#         if form.is_valid():
-#             print("FORM ES IS VALID ASDSADSA",flush=True)
-#             state = form.cleaned_data.get('state')
-#             start_date = form.cleaned_data.get('start_date')
-#             end_date = form.cleaned_data.get('end_date')
-#             filtered_queryset = Shift.objects.all()
-#             if state:
-#                 filtered_queryset = filtered_queryset.filter(id_state__short_description=state)
-
-#             if start_date:
-#                 filtered_queryset = filtered_queryset.filter(date__gte=start_date)
-
-#             if end_date:
-#                 end_date += timedelta(days=1)
-#                 filtered_queryset = filtered_queryset.filter(date__lt=end_date)
-            
-#             context['object_list'] = filtered_queryset
-        
-#         return context
+        return JsonResponse(serialized_data, safe=False)
     
     
 def update_attentions_times(request):

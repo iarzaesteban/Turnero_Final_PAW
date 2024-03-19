@@ -15,55 +15,53 @@
 
     <section>
         <h1>Reportes</h1>
-        <form method="GET">
-            {{ form.as_p }}
+        <form id="filter-form" data-reports-url="{% url 'reports' %}">
+            {% csrf_token %}
+            <label for="start-date">Fecha Desde:</label>
+            <input type="date" id="start-date" name="start-date">
+    
+            <label for="end-date">Fecha Hasta:</label>
+            <input type="date" id="end-date" name="end-date">
+    
+            <label for="state">Estado:</label>
+            <select id="state" name="state">
+                <option value="">Seleccionar Estado</option>
+                {% for state in states %}
+                    <option value="{{ state.short_description }}">{{ state.description }}</option>
+                {% endfor %}
+            </select>
+    
             <button type="submit">Filtrar</button>
         </form>
-
-        <table>
+        <table id="shifts-table">
             <thead>
                 <tr>
-                    <th>Indice</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Persona</th>
+                    <th>Operador Asignado</th>
                 </tr>
             </thead>
             <tbody>
                 {% for shift in object_list %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ shift.date }}</td>
-                    <td>{{ shift.hour }}</td>
-                    <td>{{ shift.id_person }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3">No hay shifts para mostrar</td>
-                </tr>
+                    <tr>
+                        <td>{{ shift.date }}</td>
+                        <td>{{ shift.hour }}</td>
+                        <td>{{ shift.id_person }}</td>
+                        {% if shift.id_state.short_description == 'confirmado' %}
+                            <td>{{ shift.id_person.id_user.username }}</td>
+                        {% else %}
+                            <td>Sin Asignar</td>   
+                        {% endif %}
+                        
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        {% if is_paginated %}
-        <nav>
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                    <li><a href="?page=1">&laquo;</a></li>
-                    <li><a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
-                {% endif %}
-                    <li class="active"><span>{{ page_obj.number }}</span></li>
-                {% if page_obj.has_next %}
-                    <li><a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-                    <li><a href="?page={{ paginator.num_pages }}">&raquo;</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
-
     </section>    
 
 {% include 'includes/footer.html' %}
-    <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/shift/generate_reports.js' %}" ></script>
 {% endblock content %}
