@@ -1,4 +1,6 @@
 import datetime
+import json
+from openpyxl import Workbook
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
@@ -10,8 +12,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.db.models import Q
+from django.http import HttpResponseRedirect, HttpResponse
 from .models import Users
 from applications.shift.models import Shift
 from . import forms
@@ -186,13 +187,13 @@ class ReportViews(LoginRequiredMixin, ListView):
         state = request.POST.get('state')
 
         if state and not start_date and not end_date:
-            queryset = Shift.objects.filter(id_state__short_description=state)
+            queryset = Shift.objects.filter(id_state__short_description=state).order_by('date')
 
         elif start_date and end_date and not state:
-            queryset = Shift.objects.filter(date__range=[start_date, end_date])
+            queryset = Shift.objects.filter(date__range=[start_date, end_date]).order_by('date')
 
         elif start_date and end_date and state:
-            queryset = Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date])
+            queryset = Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date]).order_by('date')
 
         else:
             queryset = Shift.objects.none()
@@ -220,3 +221,25 @@ def view_user_all_shifts(request, username):
     user_all_shifts = Shift.objects.filter(id_user__username=username, id_state__short_description='confirmado')
     return render(request, 'user/user_all_shifts.html', {'user_all_shifts': user_all_shifts,
                                                          'username': username})
+    
+def export_to_excel(request):
+    if request.method == 'POST':
+        table_data = json.loads(request.body)
+        
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Reporte de Turnos"
+
+        for row_data in table_data:
+            ws.append(row_data)
+
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+        response['Content-Disposition'] = 'attachment; filename=reporte_turnos.xlsx'
+
+        wb.save(response)
+
+        return response
+    else:
+        return HttpResponse(status=405)

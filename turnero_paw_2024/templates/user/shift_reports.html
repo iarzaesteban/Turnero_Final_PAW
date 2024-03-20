@@ -34,7 +34,7 @@
             <button type="submit">Filtrar</button>
         </form>
         <table id="shifts-table">
-            <thead>
+            <thead id="shifts-table__thead">
                 <tr>
                     <th>Fecha</th>
                     <th>Hora</th>
@@ -42,7 +42,7 @@
                     <th>Operador Asignado</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="shifts-table__tbody">
                 {% for shift in object_list %}
                     <tr>
                         <td>{{ shift.date }}</td>
@@ -59,6 +59,9 @@
             </tbody>
         </table>
 
+        <button id="export-button">
+            Exportar Tabla
+        </button>
     </section>    
 
 {% include 'includes/footer.html' %}
