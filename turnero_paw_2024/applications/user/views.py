@@ -169,41 +169,85 @@ class UpdateAttentionTimePage(LoginRequiredMixin, FormView):
         context = super(UpdateAttentionTimePage, self).get_context_data(**kwargs)
         context['messages'] = messages.get_messages(self.request)
         return context
+      
+
+def first_get(state, start_date, end_date):
+    list_shifts= None
+    query_number = 1
+    if state and start_date and end_date:
+        list_shifts = Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date]).order_by('date')
+        query_number = 2
+    elif start_date and end_date and not state:
+        list_shifts = Shift.objects.filter(date__range=[start_date, end_date]).order_by('date')
+        query_number = 3
+    elif state:
+        list_shifts = Shift.objects.filter(id_state__short_description=state).order_by('date')
+        query_number = 4
     
-class ReportViews(LoginRequiredMixin, ListView):
-    template_name = "user/shift_reports.html"
+    return list_shifts, query_number
+
+def serialize_shifts(page_obj):
+    return [{'date': shift.date, 
+             'hour': shift.hour, 
+             'id_person': str(shift.id_person),
+             'operador': shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar'} for shift in page_obj]
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['states'] = State.objects.all()
-        return context
+def list_shifts_filter_views(request):
+    list_shifts = None
+    states = State.objects.all()
+    start_date = request.POST.get('start-date')
+    state = request.POST.get('state')
+    end_date = request.POST.get('end-date')
+    
+    get_query_number = request.POST.get('query', 1)
+    get_query_number_get = request.GET.get('query')
+    if get_query_number == 1 and get_query_number_get:
+        get_query_number = get_query_number_get
+        
+    get_query_number_int = int(get_query_number) if get_query_number else None
+    
+    list_shifts, query_number = first_get(state, start_date, end_date)
+    
+    if(get_query_number_int != 1 or query_number != 1):
+        if query_number == 2 or get_query_number_int == 2:
+            list_shifts =  Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date]).order_by('date')
+            query_number = 2
+        elif query_number == 3 or get_query_number_int == 3:
+            list_shifts =  Shift.objects.filter(date__range=[start_date, end_date]).order_by('date')
+            query_number = 3
+        elif query_number == 4 or get_query_number_int == 4:
+            list_shifts =  Shift.objects.filter(id_state__short_description=state).order_by('date')
+            query_number = 4
+        
+        paginator = Paginator(list_shifts, 5)
+        page_number = request.POST.get("page")
+        page_obj = paginator.get_page(page_number)
+        serialized_page = {
+            'number': page_obj.number,
+            'paginator': paginator.num_pages,
+            'has_next': page_obj.has_next(),
+            'has_previous': page_obj.has_previous(),
+            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
+            'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
+        }
+        serialized_data = serialize_shifts(page_obj)
+        
+        return JsonResponse({'page_obj': serialized_page, 
+                             'serialized_data': serialized_data, 
+                             'query_number': query_number})
 
-    def get_queryset(self):
-        return Shift.objects.filter(id_state__short_description='confirmado', date=datetime.date.today()) 
+    else:
+        list_shifts = Shift.objects.filter(id_state__short_description='pendiente').order_by('date')
+        query_number = 1   
+    
+    paginator = Paginator(list_shifts, 5)
 
-    def post(self, request, *args, **kwargs):
-        start_date = request.POST.get('start-date')
-        end_date = request.POST.get('end-date')
-        state = request.POST.get('state')
-
-        if state and not start_date and not end_date:
-            queryset = Shift.objects.filter(id_state__short_description=state).order_by('date')
-
-        elif start_date and end_date and not state:
-            queryset = Shift.objects.filter(date__range=[start_date, end_date]).order_by('date')
-
-        elif start_date and end_date and state:
-            queryset = Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date]).order_by('date')
-
-        else:
-            queryset = Shift.objects.none()
-
-        serialized_data = [{'date': shift.date, 
-                            'hour': shift.hour, 
-                            'id_person': str(shift.id_person),
-                            'operador': shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar'} for shift in queryset]
-
-        return JsonResponse(serialized_data, safe=False)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, "user/shifts_reports.html", {"page_obj": page_obj,
+                                                             "list_shifts": list_shifts,
+                                                             "states": states,
+                                                             "query_number": query_number})
     
     
 def update_attentions_times(request):
@@ -223,23 +267,28 @@ def view_user_all_shifts(request, username):
                                                          'username': username})
     
 def export_to_excel(request):
-    if request.method == 'POST':
-        table_data = json.loads(request.body)
+    if request.method == 'GET':
+        shifts = Shift.objects.filter(id_state__short_description='pendiente').order_by('date')
         
         wb = Workbook()
         ws = wb.active
         ws.title = "Reporte de Turnos"
-
-        for row_data in table_data:
+        
+        headers = ['Fecha', 'Hora', 'Persona', 'Operador Asignado']
+        ws.append(headers)
+        for shift in shifts:
+            date_string = shift.date.strftime('%d-%m-%Y')
+            row_data = [date_string, 
+                        shift.hour, 
+                        shift.id_person.last_name + " "+ shift.id_person.first_name, 
+                        shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar']
             ws.append(row_data)
-
-        response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            )
+        
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=reporte_turnos.xlsx'
-
+        
         wb.save(response)
-
+        
         return response
     else:
         return HttpResponse(status=405)

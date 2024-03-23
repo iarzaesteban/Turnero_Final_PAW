@@ -16,7 +16,6 @@ urlpatterns = [
     path('set-attention-times/', views.UpdateAttentionTimePage.as_view(), name='set-attention-times'),
     path('view-user-shifts-today/<username>/', views.view_user_shifts_today, name='view-user-shifts-today'),
     path('view-user-all-shifts/<username>/', views.view_user_all_shifts, name='view-user-all-shifts'),
-    path('reports/', views.ReportViews.as_view(), name='reports'),
     path('export-to-excel/', views.export_to_excel, name='export-to-excel'),
-
+    path('list-shifts-filter-views/', views.list_shifts_filter_views, name='list-shifts-filter-views'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

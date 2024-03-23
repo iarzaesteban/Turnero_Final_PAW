@@ -15,7 +15,7 @@
 
     <section>
         <h1>Reportes</h1>
-        <form id="filter-form" data-reports-url="{% url 'reports' %}">
+        <form id="filter-form">
             {% csrf_token %}
             <label for="start-date">Fecha Desde:</label>
             <input type="date" id="start-date" name="start-date">
@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody id="shifts-table__tbody">
-                {% for shift in object_list %}
+                {% for shift in page_obj %}
                     <tr>
                         <td>{{ shift.date }}</td>
                         <td>{{ shift.hour }}</td>
@@ -53,11 +53,12 @@
                         {% else %}
                             <td>Sin Asignar</td>   
                         {% endif %}
-                        
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        {% include 'includes/pagination.html' %}
 
         <button id="export-button">
             Exportar Tabla
@@ -66,5 +67,6 @@
 
 {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
-    <script type="module" src="{% static 'js/shift/generate_reports.js' %}" ></script>
+    <script src="{% static 'js/shift/generate_reports.js' %}" defer></script>
+    {{ query_number|json_script:"queryNumber" }}
 {% endblock content %}
