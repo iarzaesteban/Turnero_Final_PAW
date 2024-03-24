@@ -12,8 +12,11 @@
 {% block content %}
     {% include 'includes/header.html' with show_logout_link=True show_nav=True %}
 
-    <h1>Horarios de Atención de Usuarios</h1>
+    <h1>Horarios de Atención de Operadores</h1>
     <section>
+        {% if not users %}
+            <h3>No se presentan otros operadores</h1>
+        {% endif %}
         {% for user in users %}
             {% if user.start_time_attention and user.end_time_attention %}
                 <span>

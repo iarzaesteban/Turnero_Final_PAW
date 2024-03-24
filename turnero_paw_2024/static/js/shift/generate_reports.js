@@ -130,13 +130,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const tableData = [];
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
         
+        const rows = document.querySelectorAll('#shifts-table tbody tr');
+        if (rows.length === 0) {
+            alert('La tabla no tiene datos para exportar.');
+            return;
+        }
+        
         const headerRow = [];
         document.querySelectorAll('#shifts-table thead th').forEach(header => {
             headerRow.push(header.textContent);
         });
         tableData.push(headerRow);
 
-        const rows = document.querySelectorAll('#shifts-table tbody tr');
         rows.forEach(row => {
             const rowData = [];
             const cells = row.querySelectorAll('td');
