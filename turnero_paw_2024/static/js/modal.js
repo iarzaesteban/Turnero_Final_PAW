@@ -113,6 +113,9 @@ export function requestShift() {
 function showSuccessMessage(message) {
     const messageParagraph = document.getElementById('modal-error-message');
     messageParagraph.textContent = message;
+    emailInput.value = "";
+    lastNameInput.value = "";
+    nameInput.value = "";
     messageParagraph.classList.add('modal-message-show');
     messageParagraph.style.display = 'block';
     modalContent.style.height = '43rem';
@@ -127,10 +130,6 @@ function showErrorMessage(errorMessage) {
     modalContent.style.height = '40rem';
     requestShiftBtn.disabled = true;
 }
-// function showErrorMessage() {
-//     modalErrorText.classList.add('modal-email-error-text-show');
-//     modalContent.style.height = '40rem';
-// }
 
 function validarFormatoEmail(email) {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -145,7 +145,6 @@ def confirm_shift(request):
             helpers.create_person(email, first_name, last_name)
 
         confirmation_code = helpers.generate_confirmation_code()
-        #cancelation_date = parser.parse(selected_date).date() - timedelta(days=2)
         cancelation_url = request.build_absolute_uri(reverse('cancel_shift')) + f'?confirmation_code={confirmation_code}'
         shift = helpers.create_shift(selected_date_time, email, confirmation_code, cancelation_url)
         
