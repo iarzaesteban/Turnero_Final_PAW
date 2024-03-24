@@ -146,6 +146,11 @@ class UpdateAttentionTimePage(LoginRequiredMixin, FormView):
             user.end_time_attention = end_time
             user.save()
             return redirect('home-user')
+        
+        if (user.start_time_attention == start_time and user.end_time_attention == end_time):
+            messages.warning(self.request, 'Por favor seleccione un horario de inicio o fin de atención diferente.')
+            return super(UpdateAttentionTimePage, self).form_valid(form)
+        
         user.start_time_attention = start_time
         user.end_time_attention = end_time
         user.save()
