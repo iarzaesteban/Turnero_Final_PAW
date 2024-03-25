@@ -183,9 +183,9 @@ def cancel_shift(request):
 
 
 def get_shifts_today(request):
+    state = request.GET.get('state')
     today = datetime.now()
-    print("TODAY IS {}".format(today), flush=True)
-    shifts_today = Shift.objects.filter(date=today, id_user=request.user, id_state__short_description='confirmado')
+    shifts_today = Shift.objects.filter(date=today, id_user=request.user, id_state__short_description=state)
 
     shifts_list = []
     for shift in shifts_today:

@@ -55,10 +55,13 @@
                     <li>No hay turnos pendientes.</li>
                 {% endfor %}
             <section id="shifts-confirm-state-section">
-                <section id="shifts-confirm-state-container">
+                <section id="shifts-data-states-container">
                 </section>
-                <button type="button" id="get-shift-confirm-state-btn">
-                    Turnos Para Hoy
+                <button type="button" id="get-shift-pending-state-btn" data-state="pendiente">
+                    Turnos Pendientes Para Hoy
+                </button>
+                <button type="button" id="get-shift-confirm-state-btn" data-state="confirmado">
+                    Turnos Confirmados Para Hoy
                 </button>
             </section>
             

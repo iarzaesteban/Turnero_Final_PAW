@@ -1,24 +1,40 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const shiftsContainer = document.getElementById('shifts-confirm-state-container');
-    const turnosHoyButton = document.getElementById('get-shift-confirm-state-btn');
-    let isShiftsContainerVisible = true;
+    const shiftsContainerConfirm = document.getElementById('shifts-data-states-container');
+    const shiftsPendingStateBtn = document.getElementById('get-shift-pending-state-btn');
+    const shiftsConfirmStateBtn = document.getElementById('get-shift-confirm-state-btn');
+    let isShiftsContainerPendingVisible = true;
+    let isShiftsContainerConfirmVisible = true;
 
-    turnosHoyButton.addEventListener('click', function() {
-        isShiftsContainerVisible = !isShiftsContainerVisible;
-        if (isShiftsContainerVisible) {
-            console.log("sadsadasd", isShiftsContainerVisible);
-            shiftsContainer.style.display = 'none';
-            turnosHoyButton.innerText = 'Turnos Para Hoy';
-        }else{
-            getShiftsConfirmState();
-            shiftsContainer.style.display = 'block';
-            turnosHoyButton.innerText = 'Cerrar';
+    shiftsConfirmStateBtn.addEventListener('click', function() {
+        if(!isShiftsContainerPendingVisible){
+            shiftsPendingStateBtn.innerText = 'Turnos Pendientes Para Hoy';
+            isShiftsContainerPendingVisible = true;
         }
-        turnosHoyButton.style.display = 'block';     
+        isShiftsContainerConfirmVisible = !isShiftsContainerConfirmVisible;
+        if (isShiftsContainerConfirmVisible) {
+            shiftsContainerConfirm.style.display = 'none';
+            shiftsConfirmStateBtn.innerText = 'Turnos Confirmados Para Hoy';
+        } else {
+            getShiftsState('confirmado', shiftsContainerConfirm, shiftsConfirmStateBtn);            
+        }
     });
 
-    function getShiftsConfirmState(){
-        fetch('/shift/get-shifts-today/', {
+    shiftsPendingStateBtn.addEventListener('click', function() {
+        if(!isShiftsContainerConfirmVisible){
+            shiftsConfirmStateBtn.innerText = 'Turnos Confirmados Para Hoy';
+            isShiftsContainerConfirmVisible = true;
+        }
+        isShiftsContainerPendingVisible = !isShiftsContainerPendingVisible;
+        if (isShiftsContainerPendingVisible) {
+            shiftsContainerConfirm.style.display = 'none';
+            shiftsPendingStateBtn.innerText = 'Turnos Pendientes Para Hoy';
+        } else {
+            getShiftsState('pendiente', shiftsContainerConfirm, shiftsPendingStateBtn);
+        }
+    });
+
+    function getShiftsState(state, shiftsContainer, button) {
+        fetch(`/shift/get-shifts-today/?state=${state}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,12 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log("DATA ES ",data)
             shiftsContainer.innerHTML = '';
-
             if (data.shifts_today.length > 0) {
                 data.shifts_today.forEach(shift => {
                     const shiftHtml = `
                         <span id="shifts-container__list-shifts">
+                            <h3> Turnos ${state} para hoy </h3>
                             <p>
                                 <strong>Solicitado por:</strong> ${shift.id_person}
                             </p>
@@ -49,64 +66,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     shiftsContainer.insertAdjacentHTML('beforeend', shiftHtml);
                 });
             } else {
-                shiftsContainer.innerHTML = '<li>No hay turnos confirmados para hoy.</li>';
+                shiftsContainer.innerHTML = `<h3> No hay turnos ${state} para hoy </h3>`;
             }
         })
         .catch(error => {
             console.error('Error:', error);
         });
+        shiftsContainer.style.display = 'block';
+        shiftsContainer.style.border = 'red 5px solid';
+        button.innerText = 'Cerrar';
     }
 });
-
-//     turnosHoyButton.addEventListener('click', function() {
-//         console.log("isShiftsContainerVisible", isShiftsContainerVisible);
-//         if (isShiftsContainerVisible) {
-//             console.log("sadsadasd", isShiftsContainerVisible);
-//             shiftsContainer.style.display = 'none';
-//             turnosHoyButton.innerText = 'Turnos Para Hoy';
-//         } else {
-//             fetch('/shift/get-shifts-today/', {
-//                 method: 'GET',
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 }
-//             })
-//             .then(response => response.json())
-//             .then(data => {
-//                 shiftsContainer.innerHTML = '';
-
-//                 if (data.shifts_today.length > 0) {
-//                     data.shifts_today.forEach(shift => {
-//                         const shiftHtml = `
-//                             <section id="shifts-container__list-shifts">
-//                                 <p>
-//                                     <strong>Solicitado por:</strong> ${shift.id_person}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Fecha:</strong> ${shift.date}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Hora:</strong> ${shift.hour}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Email:</strong> ${shift.mail}
-//                                 </p>
-//                             </section>
-//                         `;
-//                         shiftsContainer.insertAdjacentHTML('beforeend', shiftHtml);
-//                     });
-//                 } else {
-//                     shiftsContainer.innerHTML = '<li>No hay turnos confirmados para hoy.</li>';
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error('Error:', error);
-//             });
-
-//             
-//             turnosHoyButton.innerText = 'Cerrar';
-//         }
-//         isShiftsContainerVisible = !isShiftsContainerVisible;
-//         console.log("isShiftsContainerVisible", isShiftsContainerVisible);
-//     });
-// });

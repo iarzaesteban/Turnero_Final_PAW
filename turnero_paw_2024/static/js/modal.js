@@ -127,6 +127,7 @@ function showErrorMessage(errorMessage) {
     errorMessageParagraph.textContent = errorMessage;
     errorMessageParagraph.classList.add('modal-error-message-show');
     errorMessageParagraph.style.display = 'block';
+    errorMessageParagraph.style.color = 'red';
     modalContent.style.height = '40rem';
     requestShiftBtn.disabled = true;
 }
