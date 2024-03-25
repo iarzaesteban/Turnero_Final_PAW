@@ -20,7 +20,8 @@ from .helpers import generate_confirmation_code
 from app.settings.base import EMAIL_HOST_USER
 from applications.person.models import Person
 from applications.state.models import State
-
+from PIL import Image
+from io import BytesIO
 
 class LoginUser(FormView):
     template_name = 'login.html'
@@ -67,14 +68,23 @@ class UserRegisterView(FormView):
 
     def form_valid(self, form):
         verification_code = generate_confirmation_code()
+        picture = form.cleaned_data.get('picture')
+        output = BytesIO()
+        if picture:
+            img = Image.open(picture)
+            if img.mode == 'RGBA':
+                img = img.convert('RGB')
+            img.save(output, format='JPEG', quality=70)
+            
+        
         user = Users.objects.create_user(
             form.cleaned_data['username'],
             form.cleaned_data['password'],
-            picture=form.cleaned_data['picture'],
-            start_time_attention=form.cleaned_data['start_time_attention'],
-            end_time_attention=form.cleaned_data['end_time_attention'],
-            code_verification=verification_code
+            code_verification=verification_code,
+            picture=output.getvalue()
         )
+
+        user.save()
         
         person = Person.objects.create(
             first_name=form.cleaned_data['first_name'],
@@ -297,3 +307,12 @@ def export_to_excel(request):
         return response
     else:
         return HttpResponse(status=405)
+    
+def get_user_avatar(request):
+    user = request.user
+
+    if user.picture:
+        user.retrieve_image()
+        return HttpResponse(user.picture, content_type='image/jpeg')
+    else:
+        return HttpResponse("El usuario no posee un avatar cargado")

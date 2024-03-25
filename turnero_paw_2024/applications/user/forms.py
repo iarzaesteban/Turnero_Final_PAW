@@ -3,39 +3,33 @@ from .models import Users
 from django.contrib.auth import authenticate
 from applications.person.models import Person
 from applications.state.models import State
-class UserRegisterForm(forms.ModelForm):
-
-    password = forms.CharField(
-                        label='Contraseña', 
-                        required=True, 
-                        widget=forms.PasswordInput(
-                                    attrs={
-                                        'placeholder': 'Contraseña'
-                                        }))
-    confirm_password = forms.CharField(
-                        label='Contraseña', 
-                        required=True, 
-                        widget=forms.PasswordInput(
-                                    attrs={
-                                        'placeholder': 'Repetir Contraseña'
-                                        }))
-    first_name = forms.CharField(label='Nombre', required=True)
-    last_name = forms.CharField(label='Apellido', required=True)
-    email = forms.EmailField(label='Email', required=True)
+class UserRegisterForm(forms.Form):
+    username = forms.CharField(label='Nombre de usuario', max_length=50)
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    confirm_password = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput)
+    first_name = forms.CharField(label='Nombre')
+    last_name = forms.CharField(label='Apellido')
+    email = forms.EmailField(label='Email')
+    picture = forms.ImageField(label='Imagen', required=False) 
+        
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if Users.objects.filter(username=username).exists():
+            self.add_error('username', 'Este nombre de usuario ya está en uso.')
+        return username
     
-    class Meta:
-        model = Users
-        fields = (
-            'username',
-            'picture',
-            'start_time_attention',
-            'end_time_attention'
-        )
-
-    def clean_confirm_password(self):
-        if self.cleaned_data['password'] != self.cleaned_data['confirm_password']:
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Person.objects.filter(email=email).exists():
+            self.add_error('username', 'Este correo electrónico ya está en uso.')
+        return email
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        if password != confirm_password:
             self.add_error('username', 'Las contraseñas no coinciden')
-
 class LoginForm(forms.Form):
     username = forms.CharField(
                             label='Usuario', 

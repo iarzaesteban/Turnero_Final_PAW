@@ -18,4 +18,5 @@ urlpatterns = [
     path('view-user-all-shifts/<username>/', views.view_user_all_shifts, name='view-user-all-shifts'),
     path('export-to-excel/', views.export_to_excel, name='export-to-excel'),
     path('list-shifts-filter-views/', views.list_shifts_filter_views, name='list-shifts-filter-views'),
+    path('get-user-avatar-url/', views.get_user_avatar , name='get-user-avatar-url')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,7 +8,6 @@ class SessionTimeoutMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print("Middleware ejecutándose...")
         response = self.get_response(request)
 
         # Verifica si el usuario está autenticado
