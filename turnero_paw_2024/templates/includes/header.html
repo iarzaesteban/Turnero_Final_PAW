@@ -18,13 +18,15 @@
         </nav>
     {% endif %}
     <h1 id="title">Sistemas de turnos de Autoridad de Registro UNLu</h1>
-    <button type="button" id="header-avatar-btn">
-        <img id="user-avatar" src="{% static 'assets/user_avatar.png' %}" alt="User Avatar">
-    </button>
-    
-    <section id="_items-user" class="nav-items-user">
-        <a href="{% url 'update-attention-time' %}">Modificar Su Horario de Atención</a>
-        <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
-        <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
-    </section>
+    {% if show_avatar_user %}
+        <button type="button" id="header-avatar-btn">
+            <img id="user-avatar" src="{% static 'assets/user_avatar.png' %}" alt="User Avatar">
+        </button>
+        
+        <section id="_items-user" class="nav-items-user">
+            <a href="{% url 'update-attention-time' %}">Modificar Su Horario de Atención</a>
+            <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
+            <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
+        </section>
+    {% endif %}
 </header>

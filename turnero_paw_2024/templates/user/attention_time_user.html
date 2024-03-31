@@ -8,7 +8,7 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">     
 {% endblock links %}
 {% block content %}
-    {% include 'includes/header.html' with show_logout_link=True show_nav=True %}
+    {% include 'includes/header.html' with show_logout_link=True show_nav=True show_avatar_user=True %}
         <section id="updates-time-user-container">
             {% if user.has_set_attention_times %}
                 <h2>Modificar Horarios de Atención</h2>
