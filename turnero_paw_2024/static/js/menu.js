@@ -9,8 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const userAvatar = document.getElementById('user-avatar');
+    const currentUserAvatar = document.getElementById('current-user-avatar');
     
     const userAvatarUrl = '/get-user-avatar-url';
+    
 
     fetch(userAvatarUrl)
         .then(response => {
@@ -23,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (blob.type === 'image/jpeg') {
                 const imageUrl = URL.createObjectURL(blob);
                 userAvatar.src = imageUrl;
+                if  (currentUserAvatar){
+                    currentUserAvatar.src = imageUrl;
+                }
             }
         })
         .catch(error => {

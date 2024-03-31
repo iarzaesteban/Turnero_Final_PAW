@@ -140,6 +140,41 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
         return super(UpdatePasswordView, self).form_valid(form)
 
 
+class UpdatePictureView(LoginRequiredMixin, FormView):
+    template_name = 'user/update_picture.html'
+    form_class = forms.UpdatePictureForm
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        user = self.request.user
+        initial['username'] = user.username
+        initial['picture'] = user.picture
+        return initial
+    
+    def form_valid(self, form):
+        current_user = self.request.user
+        picture = form.cleaned_data.get('picture')
+        try:
+            if picture:
+                img = Image.open(picture)
+                if img.mode == 'RGBA':
+                    img = img.convert('RGB')
+                output = BytesIO()
+                img.save(output, format='JPEG', quality=70)
+                current_user.picture = output.getvalue()
+                output.close()
+                
+            current_user.save()
+            messages.success(self.request, 'La fotografía se ha actualizado correctamente.')
+            return redirect('update-picture') 
+        except Exception as e:
+            messages.error(self.request, f'Error al procesar la imagen: {e}')
+            return super().form_invalid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ha ocurrido un error al actualizar la fotografía. Por favor, inténtelo de nuevo.')
+        return super().form_invalid(form)
+    
 class UpdateAttentionTimePage(LoginRequiredMixin, FormView):
     template_name = "user/attention_time_user.html"
     form_class = forms.UpdateAttentionTimeUserForm

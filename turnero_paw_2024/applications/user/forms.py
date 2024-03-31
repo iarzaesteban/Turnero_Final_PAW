@@ -10,7 +10,7 @@ class UserRegisterForm(forms.Form):
     first_name = forms.CharField(label='Nombre')
     last_name = forms.CharField(label='Apellido')
     email = forms.EmailField(label='Email')
-    picture = forms.ImageField(label='Imagen', required=False) 
+    picture = forms.ImageField(label='Imagen', required=False)
         
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -71,6 +71,8 @@ class UpdatePasswordForm(forms.Form):
                                             'placeholder': 'Contraseña Nueva'
                                             }))
 
+class UpdatePictureForm(forms.Form):
+    picture = forms.ImageField(label='Elija una fotografía', required=True)
 
 class VerificationForm(forms.Form):
     code_verification = forms.CharField(required=True)
