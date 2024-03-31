@@ -61,7 +61,7 @@ class HomePage(LoginRequiredMixin, TemplateView):
         context['pending_shifts'] = pending_shifts
         return context
 
-class UserRegisterView(FormView):
+class UserRegisterView(LoginRequiredMixin, FormView):
     template_name = 'user/register.html'
     form_class = forms.UserRegisterForm
     success_url = '/register/'

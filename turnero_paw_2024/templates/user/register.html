@@ -2,16 +2,33 @@
 {% load static %}
 {% block title %}Registrar Usuario{% endblock title %}
 {% block links %}
-{% comment %} <link rel="preload" href="{% static 'css/base.css' %}" 
+
+<link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="{% static 'css/login.css' %}" 
+{% comment %} <link rel="preload" href="{% static 'css/login.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'"> {% endcomment %}
 {% endblock links %}
 {% block content %}
+    {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
     <h1>Registrar Usuarios</h1>
     <form id="form-register" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <label for="username">Usuario:</label>
+        {{ form.username }}
+        <label for="password">Contraseña:</label>
+        {{ form.password }}
+        <label for="confirm_password">Repetir Contraseña:</label>
+        {{ form.confirm_password }}
+        <label for="first_name">Nombres:</label>
+        {{ form.first_name }}
+        <label for="last_name">Apellidos:</label>
+        {{ form.last_name }}
+        <label for="email">Email:</label>
+        {{ form.email }}
+        <label for="picture">Foto:</label>
+        {{ form.picture }}
+
         <button type="submit">
             Registrar
         </button>
@@ -19,4 +36,9 @@
             <p>{{ m }}</p>
         {% endfor %}
     </form>
+    <script type="module" src="{% static 'js/menu.js' %}" ></script>
 {% endblock content %}
+
+
+{% comment %} me va a quedar acomodar el formulario de register y ademas que el usuario pueda cambiar la foto del avatar.
+validar el tema de cantidad de operadores, cantidad de turnos que puede atender por hora {% endcomment %}
