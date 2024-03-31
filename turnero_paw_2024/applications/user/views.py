@@ -299,6 +299,28 @@ def list_shifts_filter_views(request):
                                                              "states": states,
                                                              "query_number": query_number})
     
+
+class SendEmailView(LoginRequiredMixin, FormView):
+    template_name = 'user/send_email.html'
+    form_class = forms.SendEmailForm
+    
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        subject = form.cleaned_data.get('subject')
+        message = form.cleaned_data.get('message')
+        
+        try:
+            send_mail(subject, message, EMAIL_HOST_USER, [email,])
+            messages.success(self.request, f'Se ha enviado el correo electrónico a {email} correctamente.')
+        except Exception as e:
+            messages.error(self.request, f'Error al enviar el correo electrónico: {e}')
+        
+        return redirect('send-email')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ha ocurrido un error al enviar el correo electrónico. Por favor, inténtelo nuevamente.')
+        return super().form_invalid(form)
+    
     
 def update_attentions_times(request):
     current_user = request.user

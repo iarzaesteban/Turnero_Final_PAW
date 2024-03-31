@@ -73,6 +73,12 @@ class UpdatePasswordForm(forms.Form):
 
 class UpdatePictureForm(forms.Form):
     picture = forms.ImageField(label='Elija una fotografía', required=True)
+    
+class SendEmailForm(forms.Form):
+    email = forms.EmailField(label='Correo electrónico', required=True)
+    subject = forms.CharField(label='Asunto', max_length=100, required=True)
+    message = forms.CharField(label='Mensaje', widget=forms.Textarea, required=True)
+    
 
 class VerificationForm(forms.Form):
     code_verification = forms.CharField(required=True)
