@@ -12,7 +12,7 @@ DATABASES = {
         'NAME': get_secret('DB_NAME'),
         'USER': get_secret('DB_USER'),
         'PASSWORD': get_secret('DB_PASSWORD'),
-        'HOST': 'db_postgres',
+        'HOST': 'db_postgres', #'172.21.0.2',
         'PORT': '5432',
     }
 }

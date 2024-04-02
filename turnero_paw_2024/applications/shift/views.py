@@ -2,6 +2,7 @@ import datetime as dt
 import os.path
 import json
 from dateutil import parser
+from collections import defaultdict
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
@@ -22,6 +23,7 @@ from app.settings.base import EMAIL_HOST_USER
 from applications.shift.models import Shift
 from applications.state.models import State
 from applications.person.models import Person
+from applications.user.models import Users
 
 @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(TemplateView):
@@ -60,6 +62,7 @@ def get_google_calendar_events(selected_date):
         next_day_str = next_day.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         # Call the Calendar API
+        # Nos traemos los eventos del día
         events_result = (
             service.events()
             .list(
@@ -78,15 +81,38 @@ def get_google_calendar_events(selected_date):
         if not events:
             return response
         
+        start_time_count = defaultdict(int)
+        # Armamos diccionario con la hora y la cantidad de veces que se repite ese horario
         for event in events:
-            start = event["start"].get("dateTime", event["start"].get("date"))
-            formatted_start = parser.parse(start).strftime("%Y-%m-%d %H:%M:%S %p %Z")
-            event_data = {
-                "event": event["summary"],
-                "formatted_start": formatted_start
-            }
-            response.append(event_data)
-            
+            start_time = event["start"].get("dateTime", event["start"].get("date"))
+            start_time_count[start_time] += 1
+        #obtenemos los usuarios activos
+        count_users_attentions = Users.objects.filter(has_set_attention_times=True)
+        # Devolvemos de todos los eventos los que el front debe ocultar
+        for start_time, count in start_time_count.items():
+            formatted_start = parser.parse(start_time).strftime("%Y-%m-%d %H:%M:%S %p %Z")
+            # Verificamos que si ya tenemos el mismo horario seteado para los horarios de atencion de 
+            # los todos operadores 
+            if count == count_users_attentions.count():
+                event_data = {
+                    "formatted_start": formatted_start
+                }
+                response.append(event_data)
+            else:
+                # Verificamos cauntos operadores pueden atender en cierto horario.
+                count_hour_attention_user = 0
+                for operator in count_users_attentions:
+                    start_time_attention = operator.start_time_attention
+                    end_time_attention = operator.end_time_attention
+                    formatted_start_hour = parser.parse(start_time)
+                    if formatted_start_hour.time() >= start_time_attention and formatted_start_hour.time() <= end_time_attention:
+                        count_hour_attention_user +=1
+                if count_hour_attention_user < count_users_attentions.count():
+                    event_data = {
+                        "formatted_start": formatted_start
+                    }
+                    response.append(event_data)
+                
         return response
 
     except HttpError as error:
@@ -137,8 +163,8 @@ def confirm_shift(request):
         first_name = data.get('name')
         last_name = data.get('last_name')
         selected_date_time = data.get('dateTime')
-        
-        if helpers.count_pending_shifts(email) >= 2:
+        # Verificamos que el cliente no tenga mas de 2 turnos solicitados en estado pendiente
+        if helpers.count_pending_shifts(email) >= 5:
             return JsonResponse({'response': "error", "message": "La persona ya tiene más de 1 turno en estado pendiente"} )
         
         if not helpers.person_exists(email):
@@ -177,7 +203,7 @@ def cancel_shift(request):
         confirmation_code = request.GET.get('confirmation_code')
         shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
         
-        # shift.delete() 
+        shift.delete() 
         return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
@@ -204,8 +230,6 @@ class ConfirmShiftView(View):
         shift = get_object_or_404(Shift, id=shift_id)
         user = self.request.user
         try:
-            print("shift.id_user {}".format(shift.id_user), flush=True)
-            print("user != shift.id_user {}".format(user != shift.id_user), flush=True)
             if shift.id_user:
                 if user != shift.id_user:
                     shift.id_user = user
@@ -215,7 +239,7 @@ class ConfirmShiftView(View):
             shift.id_state = confirmed_state
             shift.id_user = user
             shift.save()
-            helpers.send_mail_to_user(user, shift)
+            helpers.send_mail_to_receiver(user, shift)
             return redirect('home-user')
         except State.DoesNotExist:
             pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
@@ -231,21 +255,16 @@ class CancelShiftView(View):
         shift = get_object_or_404(Shift, id=shift_id)
         
         try:
-            print("ID USER ES {}".format(self.request.user),flush=True)
             canceled_state = State.objects.get(short_description='cancelado')
             shift.id_state = canceled_state
             if not isinstance(self.request.user, AnonymousUser):
-                print("Entro al user if", flush=True)
                 user = self.request.user
                 shift.id_user = user
                 shift.save()
                 helpers.send_mail_to_receiver(user, shift)
                 return redirect('home-user')
-            print("ANTES DEL SAVE",flush=True)
             shift.save()
-            print("DESPUES DEL SAVE",flush=True)
             person = Person.objects.get(id_user=shift.id_user)
-            print("ID PERsON ES {}".format(person),flush=True)
             helpers.send_mail_to_operator(person.email, shift)
             return redirect('/shift/home/')
         except State.DoesNotExist:

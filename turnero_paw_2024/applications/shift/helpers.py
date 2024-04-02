@@ -8,6 +8,7 @@ from applications.person.models import Person
 from applications.shift.models import Shift
 from applications.state.models import State
 from app.settings.base import EMAIL_HOST_USER
+
 def person_exists(email):
     person = Person.objects.filter(email=email)
     if person:
@@ -50,7 +51,7 @@ def is_mail(mail):
         return True
     else:
         return False    
-    
+#Le enviamos un mail al cliente indicando que se ha recibido el turno. 
 def send_mail_to_receiver(user, shift):
     asunto = "Respuesta de solicitud de turno."
     message = ("Su solicitud de turno ha sido " +
@@ -68,6 +69,7 @@ def send_mail_to_receiver(user, shift):
                     "Gracias, saludos!")
     send_mail(asunto, message, EMAIL_HOST_USER, [shift.id_person.email,])
     
+#Le enviamos un mail al operador indicando que se ha cancelado un turno.
 def send_mail_to_operator(user_mail, shift):
     asunto = shift.id_person.last_name + " " + shift.id_person.first_name + " ha cancelado el turno."
     date_str = shift.date.strftime('%d/%m/%Y')
