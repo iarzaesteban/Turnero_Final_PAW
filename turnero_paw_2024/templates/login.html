@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Inicio Sesion{% endblock title %}
 {% block links %}
+<link rel="preload" href="{% static 'css/reset.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/base.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
@@ -12,6 +14,7 @@
 
 {% block content %}
     {% include 'includes/header.html' with show_index_link=True %}
+    
     <form id="form-login" method="post">
             {% csrf_token %}
             <label for="username">Usuario:</label>
@@ -19,18 +22,20 @@
 
             <label for="password">Contraseña:</label>
             {{ form.password }}
-            <section id="form-footer">
-                <button type="submit">Iniciar Sesion</button>
-                {% comment %} <a href="{% url 'user-register' %}">Registrarse</a> {% endcomment %}
-            </section>
             {% if form.errors %}
                 {% for field, error in form.errors.items %}
                         {% for message in error %}
-                            <p id="error-message">{{ message }}</p>
+                            <p class="error-message">{{ message }}</p>
                         {% endfor %}
                 {% endfor %}
             {% endif %}
+            
+            <section class="form-login__footer">
+                <button type="submit">Iniciar Sesion</button>
+                {% comment %} <a href="{% url 'user-register' %}">Registrarse</a> {% endcomment %}
+            </section>
         </form>
         
     {% include 'includes/footer.html' %}
+    <script type="module" src="{% static 'js/menu.js' %}" ></script>
 {% endblock content %}

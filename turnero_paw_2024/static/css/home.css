@@ -21,10 +21,6 @@
     align-items: center;
 }
 
-#title{
-    padding: 0 16rem;
-}
-
 
 /* Si necesitamos que tenga la barra de scroll vertical
 #selected-day-schedule::-webkit-scrollbar {

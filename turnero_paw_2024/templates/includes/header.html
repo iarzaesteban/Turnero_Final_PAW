@@ -1,7 +1,16 @@
 {% load static %}
 <header id="header">
     {% if show_index_link %}
-        <a id="request-shift" class='header-right' href="shift/home/">Solicitar Turno</a>
+        <nav id="navbar" class="navbar">
+            <section id="_items" class="nav-items">
+                <a href="shift/home/">Solicitar Turno</a>
+            </section>
+        </nav>
+        <nav id="_toggle" class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </nav>
     {% endif %}
     {% if show_nav %}
         <nav id="navbar" class="navbar">

@@ -1,0 +1,22 @@
+#search-section{
+    position: absolute;
+    right: .5rem;
+    margin: .5rem 0;
+}
+
+#search-form input{
+    padding: .3rem;
+    border: 1px solid #ccc;
+    border-radius: .2rem;
+    height: auto;
+    margin: auto;
+}
+
+#search-form button{
+    border: none;
+    background-color: #646464;
+    color: black;
+    font-size: 1rem;
+    padding: .3rem;
+    border-radius: .2rem;
+}

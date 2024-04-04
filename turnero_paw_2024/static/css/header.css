@@ -1,30 +1,14 @@
 #header{
-    font-size: .4rem;
-    background-color: #3d6608;
-    width: 100%;
     display: flex;
+    background-color: #3d6608;
     align-items: center;
 }
 
 #header h1{
     font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 7rem;
-}
-
-#header .header-right{
-    font-size: .6rem;
-    display: flex;
-    justify-content: center;
-    border: .1rem solid #ccc;
-    border-radius: .3rem;
-    background-color: #e5a028;
-    margin: 0 7rem;
-    color: black;
+    text-wrap: balance;
+    padding: 0 0 0 3rem;
     font-weight: bold;
-    text-decoration: none;
 }
 
 #header-avatar-btn{
@@ -43,43 +27,43 @@
 
 .nav-items {
     position: absolute;
-    top: 60px;
+    top: 2.5rem;
     left: 0;
-    background-color: #e5a028;
+    background-color: #25831c;
+    opacity: .8;
+    border-radius: .5rem;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: auto;
+    height: 2.2rem;
     transform: translateX(-100%);
     transition: 0.3s ease all;
 }
 
 .nav-items a {
     text-align: center;
-    padding: .8rem;
-    color: black;
+    padding: .5rem;
+    color: rgb(0, 0, 0);
     text-decoration: none;
     font-size: .7rem;
     font-weight: bold;
-    border: 2px solid #000000;
-    cursor: pointer;
+    border: 1px solid #000000;
+    border-radius: .5rem;
 }
 
 .nav-items-user a{
     text-align: center;
     padding: .8rem;
     color: black;
-    text-decoration: none;
     font-size: .7rem;
     font-weight: bold;
     border: 2px solid #000000;
-    cursor: pointer;
 }
 
 .nav-toggle {
     display: flex !important;
     flex-direction: column;
     margin: 15px;
+    cursor: pointer;
 }
 
 .nav-toggle span {
@@ -105,7 +89,7 @@
 }
 
 .open {
-    width: 20%;
+    width: 30%;
     transform: translateX(.5rem) !important;
 }
 
@@ -129,7 +113,7 @@
     width: 20%;
     transform: translateX(-35.5rem) !important;
 }
-
+/* 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #header {
         font-size: .7em;
@@ -144,16 +128,6 @@
         align-items: center;
         justify-content: center;
         position: relative;
-    }
-
-    #header .header-right {
-        width: 15%;
-        height: 2rem;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        margin: 0 .5rem;
-        font-size: .8rem;
     }
     
     #user-avatar{
@@ -184,15 +158,6 @@
         display: flex;
         justify-content: center;
         position: relative;
-    }
-    #header .header-right{
-        width: 15%;
-        height: 2rem;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        margin: 0 .5rem;
-        font-size: 1rem;
     }
 
     .navbar {
@@ -238,4 +203,4 @@
         height: 4px;
         margin-bottom: 4px;
     }
-}
+} */

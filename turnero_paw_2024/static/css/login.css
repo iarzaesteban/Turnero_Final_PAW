@@ -1,29 +1,30 @@
+.error-message{
+    font-size: .9rem;
+    color: red;
+}
+
 #form-login{
+    margin: 3rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50vw;
-    height: 25vh;
+    width: 65vw;
+    height: 30vh;
     padding: 1rem;
-    margin-top: 3rem;
     border: .1rem solid #ccc;
     border-radius: .5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 }
 
-#form-footer{
-    width: 100%;
-    margin: .5rem 0 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+#form-login input{
+    height: 15%;
 }
 
-#error-message{
-    color: red;
+.form-login__footer{
+    margin-top: 1rem;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1080px){
+/* @media only screen and (min-width: 768px) and (max-width: 1080px){
     #form-login{
         margin-top: 4rem;
         height: 35vh;
@@ -43,4 +44,4 @@
     #form-footer{
         margin-top: 2rem;
     }
-}
+} */
