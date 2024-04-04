@@ -2,8 +2,12 @@
 {% load static %}
 {% block title %}Home{% endblock title %}
 {% block links %}
-<link rel="preload" href="{% static 'css/header.css' %}" 
+<link rel="preload" href="{% static 'css/reset.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/base.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/header.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">   
 <link rel="preload" href="{% static 'css/user/user-home.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/user/search-part.css' %}" 

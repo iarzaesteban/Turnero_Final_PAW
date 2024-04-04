@@ -29,8 +29,6 @@
     position: absolute;
     top: 2.5rem;
     left: 0;
-    background-color: #25831c;
-    opacity: .8;
     border-radius: .5rem;
     display: flex;
     flex-direction: column;
@@ -42,11 +40,11 @@
 .nav-items a {
     text-align: center;
     padding: .5rem;
-    color: rgb(0, 0, 0);
     text-decoration: none;
     font-size: .7rem;
     font-weight: bold;
     border: 1px solid #000000;
+    background-color: #279e1c;
     border-radius: .5rem;
 }
 
@@ -89,7 +87,7 @@
 }
 
 .open {
-    width: 30%;
+    width: 40%;
     transform: translateX(.5rem) !important;
 }
 
