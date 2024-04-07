@@ -32,3 +32,16 @@
     padding: .5rem;
     margin-top: 1rem;
 }
+
+.users-attentions-times__close-btn{
+    display: flex;
+    background-color: red;
+    color: #fff;
+    border-radius: 4px;
+    width: 15rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0;
+    
+}

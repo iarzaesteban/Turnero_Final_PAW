@@ -8,25 +8,41 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">  
-<link rel="preload" href="{% static 'css/user/home-user.css' %}" 
-            as="style" onload="this.onload=null;this.rel='stylesheet'">   
+<link rel="preload" href="{% static 'css/user/attentions-times-users.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
-    <h1>Turnos para hoy de {{ username }}</h1>
-
+    <h2 class="users-attentions-times-title">Turnos para hoy de {{ username }}</h2>
+    <section class="users-attentions-times-container">
         {% for shift in user_shifts_today %}
-        <span>
-            <p>Apellido y Nombre: {{ shift.id_person }} </p>
-            <p>Fecha y Hora: {{ shift.date }} - {{ shift.hour }}</p>
-        </span>
-        <a href="{% url 'user-confirm-shift' shift.id %}" >
-            Asignarmelo
-        </a>
+        <section class="users-attentions-times__section">
+            <p>
+                <strong>
+                    Apellido y Nombre: 
+                </strong>
+                    {{ shift.id_person }} 
+                </p>
+            <p>
+                <strong>
+                    Fecha y Hora:
+                </strong> 
+                {{ shift.date }} - {{ shift.hour }}
+            </p>
+            <span class="users-attentions-times__btns">
+                <a href="{% url 'user-confirm-shift' shift.id %}" >
+                    Asignarmelo
+                </a>
+            </span>
+        </section>
         {% endfor %}
-        <a href="{% url 'get-attentions-times' %}">Cerrar</a>
+    </section>
+    <a href="{% url 'get-attentions-times' %}" 
+        class="users-attentions-times__close-btn">
+        Cerrar
+    </a>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
 {% endblock content %}
