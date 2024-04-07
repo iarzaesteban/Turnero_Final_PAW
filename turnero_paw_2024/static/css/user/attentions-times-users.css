@@ -3,6 +3,17 @@
     font-weight: bold;
 }
 
+.users-attentions-times-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: .5rem;
+    padding: .5rem;
+}
+
 .users-attentions-times__section{
     display: flex;
     flex-direction: column;

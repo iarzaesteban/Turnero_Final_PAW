@@ -17,7 +17,7 @@
     <h2 class="users-attentions-times-title">Horarios de Atención de los Operadores</h2>
     <section class="users-attentions-times-container">
         {% if not users %}
-            <h3>No existen otros operadores</h1>
+            <h3>No existen otros operadores</h3>
         {% endif %}
         {% for user in users %}
             {% if user.start_time_attention and user.end_time_attention %}
