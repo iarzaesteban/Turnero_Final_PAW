@@ -8,7 +8,7 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'"> 
-<link rel="preload" href="{% static 'css/user/home-user.css' %}" 
+<link rel="preload" href="{% static 'css/user/attentions-times-users.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">   
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -16,26 +16,42 @@
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
 
-    <h1>Horarios de Atención de Operadores</h1>
-    <section>
+    <h2 class="users-attentions-times-title">Horarios de Atención de los Operadores</h2>
+    <section class="users-attentions-times-container">
         {% if not users %}
-            <h3>No se presentan otros operadores</h1>
+            <h3>No existen otros operadores</h1>
         {% endif %}
         {% for user in users %}
             {% if user.start_time_attention and user.end_time_attention %}
-                <span>
-                    <p>Usuario: {{ user.username }} </p> 
-                    <p>Horario de inicio de atención: {{ user.start_time_attention }} </p>
-                    <p>Horario de finalización de atención: {{ user.end_time_attention }}</p>
-                </span>
-                <section>
-                    <a href="{% url 'view-user-shifts-today' user.username %}" >
-                            Visualizar sus turnos para hoy
-                    </a>
-                    <a href="{% url 'view-user-all-shifts' user.username %}" >
-                            Visualizar todos sus turnos
-                    </a>
+                <section class="users-attentions-times__section">
+                    <p>
+                        <strong>
+                            Usuario: 
+                        </strong> 
+                        {{ user.username }} 
+                    </p> 
+                    <p>
+                        <strong> 
+                            Horario de inicio de atención: 
+                        </strong> 
+                        {{ user.start_time_attention }} 
+                    </p>
+                    <p>
+                        <strong>
+                            Horario de finalización de atención:
+                        </strong> 
+                        {{ user.end_time_attention }}
+                    </p>
+                    <span class="users-attentions-times__btns">
+                        <a href="{% url 'view-user-shifts-today' user.username %}" >
+                                Visualizar sus turnos hoy
+                        </a>
+                        <a href="{% url 'view-user-all-shifts' user.username %}" >
+                                Visualizar todos sus turnos
+                        </a>
+                    </span>
                 </section>
+                
             {% endif %}
         {% endfor %}
     </section>
