@@ -2,9 +2,13 @@
 {% load static %}
 {% block title %}Turnos para hoy{% endblock title %}
 {% block links %}
-<link rel="preload" href="{% static 'css/header.css' %}" 
+<link rel="preload" href="{% static 'css/reset.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="{% static 'css/user/user-home.css' %}" 
+<link rel="preload" href="{% static 'css/base.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/header.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">  
+<link rel="preload" href="{% static 'css/user/home-user.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">   
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">

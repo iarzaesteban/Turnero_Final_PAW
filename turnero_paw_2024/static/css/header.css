@@ -41,12 +41,12 @@
 .nav-items-user {
     position: absolute;
     z-index: 1;
-    top: 2.5rem;
-    right: -35rem;
+    top: -5rem;
+    right: .5rem;
     display: flex;
     flex-direction: column;
     height: 2.2rem;
-    transform: translateX(-20rem); 
+    transform: translateY(-20rem); 
     transition: 0.3s ease all;
 }
 
@@ -112,7 +112,7 @@
 
 #header-avatar-btn.active + .nav-items-user {
     width: 40%;
-    transform: translateX(-35.5rem) !important;
+    transform: translateY(7.5rem) !important;
 }
 /* 
 @media only screen and (min-width: 768px) and (max-width: 1080px){

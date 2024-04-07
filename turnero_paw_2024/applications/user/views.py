@@ -58,6 +58,9 @@ class HomePage(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         
         pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+        for s in pending_shifts:
+            print(f"la fecha es {s.date}",flush=True)
+            print(f"Hora es  es {s.hour}",flush=True)
         context['pending_shifts'] = pending_shifts
         return context
 

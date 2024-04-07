@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const searchForm = document.getElementById('search-form');
+    const searchForm = document.getElementById('search-shift-section__form');
     const shiftDetailModal = document.getElementById('shift-details-modal');
     const turnoModalBody = document.getElementById('shift-details-modal-body');
     const closeModal = document.getElementById('shift-details-modal-content-close-btn');
 
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        const getInputValue = document.getElementById('input-value').value;
+        const getInputValue = document.getElementById('search-shift-section__input').value;
         const url = `/shift/search-shift/?search_value=${encodeURIComponent(getInputValue)}`;
 
         fetch(url, {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeModalFunction() {
         shiftDetailModal.style.display = 'none';
-        document.getElementById('input-value').value = '';
+        document.getElementById('search-shift-section__input').value = '';
     }
 
     function openModal(data) {
@@ -47,13 +47,24 @@ document.addEventListener('DOMContentLoaded', function() {
             turnoModalBody.innerHTML = `<p>${data.error}</p>`;
         } else {
             const turnoDetalle = data.turno_detalle;
+            const shiftDate = new Date(turnoDetalle.date);
+            const formattedDate = `${shiftDate.getDate()} de ${getMonthName(shiftDate.getMonth())} de ${shiftDate.getFullYear()}`;
+            const formattedHour = turnoDetalle.hour.slice(0, 5);
             turnoModalBody.innerHTML = `
-                <p><strong>Fecha:</strong> ${turnoDetalle.date}</p>
-                <p><strong>Hora:</strong> ${turnoDetalle.hour}</p>
+                <p><strong>Fecha:</strong> ${formattedDate}</p>
+                <p><strong>Hora:</strong> ${formattedHour}</p>
                 <p><strong>Nombre:</strong> ${turnoDetalle.first_name} ${turnoDetalle.last_name}</p>
                 <p><strong>Email:</strong> ${turnoDetalle.email}</p>
             `;
         }
+    }
+
+    function getMonthName(monthNumber) {
+        const months = ["Enero", "Febrero", "Marzo", 
+                        "Abril", "Mayo", "Junio", 
+                        "Julio", "Agosto", "Septiembre", "Octubre", 
+                        "Noviembre", "Diciembre"];
+        return months[monthNumber];
     }
 });
 

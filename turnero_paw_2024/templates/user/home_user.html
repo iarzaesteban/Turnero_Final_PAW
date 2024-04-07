@@ -8,7 +8,7 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">   
-<link rel="preload" href="{% static 'css/user/user-home.css' %}" 
+<link rel="preload" href="{% static 'css/user/home-user.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/user/search-part.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -20,10 +20,10 @@
     {% include 'includes/search-part.html' %}
     {% include 'shift/modal_shift_datails.html' %}
         <section id="shifts-container">
-            <h2>Solicitud de turnos pendientes</h2>
+            <h2> Solicitud de turnos pendientes</h2>
             
                 {% for shift in pending_shifts %}
-                <section id="shifts-container__list-shifts">
+                <section id="shifts-container__section">
                         {% if error_message %}
                             <p class="error-message">{{ error_message }}</p>
                         {% endif %}
@@ -52,9 +52,11 @@
                             </strong> 
                                 {{ shift.hour }}
                         </p>
-                    <span id="shifts-container__list-shifts__btns">
-                        <a href="{% url 'user-confirm-shift' shift.id %}">Aceptar</a>
-                        <a href="{% url 'user-cancel-shift' shift.id %}">Cancelar</a>
+                    <span id="shifts-container-section__btns">
+                        <a href="{% url 'user-confirm-shift' shift.id %}" 
+                                class="acept-btn">Aceptar</a>
+                        <a href="{% url 'user-cancel-shift' shift.id %}" 
+                                class="cancel-btn">Cancelar</a>
                     </span>
                 </section>
                 {% empty %}
@@ -63,17 +65,19 @@
             <section id="shifts-confirm-state-section">
                 <section id="shifts-data-states-container">
                 </section>
-                <button type="button" id="get-shift-pending-state-btn" data-state="pendiente">
-                    Turnos Pendientes Para Hoy
-                </button>
-                <button type="button" id="get-shift-confirm-state-btn" data-state="confirmado">
-                    Turnos Confirmados Para Hoy
-                </button>
+                <spam class="shifts-confirm-state-section__spam">
+                    <button type="button" id="get-shift-pending-state-btn" data-state="pendiente">
+                        Turnos Pendientes Hoy
+                    </button>
+                    <button type="button" id="get-shift-confirm-state-btn" data-state="confirmado">
+                        Turnos Confirmados Hoy
+                    </button>
+                </spam>
             </section>
             
         </section>
     {% include 'includes/footer.html' %}
-    <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
     <script type="module" src="{% static 'js/shift/search-shift-confirm-state.js' %}" ></script>
 {% endblock content %}

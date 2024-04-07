@@ -1,22 +1,15 @@
-#search-section{
-    position: absolute;
-    right: .5rem;
-    margin: .5rem 0;
+#search-shift-section{
+    position: relative;
+    width: 20rem;
+    margin: 0 auto;
 }
 
-#search-form input{
-    padding: .3rem;
-    border: 1px solid #ccc;
-    border-radius: .2rem;
-    height: auto;
-    margin: auto;
+#search-shift-section__input{
+    height: 2rem;
+    width: 15rem;
+    margin: .5rem;
 }
 
-#search-form button{
-    border: none;
-    background-color: #646464;
-    color: black;
-    font-size: 1rem;
-    padding: .3rem;
-    border-radius: .2rem;
+#search-shift-section button{
+    padding: .5rem;
 }

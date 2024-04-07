@@ -122,12 +122,12 @@ export function setCurrentDate(){
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
 }
 
-export function getMonthName(indice) {
-    const meses = ["Enero", "Febrero", "Marzo", 
+export function getMonthName(monthNumber) {
+    const months = ["Enero", "Febrero", "Marzo", 
                     "Abril", "Mayo", "Junio", 
                     "Julio", "Agosto", "Septiembre", "Octubre", 
                     "Noviembre", "Diciembre"];
-    return meses[indice];
+    return months[monthNumber];
 }
 
 export function changeMonth(value) {
