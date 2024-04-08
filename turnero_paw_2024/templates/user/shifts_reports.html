@@ -8,7 +8,7 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'"> 
-<link rel="preload" href="{% static 'css/user/home-user.css' %}" 
+<link rel="preload" href="{% static 'css/user/shifts-reports.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">   
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -16,8 +16,8 @@
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
 
-    <section>
-        <h1>Reportes</h1>
+    <section class="shifts-reports-container">
+        <h2 class="shifts-reports-container__title">Reportes</h2>
         <form id="filter-form">
             {% csrf_token %}
             <label for="start-date">Fecha Desde:</label>
@@ -28,44 +28,48 @@
     
             <label for="state">Estado:</label>
             <select id="state" name="state">
-                <option value="">Seleccionar Estado</option>
+                <option class="state-option" value="" selected>
+                    Seleccionar Estado
+                </option>
                 {% for state in states %}
-                    <option value="{{ state.short_description }}">{{ state.description }}</option>
+                    <option class="state-option" value="{{ state.short_description }}">
+                        {{ state.description }}
+                    </option>
                 {% endfor %}
             </select>
     
             <button type="submit">Filtrar</button>
         </form>
-        <table id="shifts-table">
-            <thead id="shifts-table__thead">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Persona</th>
-                    <th>Operador Asignado</th>
-                </tr>
-            </thead>
-            <tbody id="shifts-table__tbody">
-                {% for shift in page_obj %}
+        <section class="shifts-reports-container__table-section">
+            <table id="shifts-table">
+                <thead id="shifts-table__thead">
                     <tr>
-                        <td>{{ shift.date }}</td>
-                        <td>{{ shift.hour }}</td>
-                        <td>{{ shift.id_person }}</td>
-                        {% if shift.id_state.short_description == 'confirmado' %}
-                            <td>{{ shift.id_person.id_user.username }}</td>
-                        {% else %}
-                            <td>Sin Asignar</td>   
-                        {% endif %}
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Persona</th>
+                        <th>Operador Asignado</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        {% include 'includes/pagination.html' %}
-
-        <button id="export-button">
-            Exportar Tabla
-        </button>
+                </thead>
+                <tbody id="shifts-table__tbody">
+                    {% for shift in page_obj %}
+                        <tr>
+                            <td>{{ shift.date }}</td>
+                            <td>{{ shift.hour }}</td>
+                            <td>{{ shift.id_person }}</td>
+                            {% if shift.id_state.short_description == 'confirmado' %}
+                                <td>{{ shift.id_person.id_user.username }}</td>
+                            {% else %}
+                                <td>Sin Asignar</td>   
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include 'includes/pagination.html' %}
+            <button id="export-button">
+                Exportar Tabla
+            </button>
+        </section>
     </section>    
 
 {% include 'includes/footer.html' %}

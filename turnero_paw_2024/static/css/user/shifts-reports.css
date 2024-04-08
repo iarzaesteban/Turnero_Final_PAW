@@ -1,0 +1,74 @@
+.shifts-reports-container__title{
+    font-weight: bold;
+}
+
+#filter-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 0 .5rem .5rem;
+    padding: .5rem 0;
+}
+
+#state {
+    width: 15rem;
+}
+
+.state-option {
+    background-color: #ffffff;
+}
+
+.shifts-reports-container__table-section{
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 0 .5rem .5rem;
+}
+
+#shifts-table{
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+#shifts-table th {
+    background-color: #f2f2f2;
+    padding: 8px;
+    text-align: left;
+  }
+  
+
+#shifts-table td {
+padding: 8px;
+border-bottom: 1px solid #ddd; 
+}
+
+
+#shifts-table tbody tr:nth-child(odd) {
+background-color: #f9f9f9; 
+}
+
+
+#shifts-table tbody td:first-child {
+font-weight: bold;
+}
+
+
+#shifts-table tbody td:last-child {
+font-style: italic;
+color: #888;
+}
+
+.pagination-container{
+    position: absolute;
+    right: 1rem;
+}
+
+#export-button{
+    display: block;
+    margin: 2rem auto;
+}
