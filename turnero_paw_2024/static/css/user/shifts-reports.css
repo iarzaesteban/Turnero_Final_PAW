@@ -1,5 +1,6 @@
 .shifts-reports-container__title{
     font-weight: bold;
+    margin-left: .3rem;
 }
 
 #filter-form{
@@ -30,22 +31,24 @@
 }
 
 #shifts-table{
-    width: 100%;
+    display: flex;
     border: .1rem solid #ccc;
     border-radius: .5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: center;
 }
 
 #shifts-table th {
     background-color: #f2f2f2;
-    padding: 8px;
+    padding: 4px;
     text-align: center;
   }
   
 
 #shifts-table td {
     text-align: center;
-    padding: 8px;
+    padding: 4px;
     border-bottom: 1px solid #ddd; 
 }
 

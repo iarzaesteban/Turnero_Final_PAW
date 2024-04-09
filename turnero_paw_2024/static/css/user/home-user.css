@@ -64,7 +64,7 @@
 }
 
 .shifts-confirm-state-section__spam{
-    margin: 2rem 0;
+    margin: 2rem .5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -73,7 +73,7 @@
 
 .shifts-confirm-state-section__spam button{
     padding: 0;
-    width: 12rem;
+    width: 10rem;
     height: 3rem;
     font-weight: bold;
 }
