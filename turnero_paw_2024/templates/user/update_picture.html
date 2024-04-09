@@ -35,12 +35,8 @@
             </section>
         {% endif %}
         <span class="updates-picture-user-container__picture">
-            {% if user.picture %}
-                        <img id="current-user-avatar" 
-                        src="{% static 'assets/user_avatar.png' %}" alt="User Avatar">
-            {% else %}
-                <h3> Usted no posee una fotografía cargada en el sistema.</h3>
-            {% endif %}
+            <img id="current-user-avatar" 
+                src="{% static 'assets/user_avatar.png' %}" alt="User Avatar">
         </span>
         <form id="form-updates-picture-user" method="post" enctype="multipart/form-data">
             {% csrf_token %}
