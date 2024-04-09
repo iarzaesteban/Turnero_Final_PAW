@@ -1,0 +1,42 @@
+#updates-picture-user-container h2{
+    font-weight: bold;
+    text-wrap: balance;
+    margin-left: .3rem;
+}
+
+#messages p{
+    font-weight: bold;
+    text-wrap: balance;
+    text-align: center;
+}
+
+.updates-picture-user-container__picture{
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.updates-picture-user-container__picture img{
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+}
+
+#form-updates-picture-user{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 0 .5rem .5rem;
+    padding: .5rem 0;
+}
+
+#form-updates-picture-user img{
+    display: none; 
+    max-width: 8rem;
+    max-height: 8rem;
+    border-radius: 50%;
+    margin: 1rem 0;
+}

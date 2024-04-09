@@ -174,7 +174,7 @@ class UpdatePictureView(LoginRequiredMixin, FormView):
         try:
             if picture:
                 img = Image.open(picture)
-                if img.mode == 'RGBA':
+                if img.mode != 'RGB':
                     img = img.convert('RGB')
                 output = BytesIO()
                 img.save(output, format='JPEG', quality=70)
