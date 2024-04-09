@@ -70,6 +70,13 @@ class UpdatePasswordForm(forms.Form):
                                         attrs={
                                             'placeholder': 'Contraseña Nueva'
                                             }))
+    repeat_new_password = forms.CharField(
+                            label='Repetir Contraseña', 
+                            required=True, 
+                            widget=forms.PasswordInput(
+                                        attrs={
+                                            'placeholder': 'Repetir Contraseña'
+                                            }))
 
 class UpdatePictureForm(forms.Form):
     picture = forms.ImageField(label='Elija una fotografía', required=True)

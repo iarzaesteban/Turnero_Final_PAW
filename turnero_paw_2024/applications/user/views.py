@@ -127,20 +127,34 @@ class CodeVerificationView(FormView):
 class UpdatePasswordView(LoginRequiredMixin, FormView):
     template_name = 'user/update_password.html'
     form_class = forms.UpdatePasswordForm
-    success_url = reverse_lazy('user-login')
-    login_url = reverse_lazy('user-login')
+    success_url = '/update-password/'
     
     def form_valid(self, form):
         current_user = self.request.user
+        new_password = form.cleaned_data['new_password']
+        repeat_new_password = form.cleaned_data['repeat_new_password']
+        if new_password != repeat_new_password:
+            messages.error(self.request, 'Las contraseñas no coinciden')
+            return super(UpdatePasswordView, self).form_valid(form)
+            
         user = authenticate(username=current_user.username,
                             password=form.cleaned_data['current_password'])
-        if user:
-            new_password = form.cleaned_data['new_password']
-            current_user.set_password(new_password)
-            current_user.save()
+        try:
+            if user:
+                current_user.set_password(new_password)
+                current_user.save()
+                logout(self.request)
 
-        logout(self.request)
-        return super(UpdatePasswordView, self).form_valid(form)
+                return HttpResponseRedirect(
+                    reverse('user-login')
+                )
+            else:
+                messages.error(self.request, 'La contraseña ingresada es incorrecta')
+                return super(UpdatePasswordView, self).form_valid(form)
+        except Exception as e:
+            messages.error(self.request, 'Error al procesar el cambio de contraseña')
+            return super(UpdatePasswordView, self).form_valid(form)
+            
 
 
 class UpdatePictureView(LoginRequiredMixin, FormView):

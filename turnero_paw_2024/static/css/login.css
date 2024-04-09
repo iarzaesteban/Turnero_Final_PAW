@@ -1,15 +1,14 @@
 .error-message{
     font-size: .9rem;
     color: red;
+    text-align: center;
 }
 
 #form-login{
-    margin: 3rem auto;
+    margin: 3rem .5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 65vw;
-    height: 30vh;
     padding: 1rem;
     border: .1rem solid #ccc;
     border-radius: .5rem;
