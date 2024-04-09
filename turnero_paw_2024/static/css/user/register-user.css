@@ -1,0 +1,22 @@
+#register-user-container h2{
+    font-weight: bold;
+    text-wrap: balance;
+    margin-left: .3rem;
+}
+
+#form-register{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 0 .5rem .5rem;
+    padding: .5rem 0;
+}
+
+#messages p{
+    font-weight: bold;
+    text-align: center;
+    margin: 1rem 0;
+}

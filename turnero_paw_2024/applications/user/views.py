@@ -70,15 +70,30 @@ class UserRegisterView(LoginRequiredMixin, FormView):
     success_url = '/register/'
 
     def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        if Users.objects.filter(username=username).exists():
+            messages.error(self.request, 'El usuario ingresado ya está en uso')
+            return super(UserRegisterView, self).form_valid(form)
+        
+        email = form.cleaned_data.get('email')
+        if Person.objects.filter(email=email).exists():
+            messages.error(self.request, 'Este correo electrónico ya está en uso')
+            return super(UserRegisterView, self).form_valid(form)
+        
+        password = form.cleaned_data.get('password')
+        confirm_password = form.cleaned_data.get('confirm_password')
+        if password != confirm_password:
+            messages.error(self.request, 'Las contraseñas no coinciden')
+            return super(UserRegisterView, self).form_valid(form)
+        
         verification_code = generate_confirmation_code()
         picture = form.cleaned_data.get('picture')
         output = BytesIO()
         if picture:
             img = Image.open(picture)
-            if img.mode == 'RGBA':
+            if img.mode != 'RGB':
                 img = img.convert('RGB')
             img.save(output, format='JPEG', quality=70)
-            
         
         user = Users.objects.create_user(
             form.cleaned_data['username'],

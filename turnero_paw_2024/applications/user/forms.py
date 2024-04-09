@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django import forms
 from .models import Users
 from django.contrib.auth import authenticate
@@ -11,25 +12,6 @@ class UserRegisterForm(forms.Form):
     last_name = forms.CharField(label='Apellido')
     email = forms.EmailField(label='Email')
     picture = forms.ImageField(label='Imagen', required=False)
-        
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if Users.objects.filter(username=username).exists():
-            self.add_error('username', 'Este nombre de usuario ya está en uso.')
-        return username
-    
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if Person.objects.filter(email=email).exists():
-            self.add_error('username', 'Este correo electrónico ya está en uso.')
-        return email
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-        if password != confirm_password:
-            self.add_error('username', 'Las contraseñas no coinciden')
 class LoginForm(forms.Form):
     username = forms.CharField(
                             label='Usuario', 
