@@ -243,7 +243,8 @@ def serialize_shifts(page_obj):
     return [{'date': shift.date, 
              'hour': shift.hour, 
              'id_person': str(shift.id_person),
-             'operador': shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar'} for shift in page_obj]
+             'operador': shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar',
+             'state': shift.id_state.description} for shift in page_obj]
     
 def list_shifts_filter_views(request):
     list_shifts = None
@@ -349,14 +350,15 @@ def export_to_excel(request):
         ws = wb.active
         ws.title = "Reporte de Turnos"
         
-        headers = ['Fecha', 'Hora', 'Persona', 'Operador Asignado']
+        headers = ['Fecha', 'Hora', 'Persona', 'Operador Asignado', 'Estado']
         ws.append(headers)
         for shift in shifts:
             date_string = shift.date.strftime('%d-%m-%Y')
             row_data = [date_string, 
                         shift.hour, 
                         shift.id_person.last_name + " "+ shift.id_person.first_name, 
-                        shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar']
+                        shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar',
+                        shift.id_state.description]
             ws.append(row_data)
         
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

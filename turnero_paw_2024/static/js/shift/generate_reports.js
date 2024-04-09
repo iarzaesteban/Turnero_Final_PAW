@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const stateInput = document.getElementById('state');
     const paginationContainer = document.querySelector('.pagination-container');
     var isFilter = false;
+
     function createPagination(data) {
         paginationContainer.innerHTML = '';
         const stepLinks = document.createElement('span');
@@ -18,13 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.page_obj.has_previous) {
                 const firstLink = document.createElement('a');
                 firstLink.href = `?page=1&query=${data.query_number}`;
-                firstLink.innerText = 'Primera';
+                firstLink.innerText = '1';
                 firstLink.setAttribute('data-page', 1);
                 stepLinks.appendChild(firstLink);
     
                 const prevLink = document.createElement('a');
                 prevLink.href = `?page=${data.page_obj.previous_page_number}&query=${data.query_number}`;
-                prevLink.innerText = '‹ Anterior';
+                prevLink.innerText = ' < ';
                 prevLink.setAttribute('data-page', data.page_obj.previous_page_number);
                 stepLinks.appendChild(prevLink);
             }
@@ -37,13 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.page_obj.has_next) {
                 const nextLink = document.createElement('a');
                 nextLink.href = `?page=${data.page_obj.next_page_number}&query=${data.query_number}`;
-                nextLink.innerText = 'Siguiente ›';
+                nextLink.innerText = ' > ';
                 nextLink.setAttribute('data-page', data.page_obj.next_page_number);
                 stepLinks.appendChild(nextLink);
     
                 const lastLink = document.createElement('a');
                 lastLink.href = `?page=${data.page_obj.paginator}&query=${data.query_number}`;
-                lastLink.innerText = 'Última';
+                lastLink.innerText = data.page_obj.paginator;
                 lastLink.setAttribute('data-page', data.page_obj.paginator);
                 stepLinks.appendChild(lastLink);
             }
@@ -53,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchPage(pageNumber) {
-        console.log("fetchPage ", pageNumber)
         formData.append('page', pageNumber);
 
         fetch('/list-shifts-filter-views/', {
@@ -65,33 +65,68 @@ document.addEventListener('DOMContentLoaded', function() {
             shiftsTable.innerHTML = '';
             tHead.innerHTML = '';
             tBody.innerHTML = '';
+            shiftsTable.classList.add("shifts-table");
             const headerRow = document.createElement('tr');
             headerRow.innerHTML = `
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Persona</th>
                 <th>Operador Asignado</th>
+                <th>Estado</th>
             `;
             tHead.appendChild(headerRow);
-        
-            data.serialized_data.forEach(shift => {
+            if (data.serialized_data.length > 0){
+                data.serialized_data.forEach(shift => {
+                    const row = document.createElement('tr');
+                    const hour = shift.hour.slice(0, 5);
+                    row.innerHTML = `
+                        <td>${shift.date}</td>
+                        <td>${hour}</td>
+                        <td>${shift.id_person}</td>
+                        <td>${shift.operador}</td>
+                        <td>${shift.state}</td>
+                    `;
+                    tBody.appendChild(row);
+                });
+                shiftsTable.appendChild(tHead);
+                shiftsTable.appendChild(tBody);
+                filterForm.reset();
+                createPagination(data);
+            }else{
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${shift.date}</td>
-                    <td>${shift.hour}</td>
-                    <td>${shift.id_person}</td>
-                    <td>${shift.operador}</td>
-                `;
+                row.innerHTML = `<td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>`
+                    
+                ;
                 tBody.appendChild(row);
-            });
-            shiftsTable.appendChild(tHead);
-            shiftsTable.appendChild(tBody);
-            filterForm.reset();
-            createPagination(data);
+                shiftsTable.appendChild(tHead);
+                shiftsTable.appendChild(tBody);
+                filterForm.reset();
+                createPagination(data);
+            }
+            toggleExportButton();
         })
         .catch(error => {
             console.error('Error:', error);
         });
+    }
+
+    function validateTableData() {
+        const rows = document.querySelectorAll('#shifts-table tbody tr td');
+        let isTableEmpty = false;
+        rows.forEach(r => {
+            if (r.innerText === "-"){
+                isTableEmpty =true;
+            }
+        });
+        return isTableEmpty;
+    }
+
+    function toggleExportButton() {
+        exportButton.disabled = validateTableData();
     }
 
     paginationContainer.addEventListener('click', function(event) {
@@ -126,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function exportarExcel() {
+        console.log("EXPRTANTAsd")
         const tableData = [];
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
         
@@ -177,4 +213,5 @@ document.addEventListener('DOMContentLoaded', function() {
     const exportButton = document.querySelector('#export-button');
     exportButton.addEventListener('click', exportarExcel);
     
+    toggleExportButton();
 });

@@ -24,10 +24,6 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background-color:  #2bb334;
-}
-
 a {
     cursor: pointer;
 }

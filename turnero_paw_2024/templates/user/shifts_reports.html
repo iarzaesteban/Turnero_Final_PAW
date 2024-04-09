@@ -22,7 +22,7 @@
             {% csrf_token %}
             <label for="start-date">Fecha Desde:</label>
             <input type="date" id="start-date" name="start-date">
-    
+
             <label for="end-date">Fecha Hasta:</label>
             <input type="date" id="end-date" name="end-date">
     
@@ -41,31 +41,41 @@
             <button type="submit">Filtrar</button>
         </form>
         <section class="shifts-reports-container__table-section">
-            <table id="shifts-table">
+            <table id="shifts-table" class="shifts-table">
                 <thead id="shifts-table__thead">
                     <tr>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Persona</th>
                         <th>Operador Asignado</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody id="shifts-table__tbody">
-                    {% for shift in page_obj %}
-                        <tr>
-                            <td>{{ shift.date }}</td>
-                            <td>{{ shift.hour }}</td>
-                            <td>{{ shift.id_person }}</td>
-                            {% if shift.id_state.short_description == 'confirmado' %}
-                                <td>{{ shift.id_person.id_user.username }}</td>
-                            {% else %}
-                                <td>Sin Asignar</td>   
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
+                    {% if not page_obj %}
+                        <td>-</td>  
+                        <td>-</td> 
+                        <td>-</td> 
+                        <td>-</td>  
+                        <td>-</td>  
+                    {% else %}
+                        {% for shift in page_obj %}
+                            <tr>
+                                <td>{{ shift.date }}</td>
+                                <td>{{ shift.hour }}</td>
+                                <td>{{ shift.id_person }}</td>
+                                {% if shift.id_state.short_description == 'confirmado' %}
+                                    <td>{{ shift.id_person.id_user.username }}</td>
+                                {% else %}
+                                    <td>Sin Asignar</td>   
+                                {% endif %}
+                                <td>{{ shift.id_state.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
-            {% include 'includes/pagination.html' %}
+            {% include 'includes/pagination.html' %}   
             <button id="export-button">
                 Exportar Tabla
             </button>
@@ -75,5 +85,6 @@
 {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script src="{% static 'js/shift/generate_reports.js' %}" defer></script>
-    {{ query_number|json_script:"queryNumber" }}
+    {{ query_number|json_script:"queryNumber" }} 
+
 {% endblock content %}
