@@ -5,7 +5,7 @@
     border-radius: .5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     margin: .5rem;
-    height: 20rem;
+    height: 22rem;
     gap: 5rem;
 }
 
@@ -48,4 +48,10 @@
     scrollbar-width: none; 
     /* Para Internet Explorer */
     -ms-overflow-style: none; 
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    #info-section {
+        height: 32rem;
+    }
 }

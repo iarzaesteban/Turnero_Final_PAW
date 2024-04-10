@@ -114,3 +114,43 @@ table {
     background-color: rgb(8, 67, 8);
     color: white;
 }
+
+
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    #calendar-container{
+        font-size: 1.5rem;
+        margin-top: 5rem;
+    }
+
+    #calendar, #info-section{
+        margin: 1rem 2rem;
+    }
+
+    #calendar h2{
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    #calendar-controls{
+        width: 25rem;
+    }
+
+    #calendar-controls button{
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .calendar-controls-select{
+        width: 7rem;
+    }
+
+    #calendario {
+        width: 30rem; 
+    }
+
+    th, td {
+        width: 5rem;
+        height: 2rem;
+        font-size: 1rem;
+    }
+}

@@ -81,10 +81,19 @@ export function generateSchedules() {
     currentDateDay.textContent = `${currentDay}  ${dayOfWeek}`;
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
 
-    selectedDaySchedule.style.maxHeight = '15rem'; 
+    const windowWidth = getWindowWidth();
+    if (windowWidth >= 768 && windowWidth <= 1080) {
+        selectedDaySchedule.style.maxHeight = '24rem';
+    } else {
+        selectedDaySchedule.style.maxHeight = '15rem';
+    }
     selectedDaySchedule.style.marginTop = '1rem';
     const infoSection = document.getElementById('info-section');
     infoSection.style.display = 'block';
+}
+
+function getWindowWidth() {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 }
 
 export function getClassDay(day) {
