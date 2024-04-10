@@ -81,7 +81,8 @@ export function generateSchedules() {
     currentDateDay.textContent = `${currentDay}  ${dayOfWeek}`;
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
 
-    selectedDaySchedule.style.maxHeight = '25rem'; 
+    selectedDaySchedule.style.maxHeight = '15rem'; 
+    selectedDaySchedule.style.marginTop = '1rem';
     const infoSection = document.getElementById('info-section');
     infoSection.style.display = 'block';
 }

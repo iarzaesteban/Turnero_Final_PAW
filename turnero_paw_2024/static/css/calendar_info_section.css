@@ -1,11 +1,12 @@
 #info-section {
     display: flex;
-    width: 40rem;
-    height: 30rem;
-    border: .2rem solid #ccc;
+    flex-direction: column;
+    border: .1rem solid #ccc;
     border-radius: .5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-    flex-direction: column;
+    margin: .5rem;
+    height: 20rem;
+    gap: 5rem;
 }
 
 #current-date {
@@ -31,10 +32,6 @@
 
 #info-subtitle {
     font-style: italic;
-    padding: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .divider-line {

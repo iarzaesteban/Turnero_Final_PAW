@@ -6,25 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Author: Esteban Iarza, estudiante de la UNLu.">
     <title>Solicitud de Turno</title>
-    <link rel="preload" href="{% static 'css/home.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'css/header.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'css/modal_select_shift.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'css/calendar.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'css/calendar_info_section.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'css/user/search-part.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/reset.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/base.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/header.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/user/search-part.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/modal_select_shift.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/calendar_info_section.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/calendar.css' %}" 
+                as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-        <link rel="stylesheet" href="{% static 'css/home.css' %}">
+        <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="{% static 'css/header.css' %}">
+        <link rel="stylesheet" href="{% static 'css/user/search-part.css' %}">
         <link rel="stylesheet" href="{% static 'css/modal_select_shift.css' %}">
-        <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
         <link rel="stylesheet" href="{% static 'css/calendar_info_section.css' %}">
         <link rel="stylesheet" href="{% static 'css/shift/modal_shift_details.css' %}">
-        <link rel="stylesheet" href="{% static 'css/user/search-part.css' %}">
+        <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
     </noscript>
 </head>
 <body>
     {% include 'includes/header.html' %}
+    {% include 'includes/search-part.html' %}
     {% include 'shift/calendar.html' %}
     {% include 'shift/modal_select_shift.html' %}
     <script type="module" src="{% static 'js/index.js' %}" ></script>

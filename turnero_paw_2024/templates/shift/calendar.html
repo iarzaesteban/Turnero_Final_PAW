@@ -1,9 +1,8 @@
 {% include 'shift/modal_shift_datails.html' %}
-{% include 'includes/search-part.html' %}
 
-<section id="container">
+<section class="calendar-container">
     <section id="calendar">
-        <h2>Seleccione el día y después el horario.</h2>
+        <h2>Seleccione el día y después el horario</h2>
         <section id="calendar-controls">
             <button id="prevMonth" aria-label="<"> < </button>
                 <select id="selectMonth" class="calendar-controls-select" aria-label="select-month">
@@ -29,4 +28,6 @@
         </table>
     </section>
 {% include 'shift/calendar_info_section.html' %}
+
+{% include 'includes/footer.html' %}
 </section>
