@@ -12,6 +12,7 @@ const modalErrorText = document.getElementById('modal-email-error-text');
 const modalContent = document.getElementById('modal-content');
 const timeParagraph = document.getElementById('selectedTime');
 const dateParagraph = document.getElementById('selectedDate');
+const calendarContainer = document.getElementById('calendar-container');
 let hourShift = "";
 let minutesShift = "";
 
@@ -95,7 +96,14 @@ export function requestShift() {
         .then(data => {
             if (data.shift){
                 const message = `Se ha solicitado un turno para ${data.shift.person} el día ${data.shift.day}, a las ${data.shift.hour}. El turno será evaluado por un operador y se le notificará a su casilla de mail.`;
-                showSuccessMessage(message);
+                const messageRequestShift = document.createElement('p');
+                messageRequestShift.textContent = message;
+                const firstChild = calendarContainer.firstChild;
+                calendarContainer.insertBefore(messageRequestShift, firstChild);
+                closeModal()
+                setTimeout(function() {
+                    calendarContainer.removeChild(messageRequestShift);
+                }, 5000);
             } else if (data.response == "error"){
                 showErrorMessage(data.message);
             }

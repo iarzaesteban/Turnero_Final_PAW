@@ -186,8 +186,10 @@ def confirm_shift(request):
         end_datetime = start_datetime + timedelta(minutes=30) 
 
         add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime)
+        obj_date = datetime.strptime(shift.date, '%Y-%m-%d')
+        format_date = obj_date.strftime('%d/%m/%Y')
         shift_data = {
-            'day': shift.date,
+            'day': format_date,
             'hour': shift.hour,
             'person': shift.id_person.last_name +" "+ shift.id_person.first_name,
         }
