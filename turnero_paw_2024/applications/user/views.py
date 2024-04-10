@@ -129,10 +129,10 @@ class UserRegisterView(LoginRequiredMixin, FormView):
                     kwargs={'pk': user.id})
         )
 
-class CodeVerificationView(FormView):
+class CodeVerificationView(LoginRequiredMixin, FormView):
     template_name = 'user/user_verification.html'
     form_class = forms.VerificationForm
-    success_url = '/'
+    success_url = '/home-user/'
 
     def get_form_kwargs(self):
         kwargs = super(CodeVerificationView, self).get_form_kwargs()

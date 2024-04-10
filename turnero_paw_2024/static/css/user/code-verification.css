@@ -1,10 +1,10 @@
-#register-user-container h2{
+#code-verification-user-container h2{
     font-weight: bold;
     text-wrap: balance;
     margin-left: .3rem;
 }
 
-#form-register{
+#form-code-verification-user{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,17 +16,16 @@
 }
 
 #messages p{
-    font-weight: bold;
-    text-align: center;
     margin: 1rem 0;
+    font-weight: bold;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
-    #form-register{
+    #form-code-verification-user{
         margin: 1rem 2rem;
     }
 
-    #form-register button{
+    #form-code-verification-user button{
         margin-top: 1rem;
         width: 15rem;
     }
