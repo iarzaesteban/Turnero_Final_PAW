@@ -57,3 +57,18 @@
     margin: 2rem auto 0;
     
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    .users-attentions-times-container{
+        margin: 1rem 2rem;
+    }
+
+    .users-attentions-times__section{
+        width: 35rem;
+    }
+
+    .users-attentions-times__btns{
+        font-size: 1rem;
+    }
+
+}
