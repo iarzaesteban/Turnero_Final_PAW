@@ -23,11 +23,13 @@
             <label for="password">Contraseña:</label>
             {{ form.password }}
             {% if form.errors %}
-                {% for field, error in form.errors.items %}
-                        {% for message in error %}
-                            <p class="error-message">{{ message }}</p>
-                        {% endfor %}
-                {% endfor %}
+                <section id="messages">
+                    {% for field, error in form.errors.items %}
+                            {% for message in error %}
+                                <p class="message">{{ message }}</p>
+                            {% endfor %}
+                    {% endfor %}
+                </section>
             {% endif %}
             
             <section class="form-login__footer">
@@ -38,4 +40,5 @@
         
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/timerRemover.js' %}" ></script>
 {% endblock content %}

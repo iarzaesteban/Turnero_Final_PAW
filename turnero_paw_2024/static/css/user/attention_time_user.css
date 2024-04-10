@@ -35,3 +35,20 @@
     text-align: center;
     margin-bottom: 1rem;
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    #form-updates-time-user{
+        margin: 1rem 2rem;
+    }
+
+    #form-updates-time-user input{ 
+        height: 3rem;
+        width: 25rem;
+        font-size: 1.2rem;
+    }
+
+    #form-updates-time-user button{
+        margin-top: 1rem;
+        width: 15rem;
+    }
+}

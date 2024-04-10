@@ -19,10 +19,14 @@
         <h2>Enviar Email</h2>
         <form id="send-email-form" method="post" class="send-email__form">
             {% csrf_token %}
-            {% if messages %}  
-                {% for message in messages %}
-                    <p id="send-email-container__message" class="send-email-container__message">{{ message }}</p>
-                {% endfor %}
+            {% if messages %}
+                <section id="messages">
+                    {% for message in messages %}
+                        <p class="message {% if message.tags %} {{ message.tags }} {% endif %}">
+                            {{ message }}
+                        </p>
+                    {% endfor %}
+                </section>
             {% endif %}
             <label for="email">Correo electrónico:</label>
             {{ form.email }}
@@ -39,4 +43,5 @@
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/spinner.js' %}" ></script>
+    <script type="module" src="{% static 'js/timerRemover.js' %}" ></script>
 {% endblock content %}

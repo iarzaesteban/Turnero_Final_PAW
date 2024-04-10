@@ -24,7 +24,7 @@
     justify-content: center;
 }
 
-.send-email-container__message{
+#messages p{
     font-weight: bold;
     text-align: center;
     margin-bottom: 2rem;
