@@ -69,7 +69,7 @@ function formattedDate(selectedDate){
 }
 
 export function requestShift() {
-    if (validarFormatoEmail(emailInput.value.trim())){
+    if (validateEmailFormat(emailInput.value.trim())){
         const selectedDate = new Date(currentYear, currentMonth, currentDay, hourShift, minutesShift);
         console.log("selectedDate", selectedDate);
 
@@ -140,7 +140,7 @@ function showErrorMessage(errorMessage) {
     requestShiftBtn.disabled = true;
 }
 
-function validarFormatoEmail(email) {
+function validateEmailFormat(email) {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regexEmail.test(email);
 }

@@ -8,10 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = form.querySelector('input[name="email"]').value.trim();
         const subject = form.querySelector('input[name="subject"]').value.trim();
         const message = form.querySelector('textarea[name="message"]').value.trim();
-        return email !== '' && subject !== '' && message !== '';
+        return email !== '' && subject !== '' && message !== '' && validateEmailFormat(email);
     }
 
     spinner.classList.add("spinner-hidden");
+
+    function validateEmailFormat(email) {
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regexEmail.test(email);
+    }
 
     sendEmailBtn.addEventListener('click', function() {
         if (areFieldsFilled()) {
