@@ -58,9 +58,15 @@ class HomePage(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         
         pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
-        for s in pending_shifts:
-            print(f"la fecha es {s.date}",flush=True)
-            print(f"Hora es  es {s.hour}",flush=True)
+        paginator = Paginator(pending_shifts, 5)
+        page = self.request.GET.get('page')
+        try:
+            pending_shifts = paginator.page(page)
+        except PageNotAnInteger:
+            pending_shifts = paginator.page(1)
+        except EmptyPage:
+            pending_shifts = paginator.page(paginator.num_pages)
+        
         context['pending_shifts'] = pending_shifts
         return context
 

@@ -1,0 +1,26 @@
+.pagination-container{
+    position: absolute;
+    right: 1rem;
+}
+
+.pagination-container span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.step-links{
+    font-weight: bold;
+}
+
+.pagination-container span a {
+    margin: .3rem;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    align-content: center;
+    background-color: #000000;
+}

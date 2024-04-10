@@ -68,7 +68,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-
 }
 
 .shifts-confirm-state-section__spam button{
@@ -76,4 +75,28 @@
     width: 10rem;
     height: 3rem;
     font-weight: bold;
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    #shifts-container__section{
+        width: 90%;
+        margin: .5rem auto
+    }
+
+    #shifts-container-section__btns a {
+        width: 10rem;
+        height: 3rem;
+    }
+
+    .shifts-confirm-state-section__spam button{
+        margin-top: 1rem;
+        width: 15rem;
+        font-size: 1.2rem;
+    }
+
+    #shifts-container-section__fetch{
+        width: 90%;
+        margin: .5rem auto
+    }
 }

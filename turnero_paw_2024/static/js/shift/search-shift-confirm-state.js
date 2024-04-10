@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 shiftsContainer.style.border = '.1rem solid #ccc';
                 shiftsContainer.style.borderRadius = '.5rem';
                 shiftsContainer.style.boxShadow = '0 0 1rem rgba(0, 0, 0, 0.1)';
-                shiftsContainer.style.margin = '.5rem';
+                shiftsContainer.style.margin = '5rem .5rem';
                 shiftsContainer.style.padding = '1rem';
                 }
         })

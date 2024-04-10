@@ -12,6 +12,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/user/search-part.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/pagination.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 {% endblock links %}
@@ -62,6 +64,23 @@
                 {% empty %}
                     <p>No hay turnos pendientes.</p>
                 {% endfor %}
+                <section class="pagination-container">
+                    <span class="step-links">
+                        {% if pending_shifts.has_previous %}
+                            <a href="?page=1">1</a>
+                            <a href="?page={{ pending_shifts.previous_page_number }}"> < </a>
+                        {% endif %}
+                        
+                        <span class="current">
+                            Página {{ pending_shifts.number }} de {{ pending_shifts.paginator.num_pages }}
+                        </span>
+                        
+                        {% if pending_shifts.has_next %}
+                            <a href="?page={{ pending_shifts.next_page_number }}"> > </a>
+                            <a href="?page={{ pending_shifts.paginator.num_pages }}">{{ pending_shifts.paginator.num_pages }}</a>
+                        {% endif %}
+                    </span>
+                </section>
             <section id="shifts-confirm-state-section">
                 <section id="shifts-data-states-container">
                 </section>
