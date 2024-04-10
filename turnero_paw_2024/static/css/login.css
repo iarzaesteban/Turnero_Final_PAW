@@ -15,25 +15,25 @@
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 }
 
-#form-login input{
-    height: 15%;
-}
-
 .form-login__footer{
     margin-top: 1rem;
 }
 
-/* @media only screen and (min-width: 768px) and (max-width: 1080px){
+@media only screen and (min-width: 768px) and (max-width: 1080px){
     #form-login{
-        margin-top: 4rem;
-        height: 35vh;
         font-size: 1.5rem;
+        margin: 5rem;
+        height: 22rem;
     }
-    #form-footer{
-        margin-top: 2rem;
+    
+    #form-login button{
+        margin-top: .5rem;
+        width: 15rem;
+        padding: 1rem 0;
+        font-size: 1rem;
     }
 }
-
+/*
 @media only screen and (min-width: 1081px) {
     #form-login{
         margin-top: 5rem;
