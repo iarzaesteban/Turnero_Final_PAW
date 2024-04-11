@@ -215,9 +215,14 @@ def get_shifts_today(request):
     today = datetime.now()
     shifts_today = {}
     if state == "confirmado":
-        shifts_today = Shift.objects.filter(date=today, id_user=request.user.id, id_state__short_description=state)
+        shifts_today = Shift.objects.filter(
+                                date=today, 
+                                id_user=request.user.id, 
+                                id_state__short_description=state)
     else:
-        shifts_today = Shift.objects.filter(date=today, id_state__short_description=state)
+        shifts_today = Shift.objects.filter(
+                                date=today, 
+                                id_state__short_description=state)
 
     shifts_list = []
     for shift in shifts_today:
