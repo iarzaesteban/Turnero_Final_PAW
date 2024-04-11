@@ -1,37 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Home{% endblock title %}
+{% block title %}Turnos Confirmados Para Hoy{% endblock title %}
 {% block links %}
 <link rel="preload" href="{% static 'css/reset.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/base.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
-            as="style" onload="this.onload=null;this.rel='stylesheet'">   
-<link rel="preload" href="{% static 'css/user/home-user.css' %}" 
-            as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="{% static 'css/user/search-part.css' %}" 
-            as="style" onload="this.onload=null;this.rel='stylesheet'">
+            as="style" onload="this.onload=null;this.rel='stylesheet'"> 
 <link rel="preload" href="{% static 'css/user/pagination.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
+<link rel="preload" href="{% static 'css/user/get-confirm-shifts-today.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/modal_update_shift.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
-            
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
     {% include 'includes/modal_update_shift.html' %}
-    {% include 'includes/search-part.html' %}
-    {% include 'shift/modal_shift_datails.html' %}
     
-        <section id="shifts-container">
-            
-            <h2> Solicitud de turnos pendientes</h2>
-            
-                {% for shift in pending_shifts %}
-                <section id="shifts-container__section">
+    <section class="confirm-shifts-container-container">
+        <h2 class="confirm-shifts-title">Turnos Confirmados Para Hoy</h2>
+        {% for shift in list_shift %}
+                <section id="confirm-shifts-container__section">
                         {% if error_message %}
                             <p class="error-message">{{ error_message }}</p>
                         {% endif %}
@@ -60,52 +51,35 @@
                             </strong> 
                                 {{ shift.hour }}
                         </p>
-                    <span id="shifts-container-section__btns">
-                        <a href="{% url 'user-confirm-shift' shift.id %}" 
-                                class="acept-btn">Aceptar</a>
-                        <a href="{% url 'user-cancel-shift' shift.id %}" 
-                                class="cancel-btn">Cancelar</a>
+                    <span id="confirm-shifts-container-section__btn">
+                        <a href="{% url 'user-complete-shift' shift.id %}" 
+                                class="finaly-shift-btn">Finalizar Turno</a>
                     </span>
                 </section>
                 {% empty %}
-                    <p>No hay turnos pendientes.</p>
+                    <p>No hay turnos Confirmados para hoy</p>
                 {% endfor %}
-                {%if pending_shifts %}
+                {% if list_shift%}
                     <section class="pagination-container">
                         <span class="step-links">
-                            {% if pending_shifts.has_previous %}
+                            {% if list_shift.has_previous %}
                                 <a href="?page=1">1</a>
-                                <a href="?page={{ pending_shifts.previous_page_number }}"> < </a>
+                                <a href="?page={{ list_shift.previous_page_number }}"> < </a>
                             {% endif %}
                             
                             <span class="current">
-                                Página {{ pending_shifts.number }} de {{ pending_shifts.paginator.num_pages }}
+                                Página {{ list_shift.number }} de {{ list_shift.paginator.num_pages }}
                             </span>
                             
-                            {% if pending_shifts.has_next %}
-                                <a href="?page={{ pending_shifts.next_page_number }}"> > </a>
-                                <a href="?page={{ pending_shifts.paginator.num_pages }}">{{ pending_shifts.paginator.num_pages }}</a>
+                            {% if list_shift.has_next %}
+                                <a href="?page={{ list_shift.next_page_number }}"> > </a>
+                                <a href="?page={{ list_shift.paginator.num_pages }}">{{ list_shift.paginator.num_pages }}</a>
                             {% endif %}
                         </span>
                     </section>
-                {% endif %}
-            <section id="shifts-confirm-state-section">
-                <section id="shifts-data-states-container">
-                </section>
-                <spam class="shifts-confirm-state-section__spam">
-                    <button type="button" id="get-shift-pending-state-btn" data-state="pendiente">
-                        Turnos Pendientes Hoy
-                    </button>
-                    <button type="button" id="get-shift-confirm-state-btn" data-state="confirmado">
-                        Turnos Confirmados Hoy
-                    </button>
-                </spam>
-            </section>
-            
-        </section>
+                {%endif%}
+    </section>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/modal_update_shift.js' %}" ></script>
-    <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
-    <script type="module" src="{% static 'js/shift/search-shift-confirm-state.js' %}" ></script>
 {% endblock content %}

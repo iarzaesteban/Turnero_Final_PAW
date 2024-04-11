@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const acceptLinks = document.querySelectorAll('.acept-btn');
     const cancelLinks = document.querySelectorAll('.cancel-btn');
     const asignmentLinks = document.querySelectorAll('.asignment-btn');
+    const finalyShiftLink = document.querySelectorAll('.finaly-shift-btn');
   
     function showModal(message) {
         modalMessage.textContent = message;
@@ -26,13 +27,24 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.classList.remove('show');
     }
 
+    finalyShiftLink.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            console.log("clickeado finally btn")
+            event.preventDefault();
+            showModal("¿Estás seguro de pasar este turno a estado Completado?");
+            confirmButton.onclick = function() {
+                console.log("ACEPTANDO final")
+                window.location.href = link.href;
+                
+            };
+        });
+    });
+
     asignmentLinks.forEach(function(link) {
         link.addEventListener('click', function(event) {
-            console.log("clickeado asign")
             event.preventDefault();
             showModal("¿Estás seguro de querer asignarte este turno?");
             confirmButton.onclick = function() {
-                console.log("ACEPTANDO asign")
                 window.location.href = link.href;
                 
             };

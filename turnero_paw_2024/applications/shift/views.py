@@ -291,6 +291,37 @@ class CancelShiftView(View):
                 return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
             return redirect('/shift/home/')
     
+class CompleteShiftView(View):
+    def get(self, request, shift_id):
+        shift = get_object_or_404(Shift, id=shift_id)
+        
+        try:
+            complete_state = State.objects.get(short_description='completado')
+            shift.id_state = complete_state
+            if not isinstance(self.request.user, AnonymousUser):
+                user = self.request.user
+                shift.id_user = user
+                shift.save()
+                return redirect('get-confirm-shifts-today')
+            shift.save()
+            
+            return redirect('get-confirm-shifts-today')
+        except State.DoesNotExist:
+            if not isinstance(self.request.user, AnonymousUser):
+                list_shift = Shift.objects.filter(id_state__short_description='confirmado')
+                error_message = 'Estado de turno no encontrado'
+                return render(request, 'user/home_user.html', {
+                                                    'list_shift': list_shift, 
+                                                    'error_message': error_message})
+            return redirect('get-confirm-shifts-today')
+        except Exception as e:
+            if not isinstance(self.request.user, AnonymousUser):
+                list_shift = Shift.objects.filter(id_state__short_description='confirmado')
+                error_message = str(e)
+                return render(request, 'user/home_user.html', {
+                                                        'list_shift': list_shift, 
+                                                        'error_message': error_message})
+            return redirect('get-confirm-shifts-today')
 class SearchShiftsView(View):
     def get(self, request):
         search_value = request.GET.get('search_value', '')

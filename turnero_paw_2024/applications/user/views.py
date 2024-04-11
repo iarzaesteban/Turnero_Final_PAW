@@ -367,6 +367,22 @@ def update_attentions_times(request):
     users = User.objects.exclude(username=current_user.username)
     return render(request, 'user/update_attentions_times.html', {'users': users})
 
+def get_confirm_shifts_today(request):
+    today = datetime.datetime.now()
+    list_shift = Shift.objects.filter(
+                            id_state__short_description="confirmado",
+                            date=today).order_by("hour")
+    paginator = Paginator(list_shift, 5)
+    page_number = request.GET.get("page")
+    try:
+        list_shift = paginator.page(page_number)
+    except PageNotAnInteger:
+        list_shift = paginator.page(1)
+    except EmptyPage:
+        list_shift = paginator.page(paginator.num_pages)
+
+    return render(request, 'user/get_confirm_shifts_today.html', {'list_shift': list_shift})
+
 def view_user_shifts_today(request, username):
     user_shifts_today = Shift.objects.filter(id_user__username=username, date=datetime.date.today())
     return render(request, 'user/user_shifts_today.html', {'user_shifts_today': user_shifts_today,

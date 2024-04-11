@@ -4,6 +4,10 @@
     margin-bottom: .5rem;
 }
 
+#shifts-container p{
+    font-weight: bold;
+}
+
 #shifts-data-states-container{
     display: flex;
     flex-direction: column;
