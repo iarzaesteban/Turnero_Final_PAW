@@ -103,7 +103,7 @@ export function requestShift() {
                 closeModal()
                 setTimeout(function() {
                     calendarContainer.removeChild(messageRequestShift);
-                }, 5000);
+                }, 10000);
             } else if (data.response == "error"){
                 showErrorMessage(data.message);
             }

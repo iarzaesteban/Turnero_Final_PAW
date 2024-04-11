@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 shiftsContainer.insertAdjacentHTML('beforeend', titleShitsHtml);
                 data.shifts_today.forEach(shift => {
                     const shiftDate = new Date(shift.date);
-                    const formattedDate = `${shiftDate.getDate()} de ${getMonthName(shiftDate.getMonth())} de ${shiftDate.getFullYear()}`;
+                    const formattedDate = `${shiftDate.getDate() + 1 } de ${getMonthName(shiftDate.getMonth())} de ${shiftDate.getFullYear()}`;
                     const formattedHour = shift.hour.slice(0, 5);
                     const shiftHtml = `
                         <section id="shifts-container-section__fetch">

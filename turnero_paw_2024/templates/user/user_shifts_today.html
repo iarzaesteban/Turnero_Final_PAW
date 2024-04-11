@@ -12,9 +12,12 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/modal_update_shift.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
+    {% include 'includes/modal_update_shift.html' %}
     <h2 class="users-attentions-times-title">Turnos para hoy de {{ username }}</h2>
     <section class="users-attentions-times-container">
         {% if not user_shifts_today %}
@@ -35,7 +38,7 @@
                 {{ shift.date }} - {{ shift.hour }}
             </p>
             <span class="users-attentions-times__btns">
-                <a href="{% url 'user-confirm-shift' shift.id %}" >
+                <a class="asignment-btn" href="{% url 'user-confirm-shift' shift.id %}" >
                     Asignarmelo
                 </a>
             </span>
@@ -48,4 +51,5 @@
     </a>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/modal_update_shift.js' %}" ></script>
 {% endblock content %}
