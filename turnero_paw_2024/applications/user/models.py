@@ -15,6 +15,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     picture = models.BinaryField(null=True, blank=True)
     code_verification = models.CharField(max_length=15, blank=True)
     has_set_attention_times = models.BooleanField(default=False)
+    has_default_password = models.BooleanField(default=False)
 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

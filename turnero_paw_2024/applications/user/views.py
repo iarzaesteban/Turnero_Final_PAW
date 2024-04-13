@@ -35,6 +35,8 @@ class LoginUser(FormView):
         
         if user is not None:
             login(self.request, user)
+            if not user.has_default_password:
+                return redirect('update-password')
             if not user.has_set_attention_times:
                 return redirect('set-attention-times')
             return super(LoginUser, self).form_valid(form)
@@ -163,6 +165,8 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
         try:
             if user:
                 current_user.set_password(new_password)
+                if not current_user.has_default_password:
+                    current_user.has_default_password = True
                 current_user.save()
                 logout(self.request)
 

@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttonsOutsideMenu = document.querySelectorAll('button:not(#header-avatar-btn)');
     const linksOutsideMenu = document.querySelectorAll('a.acept-btn, a.cancel-btn');
     document.addEventListener('click', function(event) {
-        if (event.target !== headerAvatarBtn && event.target !== _toggle && 
-            !headerAvatarBtn.contains(event.target) && !_toggle.contains(event.target)) {
-            closeMenus();
-            enableButtonsAndLinks();
+        if (headerAvatarBtn){
+            if (event.target !== headerAvatarBtn && event.target !== _toggle && 
+                !headerAvatarBtn.contains(event.target) && !_toggle.contains(event.target)) {
+                closeMenus();
+                enableButtonsAndLinks();
+            }
         }
     });
     
@@ -30,13 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
             navItemsUser.classList.remove('active');
         }
     }
-
-    document.getElementById('header-avatar-btn').addEventListener('click', function() {
-        this.classList.toggle('active');
-        disableButtonsAndLinks();
-        _items.classList.remove("open");
-        _toggle.classList.remove("close");
-    });
+    if (headerAvatarBtn){
+        headerAvatarBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            disableButtonsAndLinks();
+            _items.classList.remove("open");
+            _toggle.classList.remove("close");
+        });
+    }
+    
 
     const userAvatar = document.getElementById('user-avatar');
     const currentUserAvatar = document.getElementById('current-user-avatar');
@@ -61,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    fetch(userAvatarUrl)
+    if(userAvatar){
+        fetch(userAvatarUrl)
         .then(response => {
             if (response.ok) {
                 return response.blob();
@@ -80,4 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
         });
+    }
+    
 });
