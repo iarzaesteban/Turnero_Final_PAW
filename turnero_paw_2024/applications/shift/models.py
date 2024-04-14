@@ -14,6 +14,7 @@ class Shift(models.Model):
     confirmation_code = models.CharField(max_length=50)
     confirmation_url = models.URLField(max_length=255)
     last_updated = models.DateTimeField(auto_now=True)
+    description = models.TextField(max_length=250, default='')
 
     def __str__(self):
         return f"{self.date} {self.hour} - {self.id_person}"

@@ -1,0 +1,52 @@
+#shift-details-container h2{
+    font-weight: bold;
+    margin-left: .3rem;
+    margin-bottom: .5rem;
+}
+
+h3{
+    font-weight: bold;
+}
+
+
+.shift-details-container__span{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin: 0 .5rem .5rem;
+    padding: .5rem 0;
+}
+
+
+.shift-details-container__form{
+    margin-top: 1rem;
+}
+
+.shift-details-container__form input{
+    background-color: #1d7723;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 15rem;
+    height: 2rem;
+    text-align: center;
+    align-content: center;
+}
+
+.error-message{
+    color: red;
+}
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    .shift-details-container__span{
+        margin: 1rem 2rem;
+    }
+
+    .shift-details-container__form input{
+        height: 3rem;
+        width: 20rem;
+    }
+
+}

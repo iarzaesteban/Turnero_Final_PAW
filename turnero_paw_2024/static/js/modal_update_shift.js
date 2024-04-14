@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             showModal("¿Estás seguro de pasar este turno a estado Completado?");
             confirmButton.onclick = function() {
-                console.log("ACEPTANDO final")
                 window.location.href = link.href;
                 
             };
@@ -56,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             showModal("¿Estás seguro de querer aceptar este turno?");
             confirmButton.onclick = function() {
-                console.log("ACEPTANDO")
                 window.location.href = link.href;
                 confirmButton.textContent = "";
                 showSpinner();
