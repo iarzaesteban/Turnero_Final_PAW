@@ -58,8 +58,8 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        pending_shifts = Shift.objects.filter(id_state__short_description='pendiente')
+        pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',
+                                              date__gte=datetime.date.today())
         paginator = Paginator(pending_shifts, 5)
         page = self.request.GET.get('page')
         try:
@@ -279,10 +279,11 @@ def first_get(state, start_date, end_date):
     return list_shifts, query_number
 
 def serialize_shifts(page_obj):
+    print(f"page_obj es {page_obj}",flush=True)
     return [{'date': shift.date, 
              'hour': shift.hour, 
              'id_person': str(shift.id_person),
-             'operador': shift.id_person.id_user.username if shift.id_state.short_description == 'confirmado' else 'Sin Asignar',
+             'operador': shift.id_person.id_user.username if shift.id_user else 'Sin Asignar',
              'state': shift.id_state.description} for shift in page_obj]
     
 def list_shifts_filter_views(request):
