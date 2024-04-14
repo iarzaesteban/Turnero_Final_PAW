@@ -32,14 +32,11 @@
         font-size: 1rem;
     }
 }
-/*
+
 @media only screen and (min-width: 1081px) {
     #form-login{
-        margin-top: 5rem;
-        height: 45vh;
         font-size: 1.5rem;
+        margin: 3rem 30rem;
     }
-    #form-footer{
-        margin-top: 2rem;
-    }
-} */
+
+}
