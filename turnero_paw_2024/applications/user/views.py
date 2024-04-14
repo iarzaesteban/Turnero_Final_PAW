@@ -58,8 +58,8 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',
-                                              date__gte=datetime.date.today())
+        pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',)
+                                              #date__gte=datetime.date.today())
         paginator = Paginator(pending_shifts, 5)
         page = self.request.GET.get('page')
         try:

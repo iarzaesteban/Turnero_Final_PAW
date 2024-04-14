@@ -103,3 +103,29 @@
         margin: .5rem auto
     }
 }
+
+
+@media only screen and (min-width: 1081px) {
+    #shifts-data-states-container{
+        margin: 4rem 30rem 1rem !important;
+    }
+
+    #shifts-container h2{
+        margin-bottom: 4rem;
+    }
+
+    #shifts-container-section__btns{
+        margin-top: 1rem;
+    }
+
+    #shifts-container-section__btns a{
+        width: 10rem;
+        height: 3rem;
+    }
+
+    .shifts-confirm-state-section__spam button{
+        margin-top: 1rem;
+        width: 25rem;
+    }
+
+}

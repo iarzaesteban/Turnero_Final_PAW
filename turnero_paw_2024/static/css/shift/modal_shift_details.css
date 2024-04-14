@@ -78,3 +78,18 @@
         width: 20rem;
     }
 }
+
+
+@media only screen and (min-width: 1081px) {
+    .modal-content-details{
+        width: 30rem;
+        height: 25rem;
+        justify-content: space-around;
+    }
+
+    .shift-details-modal-content-btn-close{
+        height: 3rem;
+        width: 20rem;
+    }
+
+}

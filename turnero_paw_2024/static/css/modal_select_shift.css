@@ -120,3 +120,8 @@ button:hover, button:active {
         height: 3rem;
     }
 }
+
+@media only screen and (min-width: 1081px) {
+    
+
+}

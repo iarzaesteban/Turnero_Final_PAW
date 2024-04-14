@@ -65,3 +65,16 @@
     100% { transform: rotate(360deg); }
 }
   
+
+@media only screen and (min-width: 1081px) {
+    .modal-content {
+        margin: 20% auto;
+        width: 20rem;
+        height: 15rem;
+    }
+
+    .modal-buttons button {
+        width: 15rem;
+        height: 3rem;
+    }
+}
