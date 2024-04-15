@@ -52,3 +52,21 @@
         width: 15rem;
     }
 }
+
+@media only screen and (min-width: 1081px) {
+    #form-updates-time-user{
+        margin: 0 25rem 1rem;
+    }
+
+    #form-updates-time-user input{ 
+        height: 2.5rem;
+        width: 25rem;
+        font-size: 1.2rem;
+    }
+
+    #form-updates-time-user button{
+        margin-top: 1rem;
+        height: 3rem;
+        width: 20rem;
+    }
+}
