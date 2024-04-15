@@ -30,7 +30,13 @@
                     Apellido y Nombre: 
                 </strong>
                     {{ shift.id_person }} 
-                </p>
+            </p>
+            <p>
+                <strong>
+                    Estado: 
+                </strong>
+                    {{ shift.id_state.description }} 
+            </p>
             <p>
                 <strong>
                     Fecha y Hora:
@@ -38,7 +44,8 @@
                 {{ shift.date }} - {{ shift.hour }}
             </p>
             <span class="users-attentions-times__btns">
-                <a class="asignment-btn" href="{% url 'user-confirm-shift' shift.id %}" >
+                <a class="asignment-btn" 
+                    href="{% url 'user-confirm-shift' shift.id %}" >
                     Asignarmelo
                 </a>
             </span>

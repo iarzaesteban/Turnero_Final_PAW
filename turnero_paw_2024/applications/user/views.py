@@ -389,12 +389,17 @@ def get_confirm_shifts_today(request):
     return render(request, 'user/get_confirm_shifts_today.html', {'list_shift': list_shift})
 
 def view_user_shifts_today(request, username):
-    user_shifts_today = Shift.objects.filter(id_user__username=username, date=datetime.date.today())
+    user_shifts_today = Shift.objects.filter(
+                                    id_user__username=username, 
+                                    date=datetime.date.today())
     return render(request, 'user/user_shifts_today.html', {'user_shifts_today': user_shifts_today,
                                                            'username': username})
 
 def view_user_all_shifts(request, username):
-    user_all_shifts = Shift.objects.filter(id_user__username=username, id_state__short_description='confirmado')
+    user_all_shifts = Shift.objects.filter(
+                        id_user__username=username, 
+                        id_state__short_description='confirmado',
+                        date__gte=datetime.date.today())
     return render(request, 'user/user_all_shifts.html', {'user_all_shifts': user_all_shifts,
                                                          'username': username})
     

@@ -72,3 +72,13 @@
     }
 
 }
+
+@media only screen and (min-width: 1081px) {
+    .users-attentions-times-container{
+        margin: 4rem 30rem 1rem !important;
+    }
+
+    .users-attentions-times__section{
+        width: 25rem;
+    }
+}
