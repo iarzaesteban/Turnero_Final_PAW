@@ -155,12 +155,20 @@
 
 @media only screen and (min-width: 1081px) {
     #header h1{
-        font-size: 1rem;
+        font-size: 1.5rem;
         width: 20rem;
     }
 
     .open {
         width: 20%;
+    }
+
+    .nav-items{
+        top: 4rem;
+    }
+
+    .nav-items-user{
+        top: -3.5rem;
     }
 
     .nav-items a, .nav-items-user a {
@@ -169,7 +177,22 @@
         opacity: .9;
     }
 
+    .nav-toggle span {
+        width: 2rem;
+        height: .4rem;
+        margin-bottom: .3rem;
+    }
+
+    .close span {
+        transform: rotate(45deg) translate(1px, -1px);
+    }
+
     #header-avatar-btn.active + .nav-items-user {
         width: 20%;
     }
+
+    #user-avatar{
+        width: 3rem;
+        height: 3rem;
+    } 
 }
