@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const endDateInput = document.getElementById('end-date');
     const stateInput = document.getElementById('state');
     const paginationContainer = document.querySelector('.pagination-container');
+
+    if (paginationContainer){
+        paginationContainer.classList.add("pagination-for-reports")
+    }
     var isFilter = false;
 
     function createPagination(data) {
@@ -132,9 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
     paginationContainer.addEventListener('click', function(event) {
         if (event.target.tagName === 'A' && isFilter) {
             event.preventDefault();
-            console.log("adentro del if")
             const pageNumber = event.target.getAttribute('data-page');
-            console.log("pageNumber", pageNumber)
             fetchPage(pageNumber);
         }
     });

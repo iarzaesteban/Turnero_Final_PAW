@@ -85,5 +85,28 @@
     #shifts-table td {
         padding: 1.5rem;
     }
+}
 
+@media only screen and (min-width: 1081px) {
+    #filter-form{
+        margin: 0 30rem 1rem;
+    }
+
+    .shifts-reports-container__table-section{
+        margin: 0 15rem 1rem;
+    }
+
+    #shifts-table th {
+        padding: 1rem;
+    }
+
+    #shifts-table__tbody td {
+        padding: 1rem;
+    }
+
+    #filter-form button, #export-button{
+        margin-top: 1.5rem;
+        width: 20rem;
+        height: 3rem;
+    }
 }

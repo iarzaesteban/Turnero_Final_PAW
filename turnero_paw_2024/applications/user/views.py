@@ -210,7 +210,7 @@ class UpdatePictureView(LoginRequiredMixin, FormView):
             messages.success(self.request, 'La fotografía se ha actualizado correctamente.')
             return redirect('update-picture') 
         except Exception as e:
-            messages.error(self.request, f'Error al procesar la imagen: {e}')
+            messages.error(self.request, 'Por favor ingrese una imagen correcta')
             return super().form_invalid(form)
 
     def form_invalid(self, form):

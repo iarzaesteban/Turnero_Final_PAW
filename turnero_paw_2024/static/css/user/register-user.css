@@ -31,3 +31,16 @@
         width: 15rem;
     }
 }
+
+
+@media only screen and (min-width: 1081px) {
+    #form-register{
+        margin: 0 25rem 1rem;
+    }
+
+    #form-register button{
+        margin-top: 1rem;
+        width: 20rem;
+        height: 3rem;
+    }
+}

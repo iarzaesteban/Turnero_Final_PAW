@@ -30,3 +30,15 @@
         width: 15rem;
     }
 }
+
+@media only screen and (min-width: 1081px) {
+    #form-code-verification-user{
+        margin: 0 25rem 1rem;
+    }
+
+    #form-code-verification-user button{
+        margin-top: 1rem;
+        width: 20rem;
+        height: 3rem;
+    }
+}

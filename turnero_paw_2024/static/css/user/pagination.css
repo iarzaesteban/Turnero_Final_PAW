@@ -29,4 +29,8 @@
     .pagination-container{
         right: 30rem;
     }
+
+    .pagination-for-reports{
+        right: 16rem;
+    }
 }

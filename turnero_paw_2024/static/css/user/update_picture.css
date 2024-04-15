@@ -46,3 +46,15 @@
         margin: 1rem 2rem;
     }
 }
+
+@media only screen and (min-width: 1081px) {
+    #form-updates-picture-user{
+        margin: 0 25rem 1rem;
+    }
+
+    #form-updates-picture-user button{
+        height: 3rem;
+        width: 20rem;
+    }
+
+}
