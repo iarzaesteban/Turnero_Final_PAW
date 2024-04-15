@@ -57,7 +57,9 @@
                     </span>
                 </section>
                 {% empty %}
-                    <p>No hay turnos Confirmados para hoy</p>
+                    <section id="confirm-shifts-container__section">
+                        <p>No hay turnos Confirmados para hoy</p>
+                    </section>
                 {% endfor %}
                 {% if list_shift%}
                     <section class="pagination-container">

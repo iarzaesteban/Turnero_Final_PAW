@@ -368,8 +368,13 @@ class SendEmailView(LoginRequiredMixin, FormView):
     
 def update_attentions_times(request):
     current_user = request.user
-    User = get_user_model()
-    users = User.objects.exclude(username=current_user.username)
+    users = Users.objects.exclude(
+                username=current_user.username
+            ).exclude(
+                start_time_attention__isnull=True
+            ).exclude(
+                end_time_attention__isnull=True
+            )
     return render(request, 'user/update_attentions_times.html', {'users': users})
 
 def get_confirm_shifts_today(request):

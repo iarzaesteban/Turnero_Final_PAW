@@ -15,6 +15,10 @@
     padding: .5rem;
 }
 
+.users-attentions-times-container p{
+    font-weight: bold;
+}
+
 .users-attentions-times__section{
     display: flex;
     flex-direction: column;

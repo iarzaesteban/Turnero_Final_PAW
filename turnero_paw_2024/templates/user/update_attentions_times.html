@@ -13,14 +13,11 @@
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
-
     <h2 class="users-attentions-times-title">Horarios de Atención de los Operadores</h2>
     <section class="users-attentions-times-container">
-        {% if not users %}
-            <h3>No existen otros operadores</h3>
-        {% endif %}
-        {% for user in users %}
-            {% if user.start_time_attention and user.end_time_attention %}
+        
+        {% if users %}
+            {% for user in users %}
                 <section class="users-attentions-times__section">
                     <p>
                         <strong>
@@ -49,9 +46,10 @@
                         </a>
                     </span>
                 </section>
-                
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p>No existen otros operadores.</p>
+        {% endif %}
     </section>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>

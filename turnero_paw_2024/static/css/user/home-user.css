@@ -6,6 +6,7 @@
 
 #shifts-container p{
     font-weight: bold;
+    margin-left: .3rem;
 }
 
 #shifts-data-states-container{

@@ -68,7 +68,9 @@
                     </span>
                 </section>
                 {% empty %}
-                    <p>No hay turnos pendientes.</p>
+                    <section id="shifts-container__section">
+                        <p>No hay turnos pendientes.</p>
+                    </section>
                 {% endfor %}
                 {%if pending_shifts %}
                     <section class="pagination-container">
