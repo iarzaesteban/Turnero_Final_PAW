@@ -9,6 +9,7 @@
     text-wrap: balance;
     font-weight: bold;
     width: 12rem;
+    margin-left: .5rem;
 }
 
 #header-avatar-btn{

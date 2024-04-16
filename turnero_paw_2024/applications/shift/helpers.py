@@ -82,9 +82,10 @@ def send_mail_to_receiver(user, shift, is_receiver):
         receiver = person.email
         asunto = "Canecelación de turno."
         message = ( shift.id_person.last_name + " " + shift.id_person.first_name +
-                   " ha cancelado el turno que contaba para el día " +
-            date_str + " a las " + hour_str +"hs" + ".\n\n"
-            " Manifestó: '" + shift.description + "'.\n\n")
+                    " ha cancelado el turno que contaba para el día " +
+                date_str + " a las " + hour_str +"hs" + ".\n\n")
+        if shift.description != "":
+            message +=  ("Manifestó: '" + shift.description + "'.\n\n")            
            
     send_mail(asunto, message, sender, [receiver,])
     
