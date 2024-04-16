@@ -12,6 +12,8 @@ import {
     setDaysWeek,
     setnFirstDayWeek,
     responseEvents,
+    startTimeAttention,
+    endTimeAttention,
     setCurrentMonth,
     setCurrentYear,
     calendarBody
@@ -31,9 +33,6 @@ import {
 
 let date = new Date();
 
-const startHourWork = 8;
-const finishHourWork = 17;
-const minutesIterator = 30;
 let monthSelected = document.getElementById("selectMonth");
 let yearSelected = document.getElementById("selectYear");
 
@@ -43,7 +42,6 @@ export function generateSchedules() {
 
     const infoSubtitle = document.getElementById('info-subtitle');
     infoSubtitle.style.display = 'none';
-    console.log("responseEvents",responseEvents);
 
     const currentDateDay = document.getElementById('current-date-day');
     const currentDateDate = document.getElementById('current-date-date');
@@ -52,31 +50,35 @@ export function generateSchedules() {
                                         ('es-ES', { weekday: 'long' }).
                                             replace(/^\w/, (c) => c.toUpperCase());
 
-    for (let hour = startHourWork; hour <= finishHourWork; hour++) {
-        for (let minute = 0; minute < 60; minute += minutesIterator) {
-            if (hour < finishHourWork || (hour == finishHourWork && minute === 0)) {
-                const formattedHour = hour.toString().padStart(2, '0');
-                const formattedMinute = minute.toString().padStart(2, '0');
-                const formattedTime = `${formattedHour}:${formattedMinute}`;
-                const isEventScheduled = responseEvents.some(event => event.formatted_start.includes(formattedTime));
+    const startTime = new Date(`2000-01-01T${startTimeAttention}:00`);
+    const endTime = new Date(`2000-01-01T${endTimeAttention}:00`);
+    let currentTime = startTime;
 
-                if (!isEventScheduled) {
-                    const scheduleElement = document.createElement('p');
-                    scheduleElement.textContent = `${formattedHour}:${formattedMinute}  - Solicitar`;
-                    scheduleElement.classList.add('schedule-item');
+    while (currentTime <= endTime) {
+        const hour = currentTime.getHours();
+        const minute = currentTime.getMinutes();
+        const formattedHour = hour.toString().padStart(2, '0');
+        const formattedMinute = minute.toString().padStart(2, '0');
+        const formattedTime = `${formattedHour}:${formattedMinute}`;
+        const isEventScheduled = responseEvents.some(event => event.formatted_start.includes(formattedTime));
 
-                    scheduleElement.addEventListener('click', () => {
-                        openModal(formattedHour, formattedMinute, 
-                                        dayOfWeek, 
-                                        getMonthName(currentMonth), currentYear);
-                    });
-
-                    scheduleElement.classList.add('divider-line');
-                    selectedDaySchedule.appendChild(scheduleElement);
-                }
-            }
+        if (!isEventScheduled) {
+            const scheduleElement = document.createElement('p');
+            scheduleElement.textContent = `${formattedHour}:${formattedMinute} - Solicitar`;
+            scheduleElement.classList.add('schedule-item');
+        
+            scheduleElement.addEventListener('click', () => {
+                openModal(formattedHour, formattedMinute, 
+                                dayOfWeek, 
+                                getMonthName(currentMonth), currentYear);
+            });
+            scheduleElement.classList.add('divider-line');
+        
+            selectedDaySchedule.appendChild(scheduleElement);
         }
-    }    
+    
+        currentTime.setMinutes(currentTime.getMinutes() + 30);
+    }
 
     currentDateDay.textContent = `${currentDay}  ${dayOfWeek}`;
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
@@ -89,7 +91,8 @@ export function generateSchedules() {
     }
     selectedDaySchedule.style.marginTop = '1rem';
     const infoSection = document.getElementById('info-section');
-    infoSection.style.display = 'block';
+    infoSection.style.display = 'flex';
+    infoSection.style.gap = "0";
 }
 
 function getWindowWidth() {

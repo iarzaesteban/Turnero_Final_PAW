@@ -90,13 +90,15 @@ class UpdateAttentionTimeUserForm(forms.Form):
     start_time_attention = forms.TimeField(
         label='Hora Inicio',
         required=True,
-        widget=forms.TimeInput(attrs={'type': 'time'})
+        widget=forms.TimeInput(attrs={'type': 'time',
+                                      'step': '1800'})
     )
     
     end_time_attention = forms.TimeField(
         label='Hora Fin',
         required=True,
-        widget=forms.TimeInput(attrs={'type': 'time'})
+        widget=forms.TimeInput(attrs={'type': 'time', 
+                                      'step': '1800'})
     )
     
     username = forms.CharField(widget=forms.HiddenInput(), required=False)

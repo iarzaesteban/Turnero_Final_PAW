@@ -45,5 +45,11 @@ a {
     button{
         font-size: 1.2rem;
     }
+}
 
+@media only screen and (min-width: 1081px) {
+    input, select{
+        height: 2.5rem;
+        font-size: 1.2rem;
+    }
 }

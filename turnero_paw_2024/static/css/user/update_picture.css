@@ -10,6 +10,11 @@
     text-align: center;
 }
 
+.updates-picture-user-container__user{
+    text-transform: uppercase;
+}
+
+
 .updates-picture-user-container__picture{
     display: flex;
     justify-content: center;

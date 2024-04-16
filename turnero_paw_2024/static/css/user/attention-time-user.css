@@ -9,6 +9,12 @@
     margin: 1rem 0;
 }
 
+.updates-time-user-container__recordatory{
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
 #form-updates-time-user{
     display: flex;
     flex-direction: column;

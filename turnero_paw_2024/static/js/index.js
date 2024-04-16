@@ -20,6 +20,8 @@ export let monthSelected = document.getElementById("selectMonth");
 export let yearSelected = document.getElementById("selectYear");
 
 export let responseEvents = [];
+export let startTimeAttention = "";
+export let endTimeAttention = "";
 
 export function setCurrentDay(newDay) {
     currentDay = newDay;
@@ -28,6 +30,14 @@ export function setCurrentDay(newDay) {
 export function setResponseEvents(rspEvent) {
     responseEvents = rspEvent;
 }
+
+export function setResponseStartTimeAttention(rspStartTimeAttention) {
+    startTimeAttention = rspStartTimeAttention;
+}
+
+export function setResponseEndTimeAttention(rspEndTimeAttention) {
+    endTimeAttention = rspEndTimeAttention;
+}    
 
 export function setFirstDayMonth(newFirstDay) {
     firstDayMonth = newFirstDay;

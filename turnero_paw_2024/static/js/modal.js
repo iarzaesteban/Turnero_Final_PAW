@@ -68,6 +68,15 @@ function formattedDate(selectedDate){
     return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
+function restoreInfoSection() {
+    const selectedDaySchedule = document.getElementById('selected-day-schedule');
+    selectedDaySchedule.innerHTML = '';
+    const infoSubtitle = document.getElementById('info-subtitle');
+    infoSubtitle.style.display = 'block';
+    const infoSection = document.getElementById('info-section');
+    infoSection.style.gap = "5rem";
+}
+
 export function requestShift() {
     if (validateEmailFormat(emailInput.value.trim())){
         const selectedDate = new Date(currentYear, currentMonth, currentDay, hourShift, minutesShift);
@@ -101,6 +110,7 @@ export function requestShift() {
                 const firstChild = calendarContainer.firstChild;
                 calendarContainer.insertBefore(messageRequestShift, firstChild);
                 closeModal()
+                restoreInfoSection()
                 setTimeout(function() {
                     calendarContainer.removeChild(messageRequestShift);
                 }, 10000);

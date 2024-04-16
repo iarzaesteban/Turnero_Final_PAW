@@ -31,6 +31,12 @@
 
 
 #info-subtitle {
+    display: block;
+    font-style: italic;
+}
+
+.info-subtitle {
+    display: block;
     font-style: italic;
 }
 

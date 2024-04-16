@@ -154,3 +154,38 @@ table {
         font-size: 1rem;
     }
 }
+
+@media only screen and (min-width: 1081px) {
+    #calendar{
+        margin: 4rem 30rem 1rem;
+    }
+
+    .calendar-container > p{
+        margin: 4rem 30rem 1rem;
+    }
+
+    #calendar-controls{
+        width: 28rem;
+    }
+
+    #calendar-controls button{
+        height: 2.5rem;
+    }
+
+    #calendar-controls select{
+        width: 10rem;
+    }
+
+    #calendario {
+        width: 25rem; 
+        height: 15rem;
+    }
+
+    #info-section{
+        margin: 0 25rem 1rem;
+    }
+
+    #info-section p{
+        margin-left: .5rem;
+    }
+}

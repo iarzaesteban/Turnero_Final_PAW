@@ -3,6 +3,8 @@ import {
     currentMonth,
     currentDay,
     setResponseEvents,
+    setResponseStartTimeAttention,
+    setResponseEndTimeAttention,
 } from './index.js';
 
 import {
@@ -23,9 +25,10 @@ export function getGoogleCalendarEvents() {
         body: JSON.stringify({ date: formattedDate}),
     })
     .then(response => response.json())
-    .then(data => {
-        console.log(data.events);  
-        setResponseEvents(data.events);
+    .then(data => { 
+        setResponseEvents(data.events.events_get);
+        setResponseStartTimeAttention(data.events.start_time_attention_user);
+        setResponseEndTimeAttention(data.events.end_time_attention_user);
         generateSchedules();
     })
     .catch(error => {

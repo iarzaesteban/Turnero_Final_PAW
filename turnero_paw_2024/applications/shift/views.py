@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.db.models import Min, Max
 from django.views import View
 from django.views.generic import TemplateView
 from django.urls import reverse
@@ -55,7 +56,8 @@ def get_google_calendar_events(selected_date):
             token.write(creds.to_json())
 
     try:
-        response = []
+        respone = {}
+        events_get = []
         service = build("calendar", "v3", credentials=creds)
 
         next_day = dt.datetime.strptime(selected_date, "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(days=1)
@@ -76,10 +78,21 @@ def get_google_calendar_events(selected_date):
             .execute()
         )
         events = events_result.get("items", [])
-
+        
+        start_end_times = Users.objects.aggregate(
+            earliest_start_time=Min('start_time_attention'),
+            latest_end_time=Max('end_time_attention')
+        )
+        
+        start_time_attention = start_end_times['earliest_start_time']
+        end_time_attention = start_end_times['latest_end_time']
+        start_time_attention_user = start_time_attention.strftime("%H:%M")
+        end_time_attention_user = end_time_attention.strftime("%H:%M")
         
         if not events:
-            return response
+            return {"events_get":events_get,
+                    "start_time_attention_user": start_time_attention_user,
+                    "end_time_attention_user": end_time_attention_user}
         
         start_time_count = defaultdict(int)
         # Armamos diccionario con la hora y la cantidad de veces que se repite ese horario
@@ -97,7 +110,7 @@ def get_google_calendar_events(selected_date):
                 event_data = {
                     "formatted_start": formatted_start
                 }
-                response.append(event_data)
+                events_get.append(event_data)
             else:
                 # Verificamos cauntos operadores pueden atender en cierto horario.
                 count_hour_attention_user = 0
@@ -111,12 +124,16 @@ def get_google_calendar_events(selected_date):
                     event_data = {
                         "formatted_start": formatted_start
                     }
-                    response.append(event_data)
+                    events_get.append(event_data)
                 
-        return response
+        return {"events_get":events_get,
+                "start_time_attention_user": start_time_attention_user,
+                "end_time_attention_user": end_time_attention_user}
 
     except HttpError as error:
-        return response
+        return {"events_get": events_get,
+                "start_time_attention_user": start_time_attention_user,
+                "end_time_attention_user": end_time_attention_user}
 
 def add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime):
     event_timezone = 'America/Argentina/Buenos_Aires'
