@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
 from .models import Users
 from applications.shift.models import Shift
 from . import forms
@@ -72,7 +73,7 @@ class HomePage(LoginRequiredMixin, TemplateView):
         context['pending_shifts'] = pending_shifts
         return context
 
-class UserRegisterView(LoginRequiredMixin, FormView):
+class UserRegisterView(FormView):
     template_name = 'user/register.html'
     form_class = forms.UserRegisterForm
     success_url = '/register/'
@@ -131,7 +132,7 @@ class UserRegisterView(LoginRequiredMixin, FormView):
                     kwargs={'pk': user.id})
         )
 
-class CodeVerificationView(LoginRequiredMixin, FormView):
+class CodeVerificationView(FormView):
     template_name = 'user/user_verification.html'
     form_class = forms.VerificationForm
     success_url = '/home-user/'
@@ -285,7 +286,8 @@ def serialize_shifts(page_obj):
              'id_person': str(shift.id_person),
              'operador': shift.id_person.id_user.username if shift.id_user else 'Sin Asignar',
              'state': shift.id_state.description} for shift in page_obj]
-    
+
+@login_required
 def list_shifts_filter_views(request):
     list_shifts = None
     states = State.objects.all()
@@ -365,7 +367,7 @@ class SendEmailView(LoginRequiredMixin, FormView):
         messages.error(self.request, 'Ha ocurrido un error al enviar el correo electrónico. Por favor, inténtelo nuevamente.')
         return super().form_invalid(form)
     
-    
+@login_required
 def update_attentions_times(request):
     current_user = request.user
     users = Users.objects.exclude(
@@ -377,6 +379,7 @@ def update_attentions_times(request):
             )
     return render(request, 'user/update_attentions_times.html', {'users': users})
 
+@login_required
 def get_confirm_shifts_today(request):
     today = datetime.datetime.now()
     list_shift = Shift.objects.filter(
@@ -393,6 +396,7 @@ def get_confirm_shifts_today(request):
 
     return render(request, 'user/get_confirm_shifts_today.html', {'list_shift': list_shift})
 
+@login_required
 def view_user_shifts_today(request, username):
     user_shifts_today = Shift.objects.filter(
                                     id_user__username=username, 
@@ -400,6 +404,7 @@ def view_user_shifts_today(request, username):
     return render(request, 'user/user_shifts_today.html', {'user_shifts_today': user_shifts_today,
                                                            'username': username})
 
+@login_required
 def view_user_all_shifts(request, username):
     user_all_shifts = Shift.objects.filter(
                         id_user__username=username, 
@@ -407,7 +412,8 @@ def view_user_all_shifts(request, username):
                         date__gte=datetime.date.today())
     return render(request, 'user/user_all_shifts.html', {'user_all_shifts': user_all_shifts,
                                                          'username': username})
-    
+
+@login_required
 def export_to_excel(request):
     if request.method == 'GET':
         shifts = Shift.objects.filter(id_state__short_description='pendiente').order_by('date')
@@ -435,7 +441,8 @@ def export_to_excel(request):
         return response
     else:
         return HttpResponse(status=405)
-    
+
+@login_required    
 def get_user_avatar(request):
     user = request.user
 

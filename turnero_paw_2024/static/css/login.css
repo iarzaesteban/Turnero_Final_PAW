@@ -3,6 +3,19 @@
     text-align: center;
 }
 
+.register-user{
+    margin: 0 auto;
+    display: flex;
+    background-color: #1d7723;
+    color: #fff;
+    width: 10rem;
+    height: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    border: .1rem solid #ccc;
+    border-radius: .5rem;
+}
+
 #form-login{
     margin: 3rem .5rem;
     display: flex;
@@ -21,7 +34,7 @@
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #form-login{
         font-size: 1.5rem;
-        margin: 5rem;
+        margin: 3rem 5rem 3rem;
         height: 22rem;
     }
     
@@ -31,15 +44,25 @@
         padding: 1rem 0;
         font-size: 1rem;
     }
+
+    .register-user{
+        width: 20rem;
+        height: 3rem;
+    }
 }
 
 @media only screen and (min-width: 1081px) {
     #form-login{
         font-size: 1.5rem;
-        margin: 3rem 30rem 8rem;
+        margin: 3rem 20rem 3rem;
     }
 
     #form-login button{
+        width: 20rem;
+        height: 3rem;
+    }
+
+    .register-user{
         width: 20rem;
         height: 3rem;
     }

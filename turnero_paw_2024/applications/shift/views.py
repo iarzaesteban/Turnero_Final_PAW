@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.db.models import Min, Max
 from django.views import View
@@ -173,6 +175,7 @@ def get_list_dates(request):
 
 
 @csrf_exempt
+@login_required
 def confirm_shift(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -224,7 +227,7 @@ def cancel_shift(request):
         return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
-
+@login_required
 def get_shifts_today(request):
     state = request.GET.get('state')
     today = datetime.now()
@@ -250,8 +253,7 @@ def get_shifts_today(request):
         })
     return JsonResponse({'shifts_today': shifts_list})
 
-
-class ConfirmShiftView(View):
+class ConfirmShiftView(LoginRequiredMixin, View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
         user = self.request.user
@@ -324,8 +326,8 @@ class CancelShiftView(View):
                 error_message = str(e)
                 return render(request, 'user/home_user.html', {'pending_shifts': pending_shifts, 'error_message': error_message})
             return redirect('/shift/home/')
-    
-class CompleteShiftView(View):
+        
+class CompleteShiftView(LoginRequiredMixin, View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
         

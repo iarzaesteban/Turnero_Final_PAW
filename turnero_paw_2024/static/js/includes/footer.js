@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const posicionY = rect.top + window.scrollY;
     console.log('La posición Y del elemento es:', posicionY);
 
-    if (posicionY < 500){
+    if (posicionY < 400){
         footerCardsContainer.style.marginTop = "23rem";
     }
     

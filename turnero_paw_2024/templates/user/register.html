@@ -15,7 +15,11 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 {% endblock links %}
 {% block content %}
-    {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
+    {% if user.is_authenticated %}
+        {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
+    {% else %}
+        {% include 'includes/header.html' with show_nav=True show_avatar_user=False %}
+    {% endif %}
     <section id="register-user-container">
         <h2>Registrar Usuarios</h2>
         <form id="form-register" method="post" enctype="multipart/form-data">

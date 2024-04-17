@@ -36,9 +36,9 @@
             
             <section class="form-login__footer">
                 <button type="submit">Iniciar Sesion</button>
-                {% comment %} <a href="{% url 'user-register' %}">Registrarse</a> {% endcomment %}
             </section>
         </form>
+        <a class="register-user" href="{% url 'user-register' %}">Registrar Usuario</a>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/timerRemover.js' %}" ></script>
