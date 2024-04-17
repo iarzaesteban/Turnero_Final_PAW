@@ -10,6 +10,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">            
 <link rel="preload" href="{% static 'css/login.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/footer.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 {% endblock links %}
 
 {% block content %}
@@ -37,8 +39,8 @@
                 {% comment %} <a href="{% url 'user-register' %}">Registrarse</a> {% endcomment %}
             </section>
         </form>
-        
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/timerRemover.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 {% endblock content %}

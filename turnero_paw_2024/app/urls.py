@@ -25,4 +25,5 @@ urlpatterns = [
     path('roles/', include('applications.role.urls')),
     path('states/', include('applications.state.urls')),
     path('persons/', include('applications.person.urls')),
+    path('aditionals/', include('applications.aditional_information.urls')),
 ]

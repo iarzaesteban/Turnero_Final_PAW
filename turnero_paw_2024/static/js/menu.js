@@ -1,10 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     const buttonsOutsideMenu = document.querySelectorAll('button:not(#header-avatar-btn)');
     const linksOutsideMenu = document.querySelectorAll('a.acept-btn, a.cancel-btn');
+    
+    const headerAvatarBtn = document.getElementById('header-avatar-btn');
+    const navItemsUser = document.querySelector('.nav-items-user');
+
     document.addEventListener('click', function(event) {
         if (headerAvatarBtn){
             if (event.target !== headerAvatarBtn && event.target !== _toggle && 
                 !headerAvatarBtn.contains(event.target) && !_toggle.contains(event.target)) {
+                closeMenus();
+                enableButtonsAndLinks();
+            }
+        }else{
+            if (event.target !== _toggle && 
+                !_toggle.contains(event.target)) {
                 closeMenus();
                 enableButtonsAndLinks();
             }
@@ -15,12 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
         _items.classList.toggle("open");
         _toggle.classList.toggle("close");
         disableButtonsAndLinks();
-        headerAvatarBtn.classList.remove('active');
-        navItemsUser.classList.remove('active');
-    }
-    
-    const headerAvatarBtn = document.getElementById('header-avatar-btn');
-    const navItemsUser = document.querySelector('.nav-items-user');
+        if (headerAvatarBtn && navItemsUser){
+            headerAvatarBtn.classList.remove('active');
+            navItemsUser.classList.remove('active');
+        }
+    }    
 
     function closeMenus() {
         _items.classList.remove("open");
