@@ -18,6 +18,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/modal_update_shift.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/footer.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
             
 {% endblock links %}
 {% block content %}
@@ -110,4 +112,6 @@
     <script type="module" src="{% static 'js/modal_update_shift.js' %}" ></script>
     <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
     <script type="module" src="{% static 'js/shift/search-shift-confirm-state.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 {% endblock content %}
+    

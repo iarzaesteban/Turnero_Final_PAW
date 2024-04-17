@@ -107,6 +107,10 @@
 
 
 @media only screen and (min-width: 1081px) {
+    #shifts-container{
+        margin-bottom: 10rem;
+    }
+    
     #shifts-data-states-container{
         margin: 4rem 30rem 1rem !important;
     }

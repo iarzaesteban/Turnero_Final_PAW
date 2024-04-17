@@ -22,6 +22,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{% static 'css/calendar.css' %}" 
                 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'css/footer.css' %}" 
+                as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" href="{% static 'css/reset.css' %}">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -31,6 +33,7 @@
         <link rel="stylesheet" href="{% static 'css/calendar_info_section.css' %}">
         <link rel="stylesheet" href="{% static 'css/shift/modal_shift_details.css' %}">
         <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+        <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     </noscript>
 </head>
 <body>
@@ -40,5 +43,6 @@
     {% include 'shift/modal_select_shift.html' %}
     <script type="module" src="{% static 'js/index.js' %}" ></script>
     <script type="module" src="{% static 'js/shift/search-shift.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 </body>
 </html>

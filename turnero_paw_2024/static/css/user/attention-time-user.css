@@ -60,6 +60,10 @@
 }
 
 @media only screen and (min-width: 1081px) {
+    #updates-time-user-container{
+        margin-bottom: 8rem;
+    }
+
     #form-updates-time-user{
         margin: 0 25rem 1rem;
     }
