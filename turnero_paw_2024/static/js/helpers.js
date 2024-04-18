@@ -84,11 +84,9 @@ export function generateSchedules() {
     currentDateDate.textContent = getMonthName(currentMonth) + ` de ${currentYear}`;
 
     const windowWidth = getWindowWidth();
-    if (windowWidth >= 768 && windowWidth <= 1080) {
+    if (windowWidth >= 768 ) {
         selectedDaySchedule.style.maxHeight = '24rem';
-    } else {
-        selectedDaySchedule.style.maxHeight = '15rem';
-    }
+    } 
     selectedDaySchedule.style.marginTop = '1rem';
     const infoSection = document.getElementById('info-section');
     infoSection.style.display = 'flex';
