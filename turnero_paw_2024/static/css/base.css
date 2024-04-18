@@ -48,8 +48,20 @@ a {
 }
 
 @media only screen and (min-width: 1081px) {
+    body {
+        font-size: 24px;
+    }
+
     input, select{
         height: 2.5rem;
+        font-size: 1.2rem;
+    }
+
+    textarea{
+        font-size: 1.2rem;
+    }
+
+    button, a{
         font-size: 1.2rem;
     }
 }

@@ -41,29 +41,36 @@
     #form-login button{
         margin-top: .5rem;
         width: 15rem;
+        font-size: 1.5rem;
         padding: 1rem 0;
-        font-size: 1rem;
     }
 
     .register-user{
         width: 20rem;
-        height: 3rem;
+        padding: 2rem 0;
     }
 }
 
 @media only screen and (min-width: 1081px) {
     #form-login{
         font-size: 1.5rem;
-        margin: 3rem 20rem 3rem;
+        margin: 8rem 40rem 3rem;
+    }
+    #form-login input{
+        height: 3rem;
     }
 
     #form-login button{
         width: 20rem;
         height: 3rem;
+        font-size: 1.5rem;
+        margin: 3rem 0;
     }
 
     .register-user{
         width: 20rem;
         height: 3rem;
+        font-size: 1.5rem;
+        margin-bottom: 5rem;
     }
 }

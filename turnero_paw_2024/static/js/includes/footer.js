@@ -1,13 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const footerCardsContainer = document.getElementById('footer-cards-container');
-
-    const rect = footerCardsContainer.getBoundingClientRect();
-    const posicionY = rect.top + window.scrollY;
-    console.log('La posición Y del elemento es:', posicionY);
-
-    if (posicionY < 400){
-        footerCardsContainer.style.marginTop = "23rem";
-    }
     
     fetch('/aditionals/aditional-information/')
         .then(response => response.json())
@@ -37,16 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 footerCardsContainer.appendChild(card);
             });
 
-            // Calcular la altura restante de la pantalla
-            // const windowHeight = window.innerHeight;
-            // const mainHeight = document.querySelector('main').offsetHeight;
-            // const footerHeight = footerCardsContainer.offsetHeight;
-            // const remainingHeight = windowHeight - mainHeight;
+            const footerContainer = document.querySelector('footer');
 
-            // Ajustar la altura del footer para llenar el espacio restante
-            // if (remainingHeight > footerHeight) {
-            //     footerCardsContainer.style.height = remainingHeight + 'px';
-            // }
+            const footerRect = footerCardsContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            const spaceBelowFooter = windowHeight - footerRect.bottom;
+            if(spaceBelowFooter > 0){
+                footerCardsContainer.style.position = "absolute";
+                footerCardsContainer.style.bottom = "0";
+            }
+            
         })
         .catch(error => console.error('Error fetching additional information:', error));
 });
