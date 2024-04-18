@@ -50,7 +50,7 @@
             <label for="picture">Foto:</label>
             {{ form.picture }}
 
-            <button type="submit">
+            <button id="form-register__button" type="submit">
                 Registrar
             </button>
         </form>
@@ -58,5 +58,7 @@
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/timerRemover.js' %}" ></script>
+    <script type="module" src="{% static 'js/register_spinner.js' %}" ></script>
     <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
+    
 {% endblock content %}

@@ -21,6 +21,30 @@
     margin: 1rem 0;
 }
 
+.spinner-button {
+    transition: opacity 0.75s, visibility 0.75s;
+}
+
+.spinner-hidden{
+    display: none;
+}
+
+.spinner-button::after{
+    content: "";
+    display: inline-block;
+    width: .5rem;
+    height: .5rem;
+    border: .2rem solid #dddddd;
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.75s ease infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #form-register{
         margin: 1rem 2rem;
@@ -29,6 +53,12 @@
     #form-register button{
         margin-top: 1rem;
         width: 15rem;
+    }
+
+    .spinner-button::after{
+        width: .7rem;
+        height: .7rem;
+        border: .3rem solid #dddddd;
     }
 }
 
@@ -42,5 +72,11 @@
         margin-top: 1rem;
         width: 20rem;
         height: 3rem;
+    }
+
+    .spinner-button::after{
+        width: 1rem;
+        height: 1rem;
+        border: .5rem solid #dddddd;
     }
 }

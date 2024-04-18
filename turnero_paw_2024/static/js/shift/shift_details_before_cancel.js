@@ -50,11 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelConfirmationButton.textContent = "";
         showSpinner();
         const description = descriptionTextarea.value;
-        console.log("description", description)
         const shiftId = form.getAttribute('action').split('/').slice(-2, -1)[0]; 
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        console.log('ID del turno:', shiftId);
-        console.log('Descripción del cancelamiento:', description);
+        
         fetch(`/shift/user-cancel-shift/${shiftId}/`, {
             method: 'POST',
             headers: {
@@ -67,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
-            console.log("daTA ES", data)
             if (data && data.redirect_url) {
                 window.location.href = data.redirect_url;
             } else if (data && data.error_message) {
