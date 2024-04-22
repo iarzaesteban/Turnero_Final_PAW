@@ -62,6 +62,11 @@
     
 }
 
+.pagination-container {
+    position: relative;
+    left: 5rem;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     .users-attentions-times-container{
         margin: 1rem 2rem;
@@ -75,6 +80,11 @@
         font-size: 1rem;
     }
 
+    .pagination-container {
+        position: relative;
+        left: 14rem;
+    }
+
 }
 
 @media only screen and (min-width: 1081px) {
@@ -84,5 +94,10 @@
 
     .users-attentions-times__section{
         width: 40rem;
+    }
+
+    .pagination-container {
+        position: relative;
+        left: 25rem;
     }
 }

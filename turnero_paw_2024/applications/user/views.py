@@ -370,13 +370,17 @@ class SendEmailView(LoginRequiredMixin, FormView):
 @login_required
 def update_attentions_times(request):
     current_user = request.user
-    users = Users.objects.exclude(
-                username=current_user.username
-            ).exclude(
-                start_time_attention__isnull=True
-            ).exclude(
-                end_time_attention__isnull=True
-            )
+    users = Users.objects.all()
+            
+    paginator = Paginator(users, 5)
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    
     return render(request, 'user/update_attentions_times.html', {'users': users})
 
 @login_required

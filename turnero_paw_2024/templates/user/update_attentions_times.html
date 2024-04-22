@@ -7,8 +7,10 @@
 <link rel="preload" href="{% static 'css/base.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
-            as="style" onload="this.onload=null;this.rel='stylesheet'"> 
-<link rel="preload" href="{% static 'css/user/attentions-times-users.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/pagination.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/attentions-times-users.css' %}"
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/footer.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -18,7 +20,6 @@
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
     <h2 class="users-attentions-times-title">Horarios de Atención de los Operadores</h2>
     <section class="users-attentions-times-container">
-        
         {% if users %}
             {% for user in users %}
                 <section class="users-attentions-times__section">
@@ -52,6 +53,26 @@
             {% endfor %}
         {% else %}
             <p>No existen otros operadores.</p>
+        {% endif %}
+    
+        {% if users %}
+            <section class="pagination-container">
+                <span class="step-links">
+                    {% if users.has_previous %}
+                        <a href="?page=1">1</a>
+                        <a href="?page={{ users.previous_page_number }}"> < </a>
+                    {% endif %}
+                    
+                    <span class="current">
+                        Página {{ users.number }} de {{ users.paginator.num_pages }}
+                    </span>
+                    
+                    {% if users.has_next %}
+                        <a href="?page={{ users.next_page_number }}"> > </a>
+                        <a href="?page={{ users.paginator.num_pages }}">{{ users.paginator.num_pages }}</a>
+                    {% endif %}
+                </span>
+            </section>
         {% endif %}
     </section>
     {% include 'includes/footer.html' %}
