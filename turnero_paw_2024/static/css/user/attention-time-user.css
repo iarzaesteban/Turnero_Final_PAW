@@ -79,4 +79,9 @@
         height: 3rem;
         width: 20rem;
     }
+
+    .pagination-container{
+        position: absolute;
+        right: 10rem;
+    }
 }

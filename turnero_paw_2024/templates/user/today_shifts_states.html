@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock title %}
+{% block links %}
+<link rel="preload" href="{% static 'css/reset.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/base.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/header.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'"> 
+<link rel="preload" href="{% static 'css/user/pagination.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/today-shifts-states.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/modal_update_shift.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/footer.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+{% endblock links %}
+{% block content %}
+    {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
+    {% include 'includes/modal_update_shift.html' %}
+    
+    <section class="confirm-shifts-container-container">
+        <h2 class="confirm-shifts-title">{{ title }}</h2>
+        {% for shift in list_shift %}
+                <section id="confirm-shifts-container__section">
+                        {% if error_message %}
+                            <p class="error-message">{{ error_message }}</p>
+                        {% endif %}
+                        <p>
+                            <strong>
+                                Solicitado por:
+                            </strong>   
+                            {{ shift.id_person.last_name }}
+                            {{ shift.id_person.first_name }} 
+                        </p>
+                        <p>
+                            <strong>
+                                Email:
+                            </strong> 
+                                {{ shift.id_person.email }}
+                        </p>
+                        <p>
+                            <strong>
+                                Fecha:
+                            </strong> 
+                                {{ shift.date }}
+                        </p>
+                        <p>
+                            <strong>
+                                Hora:
+                            </strong> 
+                                {{ shift.hour }}
+                        </p>             
+                </section>
+                {% empty %}
+                    <section id="confirm-shifts-container__section">
+                        <p>No Hay {{ title }}</p>
+                    </section>
+                {% endfor %}
+                {% if list_shift%}
+                    <section class="pagination-container">
+                        <span class="step-links">
+                            {% if list_shift.has_previous %}
+                                <a href="?page=1&state={{ state }}">1</a>
+                                <a href="?page={{ list_shift.previous_page_number }}&state={{ state }}"> < </a>
+                            {% endif %}
+                            
+                            <span class="current">
+                                Página {{ list_shift.number }} de {{ list_shift.paginator.num_pages }}
+                            </span>
+                            
+                            {% if list_shift.has_next %}
+                                <a href="?page={{ list_shift.next_page_number }}&state={{ state }}"> > </a>
+                                <a href="?page={{ list_shift.paginator.num_pages }}&state={{ state }}">{{ list_shift.paginator.num_pages }}</a>
+                            {% endif %}
+                        </span>
+                    </section>
+                {%endif%}
+
+        <a href="{% url 'home-user' %}" 
+            class="today-shifts-states__close-btn">
+            Cerrar
+        </a>
+    </section>
+    {% include 'includes/footer.html' %}
+    <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
+{% endblock content %}

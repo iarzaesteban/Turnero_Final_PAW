@@ -4,6 +4,7 @@ import json
 from dateutil import parser
 from collections import defaultdict
 from datetime import datetime, timedelta
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -227,31 +228,42 @@ def cancel_shift(request):
         return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
-@login_required
-def get_shifts_today(request):
-    state = request.GET.get('state')
-    today = datetime.now()
-    shifts_today = {}
-    if state == "confirmado":
-        shifts_today = Shift.objects.filter(
-                                date=today, 
-                                id_user=request.user.id, 
-                                id_state__short_description=state)
-    else:
-        shifts_today = Shift.objects.filter(
-                                date=today, 
-                                id_state__short_description=state)
-
-    shifts_list = []
-    for shift in shifts_today:
-        shifts_list.append({
-            'date': shift.date,
+def serialize_shifts(page_obj):
+    print(f"page_obj es {page_obj}",flush=True)
+    return [{'date': shift.date,
             'hour': shift.hour,
             'full_name': shift.id_person.last_name + " " + shift.id_person.first_name,
             'mail': shift.id_person.email,
-            'id_person': str(shift.id_person),
-        })
-    return JsonResponse({'shifts_today': shifts_list})
+            'id_person': str(shift.id_person),} for shift in page_obj]
+    
+@login_required
+def get_shifts_today(request):
+    state = request.GET.get('state')
+    title = f"Turnos {state}s para hoy"
+    today = datetime.now()
+    list_shift = {}
+    if state == "confirmado":
+        list_shift = Shift.objects.filter(
+                                date=today,
+                                id_user=request.user.id, 
+                                id_state__short_description=state).order_by("hour")
+    else:
+        list_shift = Shift.objects.filter(
+                                date=today,
+                                id_state__short_description=state).order_by("hour")
+        
+        
+    paginator = Paginator(list_shift, 5)
+    page_number = request.GET.get("page")
+    try:
+        list_shift = paginator.page(page_number)
+    except PageNotAnInteger:
+        list_shift = paginator.page(1)
+    except EmptyPage:
+        list_shift = paginator.page(paginator.num_pages)
+    return render(request, 'user/today_shifts_states.html', {'list_shift': list_shift, 
+                                                             'title': title,
+                                                             'state': state})
 
 class ConfirmShiftView(LoginRequiredMixin, View):
     def get(self, request, shift_id):

@@ -8,8 +8,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'"> 
-<link rel="preload" href="{% static 'css/user/attentions-times-users.css' %}" 
-            as="style" onload="this.onload=null;this.rel='stylesheet'">   
+<link rel="preload" href="{% static 'css/user/user-all-shifts.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/footer.css' %}" 
@@ -50,6 +50,27 @@
             </span>
         </section>
         {% endfor %}
+
+        {% if user_all_shifts%}
+            <section class="pagination-container">
+                <span class="step-links">
+                    {% if user_all_shifts.has_previous %}
+                        <a href="?page=1">1</a>
+                        <a href="?page={{ user_all_shifts.previous_page_number }}"> < </a>
+                    {% endif %}
+                    
+                    <span class="current">
+                        Página {{ user_all_shifts.number }} de {{ user_all_shifts.paginator.num_pages }}
+                    </span>
+                    
+                    {% if user_all_shifts.has_next %}
+                        <a href="?page={{ user_all_shifts.next_page_number }}"> > </a>
+                        <a href="?page={{ user_all_shifts.paginator.num_pages }}">{{ user_all_shifts.paginator.num_pages }}</a>
+                    {% endif %}
+                </span>
+            </section>
+        {%endif%}
+                
     </section>
     <a href="{% url 'get-attentions-times' %}" 
         class="users-attentions-times__close-btn">

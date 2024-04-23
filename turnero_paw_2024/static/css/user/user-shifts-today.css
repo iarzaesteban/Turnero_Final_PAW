@@ -112,7 +112,6 @@
     }
 
     .pagination-container {
-        position: relative;
         left: 14rem;
     }
 
@@ -128,7 +127,6 @@
     }
 
     .pagination-container {
-        position: relative;
-        left: 18rem;
+        left: 16rem;
     }
 }

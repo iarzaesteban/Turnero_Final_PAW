@@ -370,7 +370,13 @@ class SendEmailView(LoginRequiredMixin, FormView):
 @login_required
 def update_attentions_times(request):
     current_user = request.user
-    users = Users.objects.all()
+    users = Users.objects.exclude(
+                username=current_user.username
+            ).exclude(
+                start_time_attention__isnull=True
+            ).exclude(
+                end_time_attention__isnull=True
+            )
             
     paginator = Paginator(users, 5)
     page = request.GET.get('page')
@@ -402,18 +408,41 @@ def get_confirm_shifts_today(request):
 
 @login_required
 def view_user_shifts_today(request, username):
+    # obtenemos todos los turnos confirmados para hoy del usuario seleccionado
     user_shifts_today = Shift.objects.filter(
-                                    id_user__username=username, 
-                                    date=datetime.date.today())
+                                id_user__username=username, 
+                                id_state__short_description='confirmado',
+                                date=datetime.date.today())
+    
+    paginator = Paginator(user_shifts_today, 5)
+    page_number = request.GET.get("page")
+    try:
+        user_shifts_today = paginator.page(page_number)
+    except PageNotAnInteger:
+        user_shifts_today = paginator.page(1)
+    except EmptyPage:
+        user_shifts_today = paginator.page(paginator.num_pages)
     return render(request, 'user/user_shifts_today.html', {'user_shifts_today': user_shifts_today,
                                                            'username': username})
 
 @login_required
 def view_user_all_shifts(request, username):
+    # Obtenemos los turnos confirmados por el usuario seleccionado 
+    # del dia actial en adelante
     user_all_shifts = Shift.objects.filter(
                         id_user__username=username, 
                         id_state__short_description='confirmado',
                         date__gte=datetime.date.today())
+    
+    paginator = Paginator(user_all_shifts, 5)
+    page_number = request.GET.get("page")
+    try:
+        user_all_shifts = paginator.page(page_number)
+    except PageNotAnInteger:
+        user_all_shifts = paginator.page(1)
+    except EmptyPage:
+        user_all_shifts = paginator.page(paginator.num_pages)
+        
     return render(request, 'user/user_all_shifts.html', {'user_all_shifts': user_all_shifts,
                                                          'username': username})
 

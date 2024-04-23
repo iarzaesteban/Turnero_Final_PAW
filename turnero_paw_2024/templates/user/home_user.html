@@ -93,18 +93,22 @@
                         </span>
                     </section>
                 {% endif %}
-            <section id="shifts-confirm-state-section">
-                <section id="shifts-data-states-container">
+                <section id="shifts-confirm-state-section">
+                    <span class="shifts-confirm-state-section__spam">
+                        <button type="button" 
+                                class="get-shifts-btn" 
+                                data-state="pendiente" 
+                                data-url="{% url 'get_shifts_today' %}?state=pendiente">
+                            Turnos Pendientes Hoy
+                        </button>
+                        <button type="button" 
+                                class="get-shifts-btn" 
+                                data-state="confirmado" 
+                                data-url="{% url 'get_shifts_today' %}?state=confirmado">
+                            Turnos Confirmados Hoy
+                        </button>
+                    </span>
                 </section>
-                <spam class="shifts-confirm-state-section__spam">
-                    <button type="button" id="get-shift-pending-state-btn" data-state="pendiente">
-                        Turnos Pendientes Hoy
-                    </button>
-                    <button type="button" id="get-shift-confirm-state-btn" data-state="confirmado">
-                        Turnos Confirmados Hoy
-                    </button>
-                </spam>
-            </section>
             
         </section>
     {% include 'includes/footer.html' %}
