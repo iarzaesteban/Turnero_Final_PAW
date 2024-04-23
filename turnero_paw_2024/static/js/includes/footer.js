@@ -19,12 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 title.textContent = info.title;
                 const description = document.createElement('p');
                 description.textContent = info.description;
+                const link = document.createElement('a');
+                link.href = info.link;
+                link.textContent = info.link;
 
                 content.appendChild(title);
                 content.appendChild(description);
 
                 card.appendChild(icon);
                 card.appendChild(content);
+                card.appendChild(link);
 
                 footerCardsContainer.appendChild(card);
             });

@@ -31,6 +31,10 @@
     text-transform: uppercase;
     font-weight: bold;
 }
+.footer-card a{
+    text-decoration: underline;
+    color: #193a11;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #footer-cards-container{

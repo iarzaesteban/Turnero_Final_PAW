@@ -7,6 +7,7 @@ class AditionalInformation(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     icon = models.TextField()
+    link = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.title

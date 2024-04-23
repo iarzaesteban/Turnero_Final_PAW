@@ -23,7 +23,7 @@
     <h2 class="users-attentions-times-title">Turnos para hoy de {{ username }}</h2>
     <section class="users-attentions-times-container">
         {% if not user_shifts_today %}
-            <h3>No posee turnos para hoy</h3>
+            <h3>No posee turnos confirmados para hoy</h3>
         {% endif %}
         {% for shift in user_shifts_today %}
         <section class="users-attentions-times__section">
