@@ -13,6 +13,7 @@ urlpatterns = [
     path('get-confirm-shifts-today/', views.get_confirm_shifts_today, name='get-confirm-shifts-today'),
     path('user-logout/', views.LogoutView.as_view(), name='user-logout'), 
     path('update-password/', views.UpdatePasswordView.as_view(), name='update-password'),
+    path('update-footer/', views.UpdateFooterView.as_view(), name='update-footer'),
     path('update-picture/', views.UpdatePictureView.as_view(), name='update-picture'),
     path('user-verification/<pk>/', views.CodeVerificationView.as_view(), name='user-verification'),
     path('set-attention-times/', views.UpdateAttentionTimePage.as_view(), name='set-attention-times'),

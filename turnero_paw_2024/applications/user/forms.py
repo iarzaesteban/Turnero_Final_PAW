@@ -12,6 +12,16 @@ class UserRegisterForm(forms.Form):
     last_name = forms.CharField(label='Apellido')
     email = forms.EmailField(label='Email')
     picture = forms.ImageField(label='Imagen', required=False)
+    
+
+class UserUpdateFooterForm(forms.Form):
+    title = forms.CharField(label='Título', max_length=50)
+    description = forms.CharField(label='Descripcion')
+    link = forms.CharField(label='Ruta del Enlace', required=False)
+    icon = forms.ImageField(label='Icono', required=False)
+    icon_base64 = forms.CharField(label='icon_base64', required=False)
+    
+    
 class LoginForm(forms.Form):
     username = forms.CharField(
                             label='Usuario', 

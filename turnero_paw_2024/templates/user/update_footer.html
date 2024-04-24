@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Administrar footer de la página{% endblock title %}
+{% block links %}
+<link rel="preload" href="{% static 'css/reset.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/base.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/header.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/pagination.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/user/update-footer.css' %}"
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/footer.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
+            
+{% endblock links %}
+{% block content %}
+    {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
+    <section id="updates-footer-container">
+        <h2>Actualizar Pie de Página</h2>
+        <p class="updates-footer-container__user"> 
+            <strong>
+                Usuario:
+            </strong>
+            {{ user.username }}
+        </p>
+        <h3>Agregar nueva card al footer</h3>
+        <form id="form-updates-footer" class="form-updates-footer" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="title">Título:</label>
+            {{ form.title }}
+            <label for="description">Descripción:</label>
+            {{ form.description }}
+            <label for="icon">Icono:</label>
+            <input type="file" id="icon" name="icon">
+            <input type="hidden" id="hidden-icon" name="icon_base64">
+            <label for="link">Link:</label>
+            {{ form.link }}
+
+            <button type="submit">Crear Nueva Card Footer</button>
+        </form>
+        {% if aditional_information %}
+            <h3>Editar o Eliminar card del footer</h3>
+            <section class="updates-footer-container">
+                {% for a in aditional_information %}
+                    <section class="updates-footer-container__information">
+                        <p>
+                            <strong>
+                                Título:
+                            </strong>   
+                            {{ a.title }}
+                        </p>
+                        <p>
+                            <strong>
+                                Descripción:
+                            </strong> 
+                                {{ a.description }}
+                        </p>
+                        <p>
+                            <strong>
+                                Icono:
+                            </strong> 
+                            <img src="{{ a.icon }}" alt="Icono">
+                        </p>
+                        {% if a.link %}
+                            <p>
+                                <strong>
+                                    Link:
+                                </strong> 
+                                    {{ a.link }}
+                            </p>   
+                        {% endif %} 
+
+                        <span class="updates-footer-container-information__span"> 
+                            <button class="btn-edit" data-id="{{ a.pk }}">Editar</button>
+                            <button class="btn-delete" data-id="{{ a.pk }}">Borrar</button>
+                        </span>
+                    </section>
+                {% endfor %}
+            </section>
+        {% else %}
+            <h3>El footer no posee información</h3>
+        {% endif %}
+    </section>
+    {% include 'includes/footer.html' %}
+    <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/process_icon.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
+{% endblock content %}

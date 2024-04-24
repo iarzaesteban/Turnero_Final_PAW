@@ -16,6 +16,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Users
 from applications.shift.models import Shift
+from applications.aditional_information.models import AditionalInformation
 from . import forms
 from .helpers import generate_confirmation_code
 from app.settings.base import EMAIL_HOST_USER
@@ -60,7 +61,7 @@ class HomePage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',
-                                              date__gte=datetime.date.today())
+                                              date__gte=datetime.date.today()).order_by('hour')
         paginator = Paginator(pending_shifts, 5)
         page = self.request.GET.get('page')
         try:
@@ -147,6 +148,36 @@ class CodeVerificationView(FormView):
     def form_valid(self, form):
         Users.objects.filter(id=self.kwargs['pk']).update(is_active=True)
         return super(CodeVerificationView, self).form_valid(form)
+
+class UpdateFooterView(LoginRequiredMixin, FormView):
+    template_name = 'user/update_footer.html'    
+    form_class = forms.UserUpdateFooterForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        aditional_information = AditionalInformation.objects.all()
+        
+        context['aditional_information'] = aditional_information
+        return context
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            link = form.cleaned_data['link']
+            icon_base64 = form.cleaned_data['icon_base64']            
+            
+            AditionalInformation.objects.create(
+                title=title,
+                description=description,
+                link=link,
+                icon=icon_base64
+            )
+
+            return JsonResponse({'success': True})
+        
+        return JsonResponse({'Error': True})
     
 class UpdatePasswordView(LoginRequiredMixin, FormView):
     template_name = 'user/update_password.html'
