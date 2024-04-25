@@ -19,6 +19,7 @@
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     justify-content: space-around;
     align-items: center;
+    width: 95%;
 }
 
 .footer-card-icon {
@@ -38,20 +39,18 @@
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #footer-cards-container{
-        flex-direction: row;
-    }
-
-    .footer-card {
-        height: 26rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     }
 }
 
 @media only screen and (min-width: 1081px) { 
     #footer-cards-container{
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
     }
 
-    .footer-card {
-        height: 20rem;
+    .footer-card p{
+        margin: 2rem;
     }
 }
