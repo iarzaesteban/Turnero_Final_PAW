@@ -1,5 +1,5 @@
-import base64
-
+import json
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from .models import AditionalInformation
 
@@ -11,3 +11,29 @@ def aditional_information_api(request):
         info['icon'] = icon_base64
         serialized_information.append(info)
     return JsonResponse(serialized_information, safe=False)
+
+def delete_aditional_information(request, pk):
+    if request.method == 'POST':
+        aditional_information = get_object_or_404(AditionalInformation, pk=pk)
+        aditional_information.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+    
+def update_aditional_information(request, pk):
+    if request.method == 'POST':
+        aditional_information = get_object_or_404(AditionalInformation, pk=pk)
+        data = json.loads(request.body)
+        aditional_information.title = data['title']
+        aditional_information.description = data['description']
+        aditional_information.link = data['link']
+        aditional_information.icon = data['icon_base64']
+        print("Los atributos a modificar son :", flush=True)
+        print(f"TITLE : {aditional_information.title}", flush=True)
+        print(f"DESCRIPCION: {aditional_information.description}", flush=True)
+        print(f"LINK: {aditional_information.link}", flush=True)
+        print(f"ICON: {aditional_information.icon}", flush=True)
+        aditional_information.save()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
