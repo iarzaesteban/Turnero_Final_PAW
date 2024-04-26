@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('', include('applications.user.urls')),
     path('shift/', include('applications.shift.urls')),
@@ -27,3 +28,6 @@ urlpatterns = [
     path('persons/', include('applications.person.urls')),
     path('aditionals/', include('applications.aditional_information.urls')),
 ]
+
+handler404 = 'app.views.pagina_no_encontrada'
+handler500 = 'app.views.internal_server_error'
