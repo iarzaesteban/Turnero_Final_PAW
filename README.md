@@ -35,7 +35,22 @@ Sistema de geston de turnos AR unlu
 7. Levantamos el proyecto:
    ```bash
    docker-compose up
-8. Ingresamos en el navegador:
+8. Abrimos otra terminal.
+9. Corremos las migraciones
+   ```bash
+   docker-compose exec web python3 manage.py makemigrations
+10. Corremos migrate:
+    ```bashd
+    docker-compose exec web python3 manage.py migrate
+11. Cargamos la base de datos:
+    ```bash
+    docker-compose run --rm web python manage.py loaddata role
+    docker-compose run --rm web python manage.py loaddata state
+    docker-compose run --rm web python manage.py loaddata aditional_information
+12. Creamos un usuario:
+    ```bash
+    docker-compose exec web python3 manage.py createsuperuser
+14. Ingresamos en el navegador:
    http://localhost:8000
 
 
