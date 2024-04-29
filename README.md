@@ -20,19 +20,22 @@ Sistema de geston de turnos AR unlu
 2. Clona el repositorio:
    ```bash
     git clone https://github.com/iarzaesteban/Turnero_Final_PAW.git
-3. Crea un enlace simbólico:
+3. Ingresar al proyecto:
    ```bash
-   sudo ln -s ~/Turnero_Final_PAW/turnero_paw_2024 /opt/turnero_paw_2024
-4. Ingresamos al proyecto
-   ```bash
-   cd /opt/turnero_paw_2024
-5. Cambiamos branch:
+   cd Turnero_Final_PAW
+4. Cambiamos branch:
    ```bash
    git checkout develop
-6. Levantamos el proyecto:
+5. Crea un enlace simbólico:
+   ```bash
+   sudo ln -s ~/Turnero_Final_PAW/turnero_paw_2024 /opt/turnero_paw_2024
+6. Ingresamos al proyecto
+   ```bash
+   cd /opt/turnero_paw_2024
+7. Levantamos el proyecto:
    ```bash
    docker-compose up
-7. Ingresamos en el navegador:
+8. Ingresamos en el navegador:
    http://localhost:8000
 
 
