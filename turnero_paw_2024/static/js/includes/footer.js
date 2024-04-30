@@ -37,12 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const windowHeight = window.innerHeight;
 
             const spaceBelowFooter = windowHeight - footerRect.bottom;
-            if(spaceBelowFooter > 0){
-                footerCardsContainer.style.position = "absolute";
-                footerCardsContainer.style.bottom = "0";
+            if(spaceBelowFooter >= 0){
+                footerCardsContainer.style.position = "relative";
+                footerCardsContainer.style.top = "15rem";
             }
-            
-            
         })
         .catch(error => console.error('Error fetching additional information:', error));
 });

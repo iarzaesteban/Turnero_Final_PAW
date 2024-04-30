@@ -16,14 +16,12 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.urls import reverse
 from django.contrib.auth.models import AnonymousUser
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.exceptions import RefreshError
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from . import helpers
-from app.settings.base import EMAIL_HOST_USER
 from applications.shift.models import Shift
 from applications.state.models import State
 from applications.person.models import Person
@@ -35,37 +33,32 @@ class IndexView(TemplateView):
 
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
-CREDENTIALS_FILE = './json_google/credential_calendar.json'
+CREDENTIALS_FILE = './json_google/credential_keys.json'
+
+def get_credentials():
+    creds = None
+
+    if not creds or not creds.valid:
+        # Carga las credenciales de la cuenta de servicio desde el archivo JSON
+        creds = service_account.Credentials.from_service_account_file(
+            CREDENTIALS_FILE, scopes=SCOPES
+        )
+
+    return creds
 
 def get_google_calendar_events(selected_date):
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                CREDENTIALS_FILE, SCOPES
-            )
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+    creds = get_credentials()
 
     try:
-        respone = {}
         events_get = []
         service = build("calendar", "v3", credentials=creds)
 
         next_day = dt.datetime.strptime(selected_date, "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(days=1)
         next_day_str = next_day.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-
         # Call the Calendar API
         # Nos traemos los eventos del día
         events_result = (
@@ -77,11 +70,11 @@ def get_google_calendar_events(selected_date):
                 maxResults=10,
                 singleEvents=True,
                 orderBy="startTime",
+                timeZone="America/Argentina/Buenos_Aires"
             )
             .execute()
         )
         events = events_result.get("items", [])
-        
         start_end_times = Users.objects.aggregate(
             earliest_start_time=Min('start_time_attention'),
             latest_end_time=Max('end_time_attention')
@@ -140,8 +133,7 @@ def get_google_calendar_events(selected_date):
 
 def add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime):
     event_timezone = 'America/Argentina/Buenos_Aires'
-
-    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    creds = get_credentials()
     service = build('calendar', 'v3', credentials=creds)
     event = {
         'summary': event_summary,
@@ -176,7 +168,6 @@ def get_list_dates(request):
 
 
 @csrf_exempt
-@login_required
 def confirm_shift(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -194,7 +185,6 @@ def confirm_shift(request):
         confirmation_code = helpers.generate_confirmation_code()
         cancelation_url = request.build_absolute_uri(reverse('cancel_shift')) + f'?confirmation_code={confirmation_code}'
         shift = helpers.create_shift(selected_date_time, email, confirmation_code, cancelation_url)
-        
         event_data = {
             'shift_id': shift.id,
             'person_name': f"{shift.id_person.last_name} {shift.id_person.first_name}"
@@ -203,8 +193,9 @@ def confirm_shift(request):
         event_description = f"Fecha: {shift.date}, Hora: {shift.hour}"
         shift_date = datetime.strptime(shift.date, '%Y-%m-%d').date()
         shift_time = datetime.strptime(shift.hour+":00", '%H:%M:%S').time()
-        start_datetime = datetime.combine(shift_date, shift_time)  
-        end_datetime = start_datetime + timedelta(minutes=30) 
+        
+        start_datetime = datetime.combine(shift_date, shift_time)
+        end_datetime = start_datetime + timedelta(minutes=30)
 
         add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime)
         obj_date = datetime.strptime(shift.date, '%Y-%m-%d')
@@ -229,7 +220,6 @@ def cancel_shift(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 def serialize_shifts(page_obj):
-    print(f"page_obj es {page_obj}",flush=True)
     return [{'date': shift.date,
             'hour': shift.hour,
             'full_name': shift.id_person.last_name + " " + shift.id_person.first_name,
