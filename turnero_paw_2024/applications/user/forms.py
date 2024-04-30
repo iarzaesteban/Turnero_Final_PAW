@@ -112,3 +112,17 @@ class UpdateAttentionTimeUserForm(forms.Form):
     )
     
     username = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+
+class ShiftFilterForm(forms.Form):
+    state_choices = State.objects.values_list('short_description', 'description')
+    state_choices = [('', 'Seleccione un estado')] + list(state_choices)
+    state = forms.ChoiceField(choices=state_choices, required=True,)
+    start_date = forms.DateField(
+                        label='Fecha de inicio', 
+                        required=True,
+                        widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(
+                        label='Fecha de fin', 
+                        required=True,
+                        widget=forms.DateInput(attrs={'type': 'date'}))
