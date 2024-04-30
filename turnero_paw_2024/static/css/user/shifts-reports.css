@@ -66,6 +66,7 @@
 
 #export-button:disabled{
     background-color: #888;
+    cursor: not-allowed;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){

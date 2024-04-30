@@ -1,9 +1,9 @@
 from .base import *
 import os
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # DEBUG = True
 
