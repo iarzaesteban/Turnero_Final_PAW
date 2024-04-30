@@ -6,7 +6,7 @@
     align-items: center;
     border: .1rem solid #ccc;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-    background-color: #cfd8d4;
+    background-color: #466959;
 }
 
 .footer-card {
@@ -26,15 +26,19 @@
     width: 3rem;
     height: 3rem;
     margin-bottom: 1rem;
+    background-color: white;
+    border-radius: 50%;
+    border: .5rem solid rgb(255, 255, 255);
 }
 
 .footer-card-content h3 {
     text-transform: uppercase;
     font-weight: bold;
+    color: #ffffff;
 }
 .footer-card a{
     text-decoration: underline;
-    color: #193a11;
+    color: #ffffff;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
@@ -45,6 +49,10 @@
 }
 
 @media only screen and (min-width: 1081px) { 
+    .footer-card {
+        height: 25rem;
+    }
+    
     #footer-cards-container{
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
