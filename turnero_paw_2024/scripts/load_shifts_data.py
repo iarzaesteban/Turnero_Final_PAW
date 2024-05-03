@@ -83,8 +83,8 @@ def run():
         id_state = random.choice(State.objects.all())
 
         confirmation_code = generate_confirmation_code()
-        cancellation_url = f'http://localhost:8000/cancel_shift?confirmation_code={confirmation_code}'
-
+        cancellation_url = f'http://localhost:8000/shift/cancel-shift/?confirmation_code={confirmation_code}'
+                        
 
         shift_fields = {
             'date': date,

@@ -91,3 +91,29 @@
         height: 1rem;
     }
 }
+
+@media only screen and (min-width: 1081px) {
+    .modal-content {
+        margin: 20% auto;
+        height: 25rem;
+    }
+
+    #cancel-description{
+        height: 15rem;
+    }
+
+    .modal-buttons {
+        margin-top: 2rem;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+
+    .modal-buttons button {
+        width: 12rem;
+        height: 4rem;
+    }
+
+}

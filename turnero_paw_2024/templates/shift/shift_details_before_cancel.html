@@ -12,6 +12,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/shift/modal_cancel_shift.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/footer.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' %}
@@ -48,4 +50,5 @@
     
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/shift/shift_details_before_cancel.js' %}" ></script>
+    <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 {% endblock content %}

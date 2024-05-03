@@ -25,7 +25,7 @@
       "fields": {
         "first_name": "Pepe",
         "last_name": "Juarez",
-        "email": "iarzaesteban94@gmail.com",
+        "email": "pepejuarez@gmail.com",
         "id_user": "3"
       }
     },
@@ -35,7 +35,7 @@
       "fields": {
         "first_name": "Juan",
         "last_name": "Perez",
-        "email": "iarzaesteban94@gmail.com",
+        "email": "juanperez@gmail.com",
         "id_user": "4"
       }
     },
@@ -45,7 +45,7 @@
       "fields": {
         "first_name": "Pedro",
         "last_name": "Pedrines",
-        "email": "iarzaesteban94@gmail.com",
+        "email": "pedropedrines@gmail.com",
         "id_user": "5"
       }
     }

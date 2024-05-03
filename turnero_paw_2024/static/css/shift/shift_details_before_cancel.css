@@ -50,3 +50,11 @@ h3{
     }
 
 }
+
+@media only screen and (min-width: 1081px) {
+    .shift-details-container__form input{
+        height: 4rem;
+        width: 25rem;
+    }
+    
+}
