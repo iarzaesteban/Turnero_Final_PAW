@@ -16,7 +16,6 @@ def get_secret(secret_name, secrets=secret):
         msg = "La variable %s no existe" %  secret_name
         raise ImportError
 
-
 SECRET_KEY = get_secret('SECRET_KEY')
 
 # Application definition
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     #MY APPS
     'applications.user',
     'applications.tests',

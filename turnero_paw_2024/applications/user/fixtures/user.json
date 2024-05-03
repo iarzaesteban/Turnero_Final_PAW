@@ -1,18 +1,58 @@
 [
     {
-      "model": "user.Users",
-      "pk": 1,
-      "fields": {
-        "username": "admin",
-        "password": "cb89da734fb030bf88a327b236a3055fda6a3a2255c04ade5c37700713c89c7b"
-      }
+        "model": "user.Users",
+        "pk": 1,
+        "fields": {
+            "username": "admin",
+            "password": "159159"
+        }
     },
     {
-      "model": "user.Users",
-      "pk": 2,
-      "fields": {
-        "username": "esteban",
-        "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"
-      }
-    }    
+        "model": "user.Users",
+        "pk": 2,
+        "fields": {
+            "username": "esteban",
+            "password": "123456",
+            "start_time_attention": "08:30:00",
+            "end_time_attention": "16:30:00",
+            "has_set_attention_times": true,
+            "has_default_password": true
+        }
+    },
+    {
+        "model": "user.Users",
+        "pk": 3,
+        "fields": {
+            "username": "pepe",
+            "password": "123456",
+            "start_time_attention": "08:00:00",
+            "end_time_attention": "17:00:00",
+            "has_set_attention_times": true,
+            "has_default_password": true
+        }
+    },
+    {
+        "model": "user.Users",
+        "pk": 4,
+        "fields": {
+            "username": "juan",
+            "password": "123456",
+            "start_time_attention": "09:00:00",
+            "end_time_attention": "17:00:00",
+            "has_set_attention_times": true,
+            "has_default_password": true
+        }
+    },
+    {
+        "model": "user.Users",
+        "pk": 5,
+        "fields": {
+            "username": "pedro",
+            "password": "123456",
+            "start_time_attention": "09:00:00",
+            "end_time_attention": "17:00:00",
+            "has_set_attention_times": true,
+            "has_default_password": true
+        }
+    }
 ]
