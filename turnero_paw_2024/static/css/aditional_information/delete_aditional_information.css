@@ -41,6 +41,12 @@
     display: block;
 }  
 
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    #cancel-button{
+        margin-bottom: 1rem;
+    }
+}
+
 @media only screen and (min-width: 1081px) {
     .modal-content {
         margin: 20% auto;
@@ -55,6 +61,8 @@
     .modal-buttons{
         margin-top: 3rem;
     }
+
+    
 
     .modal-buttons button {
         width: 15rem;

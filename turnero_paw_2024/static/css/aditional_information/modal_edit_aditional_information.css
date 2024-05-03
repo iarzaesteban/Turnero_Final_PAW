@@ -11,7 +11,7 @@
 
 .modal-content-edit {
     background-color: white;
-    margin: 20% auto;
+    margin: 0 auto;
     padding: 20px;
     border: 1px solid #CCC;
     width: 75%;
@@ -38,8 +38,13 @@
     margin-top: 1rem;
 }
 
+.modal-content-edit img{
+    width: 2rem;
+    height: 2rem;
+}
+
 .modal-buttons button {
-    width: 15rem;
+    width: 10rem;
     margin: .5rem;
 }
 

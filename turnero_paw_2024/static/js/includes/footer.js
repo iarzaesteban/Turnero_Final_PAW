@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const footerCardsContainer = document.getElementById('footer-cards-container');
     
+
+    function getWindowWidth() {
+        return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    }
+
     fetch('/aditionals/aditional-information/')
         .then(response => response.json())
         .then(data => {
@@ -37,9 +42,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const windowHeight = window.innerHeight;
 
             const spaceBelowFooter = windowHeight - footerRect.bottom;
+            const windowWidth = getWindowWidth();
+
             if(spaceBelowFooter >= 0){
                 footerCardsContainer.style.position = "relative";
-                footerCardsContainer.style.top = "15rem";
+                if (windowWidth <= 768 ) {
+                    footerCardsContainer.style.top = "15rem";
+                }else{
+                    footerCardsContainer.style.top = "25rem";
+                }
+                
             }
         })
         .catch(error => console.error('Error fetching additional information:', error));
