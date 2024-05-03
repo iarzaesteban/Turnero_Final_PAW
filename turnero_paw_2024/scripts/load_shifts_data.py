@@ -42,10 +42,12 @@ def run():
         id_state = random.choice(State.objects.all())
 
         date = datetime.now().date()
+        random_minutes = random.randint(0, 1) * 30
+    
         hour = datetime.now().time().replace(
             hour=random.randint(earliest_start.hour, latest_end.hour),
-            minute=random.randint(0, 59),
-            second=random.randint(0, 59)
+            minute=random_minutes,
+            second=0
         )
 
         confirmation_code = generate_confirmation_code()
@@ -68,10 +70,12 @@ def run():
 
         random_day = random.randint(1, days_in_month)
         date = datetime(current_year, random_month, random_day)
+        random_minutes = random.randint(0, 1) * 30
+    
         hour = datetime.now().time().replace(
             hour=random.randint(earliest_start.hour, latest_end.hour),
-            minute=random.randint(0, 59),
-            second=random.randint(0, 59)
+            minute=random_minutes,
+            second=0
         )
 
         id_user = random.choice(Users.objects.all())

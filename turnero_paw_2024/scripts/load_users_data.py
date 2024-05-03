@@ -9,13 +9,11 @@ def run():
         for user_data in users_data:
             username = user_data['fields']['username']
             password = user_data['fields']['password']
-            print("vamos a get los siguinetes atributos")
             start_time_attention = user_data['fields'].get('start_time_attention', '')
             end_time_attention = user_data['fields'].get('end_time_attention', '')
             has_set_attention_times = user_data['fields'].get('has_set_attention_times', False)
             has_default_password = user_data['fields'].get('has_default_password', False)
             print(f"username  -{username}-")
-            print(f"password  -{password}-")
 
             hashed_password = make_password(password)
             verification_code = generate_confirmation_code()
