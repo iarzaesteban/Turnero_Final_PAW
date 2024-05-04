@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
             openModal(data);
         })
         .catch(error => {
-            console.error("Error:", error);
             turnoModalBody.innerHTML = `<p>${error.message}</p>`;
             openModal({ error: error.message });
         });

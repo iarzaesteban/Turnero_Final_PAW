@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     finalyShiftLink.forEach(function(link) {
         link.addEventListener('click', function(event) {
-            console.log("clickeado finally btn")
             event.preventDefault();
             showModal("¿Estás seguro de pasar este turno a estado Completado?");
             confirmButton.onclick = function() {

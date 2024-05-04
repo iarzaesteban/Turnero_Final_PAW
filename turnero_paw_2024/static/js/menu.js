@@ -86,13 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (blob.type === 'image/jpeg') {
                 const imageUrl = URL.createObjectURL(blob);
                 userAvatar.src = imageUrl;
+                userAvatar.alt = "image avatar";
                 if  (currentUserAvatar){
                     currentUserAvatar.src = imageUrl;
                 }
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            userAvatar.alt = "image avatar";
         });
     }
     

@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleExportButton();
         })
         .catch(error => {
-            console.error('Error:', error);
+            setTimeout(() => window.location.reload(), 5000);
         });
     }
 
@@ -163,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function exportarExcel() {
-        console.log("EXPRTANTAsd")
         const tableData = [];
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
         
@@ -208,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.removeChild(a);
         })
         .catch(error => {
-            console.error('Error:', error);
+            setTimeout(() => window.location.reload(), 5000);
         });
     }
 

@@ -144,8 +144,6 @@ export function getMonthName(monthNumber) {
 export function changeMonth(value) {
     
     const changeMonth = currentMonth + value;
-    console.log("currentMonth",currentMonth);
-    console.log("changeMonth",changeMonth);
     
     if (changeMonth == currentMonth){
         setCurrentMonth(monthSelected.selectedIndex);

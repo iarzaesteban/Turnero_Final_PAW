@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         })
         .catch(error => {
-            console.error("Error:", error);
+            setTimeout(() => window.location.reload(), 5000);
         });
     });
 

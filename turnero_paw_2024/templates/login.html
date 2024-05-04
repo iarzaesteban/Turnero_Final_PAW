@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Inicio Sesion{% endblock title %}
+{% block description %}Página de login de la aplicación de turnos{% endblock description %}
 {% block links %}
 <link rel="preload" href="{% static 'css/reset.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -32,13 +33,13 @@
                             {% endfor %}
                     {% endfor %}
                 </section>
-            {% endif %}
+            {% endif %} 
             
             <section class="form-login__footer">
-                <button type="submit">Iniciar Sesion</button>
+                <button type="submit" aria-label="Iniciar Sesión">Iniciar Sesión</button>
             </section>
         </form>
-        <a class="register-user" href="{% url 'user-register' %}">Registrar Usuario</a>
+        <a class="register-user" href="{% url 'user-register' %}" aria-label="register">Registrar Usuario</a>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/timerRemover.js' %}" ></script>

@@ -89,7 +89,6 @@ function generateSchedules() {
     // Ocultamos el párrafo 'info-subtitle'
     const infoSubtitle = document.getElementById('info-subtitle');
     infoSubtitle.style.display = 'none';
-    console.log("responseEvents",responseEvents);
 
     const currentDateDay = document.getElementById('current-date-day');
     const currentDateDate = document.getElementById('current-date-date');
@@ -228,7 +227,6 @@ function changeMonth(value) {
         currentMonth = changeMonth;
     }
 
-    console.log("currentMonth es ", currentMonth);
     calendarBody.innerHTML = "";
     updateAtributesDate();
     generateCalendar();
@@ -283,7 +281,6 @@ function getMonthName(indice) {
 }
 
 function getGoogleCalendarEvents() {
-    console.log("getGoogleCalendarEvents es ");
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
     const formattedDate = selectedDate.toISOString();
     fetch('/get_google_calendar_events/', {
@@ -296,9 +293,7 @@ function getGoogleCalendarEvents() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data.events);  
         responseEvents = data.events;
-        console.log("getGoogleCalendarEvents es ");
         generateSchedules();
     })
     .catch(error => {

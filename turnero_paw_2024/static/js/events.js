@@ -13,9 +13,7 @@ import {
 
 export function getGoogleCalendarEvents() {
     const selectedDate = new Date(currentYear, currentMonth, currentDay);
-    console.log("selectedDate", selectedDate);
     const formattedDate = selectedDate.toISOString();
-    console.log("formattedDate", formattedDate);
     fetch('/shift/get_google_calendar_events/', {
         method: 'POST',
         headers: {
@@ -32,6 +30,6 @@ export function getGoogleCalendarEvents() {
         generateSchedules();
     })
     .catch(error => {
-        console.error('Error fetching Google Calendar events:', error);
+        setTimeout(() => window.location.reload(), 5000);
     });
 }

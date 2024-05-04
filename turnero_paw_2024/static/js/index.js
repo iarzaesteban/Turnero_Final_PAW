@@ -85,7 +85,6 @@ prevMonthButton.addEventListener('click', () => changeMonth(-1));
 nextMonthButton.addEventListener('click', () => changeMonth(1));
 
 selectMonth.addEventListener('change', () => {
-    console.log("Selecting month",selectMonth.value)
     const selectedMonthIndex = selectMonth.value;
     changeMonth(selectedMonthIndex - currentMonth);
 });

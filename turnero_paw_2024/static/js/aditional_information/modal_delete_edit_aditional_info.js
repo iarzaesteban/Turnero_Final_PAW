@@ -49,12 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => {
                 if (response.ok) {
                     window.location.reload();
-                } else {
-                    console.error('Error al eliminar el elemento');
                 }
             })
             .catch(error => {
-                console.error('Error al eliminar el elemento:', error);
+                setTimeout(() => window.location.reload(), 5000);
             });
         });
     }
@@ -65,8 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
         editLinkInput.value = link ;
         if (icon) {
             editIconPreview.src = icon;
+            editIconPreview.alt = "icon";
         } else {
             editIconPreview.src = "assets/not-image.png";
+            editIconPreview.alt = "not-image"
         }
         editModal.classList.add('show');
         editSaveButton.addEventListener('click', function() {
@@ -94,13 +94,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => {
                     if (response.ok) {
                         window.location.reload();
-                    } else {
-                        console.error('Error al editar el elemento');
                     }
                 })
                 .catch(error => {
-                    console.error('Error al editar el elemento:', error);
-                });
+                    setTimeout(() => window.location.reload(), 5000);                });
             };
         
             if (iconFile) {

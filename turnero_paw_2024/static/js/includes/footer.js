@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const icon = document.createElement('img');
                 icon.classList.add('footer-card-icon');
                 icon.src = info.icon;
+                icon.alt = info.title
 
                 const content = document.createElement('span');
                 content.classList.add('footer-card-content');
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title.textContent = info.title;
                 const description = document.createElement('p');
                 description.textContent = info.description;
+                description.style.fontWeight = "bold";
                 const link = document.createElement('a');
                 link.href = info.link;
                 link.textContent = info.link;
@@ -54,5 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
             }
         })
-        .catch(error => console.error('Error fetching additional information:', error));
+        .catch(error => {
+            const card = document.createElement('section');
+            card.classList.add('footer-card');
+            footerCardsContainer.appendChild(card);
+        });
 });

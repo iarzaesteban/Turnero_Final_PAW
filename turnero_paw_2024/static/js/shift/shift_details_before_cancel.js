@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal();
         })
         .catch(error => {
-            console.error('Error al enviar los datos al backend:', error);
             closeModal();
         });
     });

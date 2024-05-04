@@ -3,7 +3,7 @@
     {% if show_index_link %}
         <nav id="navbar" class="navbar">
             <section id="_items" class="nav-items">
-                <a href="shift/home/">Solicitar Turno</a>
+                <a href="shift/home/" aria-label="home" >Solicitar Turno</a>
             </section>
         </nav>
         <nav id="_toggle" class="nav-toggle">
@@ -16,17 +16,17 @@
     {% if user.is_authenticated %}
         <nav id="navbar" class="navbar">
             <section id="_items" class="nav-items">
-                <a href="{% url 'home-user' %}">Home</a>
-                <a href="{% url 'get-attentions-times' %}">Visualizar Horarios Operadores</a>
-                <a href="{% url 'get-confirm-shifts-today' %}">Visualizar Turnos Confirmados Hoy</a>
-                <a href="{% url 'send-email' %}">Enviar Mail</a>
-                <a href="{% url 'list-shifts-filter-views' %}">Reportes</a>
+                <a href="{% url 'home-user' %}" aria-label="home">Home</a>
+                <a href="{% url 'get-attentions-times' %}" aria-label="show-operator-times">Visualizar Horarios Operadores</a>
+                <a href="{% url 'get-confirm-shifts-today' %}" aria-label="show-today-shifts">Visualizar Turnos Confirmados Hoy</a>
+                <a href="{% url 'send-email' %}" aria-label="send-mail">Enviar Mail</a>
+                <a href="{% url 'list-shifts-filter-views' %}" aria-label="reports">Reportes</a>
             </section>
         </nav>
     {% else %}
         <nav id="navbar" class="navbar">
             <section id="_items" class="nav-items">
-                <a href="{% url 'home-user' %}">Home</a>
+                <a href="{% url 'home-user' %}" aria-label="home">Home</a>
             </section>
         </nav>
     {% endif %}
@@ -39,17 +39,17 @@
     {% endif %}
     <h1 id="title">Sistemas de turnos Autoridad Registro UNLu</h1>
     {% if show_avatar_user %}
-        <button type="button" id="header-avatar-btn">
+        <button type="button" id="header-avatar-btn" aria-label="avatar">
             <img id="user-avatar" src="{% static 'assets/user_avatar.png' %}" alt="User Avatar">
         </button>
         
         <section id="_items-user" class="nav-items-user">
-            <a href="{% url 'update-attention-time' %}">Modificar Horario de Atención</a>
-            <a href="{% url 'update-password' %}">Cambiar Contraseña</a>
-            <a href="{% url 'update-picture' %}">Cambiar Foto</a>
-            <a href="{% url 'user-register' %}">Crear Usuario</a>
-            <a href="{% url 'update-footer' %}">Actualizar Pie Página</a>
-            <a href="{% url 'user-logout' %}">Cerrar Sesion</a>
+            <a href="{% url 'update-attention-time' %}" aria-label="update-attention-time">Modificar Horario de Atención</a>
+            <a href="{% url 'update-password' %}" aria-label="update-password">Cambiar Contraseña</a>
+            <a href="{% url 'update-picture' %}" aria-label="update-picture">Cambiar Foto</a>
+            <a href="{% url 'user-register' %}" aria-label="create-user">Crear Usuario</a>
+            <a href="{% url 'update-footer' %}" aria-label="update-footer">Actualizar Pie Página</a>
+            <a href="{% url 'user-logout' %}" aria-label="signout">Cerrar Sesion</a>
         </section>
     {% endif %}
 </header>

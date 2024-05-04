@@ -4,11 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSpinner() {
         const registerButton = document.getElementById('form-register__button');
         registerButton.classList.add("spinner-button");
-        console.log("CLIECK desp de class BB")
     }
 
     registerForm.addEventListener('submit', function(event) {
-        console.log("Formulario enviado");
         const registerButton = document.getElementById('form-register__button');
         registerButton.textContent = "";
         showSpinner();

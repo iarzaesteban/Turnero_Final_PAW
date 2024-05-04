@@ -80,10 +80,8 @@ function restoreInfoSection() {
 export function requestShift() {
     if (validateEmailFormat(emailInput.value.trim())){
         const selectedDate = new Date(currentYear, currentMonth, currentDay, hourShift, minutesShift);
-        console.log("selectedDate", selectedDate);
 
         const formatDate = formattedDate(selectedDate);
-        console.log("formattedDate", formatDate);
         fetch('/shift/confirm_shift/', {
             method: 'POST',
             headers: {
@@ -119,7 +117,6 @@ export function requestShift() {
             }
         })
         .catch(error => {
-            console.error('Error al solicitar turno:', error);
             showErrorMessage('Error al solicitar turno');
         });
     } else {
