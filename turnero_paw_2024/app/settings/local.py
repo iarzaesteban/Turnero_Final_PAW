@@ -3,12 +3,8 @@ import os
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-# DEBUG = True
-
-# ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '2c7d-2800-af0-150a-bba2-1282-b2e1-bf6a-74ed.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://2c7d-2800-af0-150a-bba2-1282-b2e1-bf6a-74ed.ngrok-free.app']
 
 DATABASES = {
     'default': {
@@ -16,10 +12,11 @@ DATABASES = {
         'NAME': get_secret('DB_NAME'),
         'USER': get_secret('DB_USER'),
         'PASSWORD': get_secret('DB_PASSWORD'),
-        'HOST': 'db_postgres', #'172.21.0.2',
+        'HOST': 'db_postgres',
         'PORT': '5432',
     }
 }
+
 
 
 # Static files (CSS, JavaScript, Images)

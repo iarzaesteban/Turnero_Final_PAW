@@ -1,4 +1,5 @@
 import random
+import os
 import calendar
 from datetime import datetime, timedelta
 from applications.shift.models import Shift
@@ -51,18 +52,17 @@ def run():
         )
 
         confirmation_code = generate_confirmation_code()
-        cancellation_url = f'http://localhost:8000/cancel_shift?confirmation_code={confirmation_code}'
+        cancellation_url = (os.environ.get('NGROK_URL', 'http://localhost:8000') + f'/shift/cancel-shift/?confirmation_code={confirmation_code}')
 
         shift_fields = {
             'date': date,
             'hour': hour,
             'id_person': id_person,
-            'id_user': id_user,
+            'id_user': id_user if id_state.short_description != 'pendiente' else None,
             'id_state': id_state,
             'confirmation_code': confirmation_code,
             'confirmation_url': cancellation_url
         }
-
         shift = Shift.objects.create(**shift_fields)
         shift.save()
 
@@ -83,14 +83,14 @@ def run():
         id_state = random.choice(State.objects.all())
 
         confirmation_code = generate_confirmation_code()
-        cancellation_url = f'http://localhost:8000/shift/cancel-shift/?confirmation_code={confirmation_code}'
+        cancellation_url = (os.environ.get('NGROK_URL', 'http://localhost:8000') + f'/shift/cancel-shift/?confirmation_code={confirmation_code}')
                         
 
         shift_fields = {
             'date': date,
             'hour': hour,
             'id_person': id_person,
-            'id_user': id_user,
+            'id_user': id_user if id_state.short_description != 'pendiente' else None,
             'id_state': id_state,
             'confirmation_code': confirmation_code,
             'confirmation_url' : cancellation_url

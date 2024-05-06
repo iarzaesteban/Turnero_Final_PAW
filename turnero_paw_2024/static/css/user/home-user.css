@@ -47,6 +47,7 @@
     width: 100%;
     flex-direction: row;
     justify-content: space-evenly;
+    margin-top: 1rem;
 }
 
 #shifts-container-section__btns a{
@@ -69,7 +70,7 @@
 }
 
 .shifts-confirm-state-section__spam{
-    margin: 2rem .5rem;
+    margin: 3rem .5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

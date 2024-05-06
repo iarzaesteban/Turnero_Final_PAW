@@ -46,12 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
             turnoModalBody.innerHTML = `<p>${data.error}</p>`;
         } else {
             const turnoDetalle = data.turno_detalle;
+            console.log("turnodetalle es", turnoDetalle)
             const shiftDate = new Date(turnoDetalle.date);
-            const formattedDate = `${shiftDate.getDate()} de ${getMonthName(shiftDate.getMonth())} de ${shiftDate.getFullYear()}`;
+            const formattedDate = `${shiftDate.getDate() + 1} de ${getMonthName(shiftDate.getMonth())} de ${shiftDate.getFullYear()}`;
             const formattedHour = turnoDetalle.hour.slice(0, 5);
             turnoModalBody.innerHTML = `
                 <p><strong>Fecha:</strong> ${formattedDate}</p>
                 <p><strong>Hora:</strong> ${formattedHour}</p>
+                <p><strong>Estado:</strong> ${turnoDetalle.state}</p>
                 <p><strong>Nombre:</strong> ${turnoDetalle.first_name} ${turnoDetalle.last_name}</p>
                 <p><strong>Email:</strong> ${turnoDetalle.email}</p>
             `;

@@ -1,5 +1,6 @@
 import random
 import string
+import os
 import re
 from datetime import datetime
 
@@ -54,28 +55,28 @@ def is_mail(mail):
 #Le enviamos un mail al cliente indicando que se ha recibido el turno. 
 def send_mail_to_receiver(user, shift, is_receiver):
     if is_receiver:
+        URL = os.environ.get('NGROK_URL', 'http://localhost:8000')
         sender = EMAIL_HOST_USER
         receiver = shift.id_person.email
         asunto = "Respuesta de solicitud de turno."
         message = ("Su solicitud de turno ha sido " +
-            shift.id_state.short_description +
-            " por el usuario " + user.username + ".\n\n")
+           shift.id_state.short_description +
+           " por el usuario " + user.username + ".\n\n")
         if shift.id_state.short_description == "confirmado":
             message += ("Su código de verificación es " + shift.confirmation_code +
-                ", podra ingresarlo en la web http://localhost:8000/shift/home/ para recordar su turno en caso de ser necesario.\n" +
-            "En caso de querer cancelar su turno, puede hacerlo ingresando al siguiente enlace:\n" +
-            shift.confirmation_url + "\n\n" +
-            "Recuerde que debe hacerlo dos días previo al turno programado.\n\n" +
-            "Gracias, saludos!")
+                        ", podra ingresarlo en la web " + 
+                        URL + "/shift/home/" +
+                        " para recordar su turno en caso de ser necesario.\n" +
+                        "En caso de querer cancelar su turno, puede hacerlo ingresando al siguiente enlace:\n" +
+                        shift.confirmation_url + "\n\n" +
+                        "Recuerde que debe hacerlo dos días previo al turno programado.\n\n" +
+                        "Gracias, saludos!")
         else:
-            message += ("Si desea puede volver a solicitar su turno, para ello ingrese a la url http://localhost:8000.\n"+
+            message += ("Si desea puede volver a solicitar su turno, para ello ingrese a la url " +
+                        URL + ".\n"+
                         "Gracias, saludos!")
     else:
-        print("ENTRO AL ELSE ",flush=True)
         person = Person.objects.get(id_user=user.id)
-        print(f"sender  {shift.id_person.email}",flush=True)
-        print(f"user.id  {user.id}",flush=True)
-        print(f"receiver  {person.email}",flush=True)
         date_str = shift.date.strftime('%d/%m/%Y')
         hour_str = shift.hour.strftime('%H:%M:%S')
         sender = shift.id_person.email
@@ -83,7 +84,8 @@ def send_mail_to_receiver(user, shift, is_receiver):
         asunto = "Canecelación de turno."
         message = ( shift.id_person.last_name + " " + shift.id_person.first_name +
                     " ha cancelado el turno que contaba para el día " +
-                date_str + " a las " + hour_str +"hs" + ".\n\n")
+                date_str + " a las " + hour_str +"hs" + ".\n"
+                "Su email es "+ shift.id_person.email +".\n\n")
         if shift.description != "":
             message +=  ("Manifestó: '" + shift.description + "'.\n\n")            
            

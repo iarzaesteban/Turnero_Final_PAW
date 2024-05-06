@@ -26,5 +26,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
+    environment:
+      - NGROK_URL=${NGROK_URL:-http://localhost:8000}
     networks:
       - turnero_network

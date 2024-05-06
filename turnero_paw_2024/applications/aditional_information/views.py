@@ -28,11 +28,6 @@ def update_aditional_information(request, pk):
         aditional_information.description = data['description']
         aditional_information.link = data['link']
         aditional_information.icon = data['icon_base64']
-        print("Los atributos a modificar son :", flush=True)
-        print(f"TITLE : {aditional_information.title}", flush=True)
-        print(f"DESCRIPCION: {aditional_information.description}", flush=True)
-        print(f"LINK: {aditional_information.link}", flush=True)
-        print(f"ICON: {aditional_information.icon}", flush=True)
         aditional_information.save()
         return JsonResponse({'success': True})
     else:

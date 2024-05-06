@@ -377,6 +377,7 @@ class SearchShiftsView(View):
                 'hour': shift.hour,
                 'first_name': shift.id_person.first_name,
                 'last_name': shift.id_person.last_name,
+                'state': shift.id_state.description,
                 'email': shift.id_person.email,
             }
             return JsonResponse({'turno_detalle': turno_detalle})

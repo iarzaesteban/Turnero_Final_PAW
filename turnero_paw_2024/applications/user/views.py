@@ -311,7 +311,6 @@ def first_get(state, start_date, end_date):
     return list_shifts, query_number
 
 def serialize_shifts(page_obj):
-    print(f"page_obj es {page_obj}",flush=True)
     return [{'date': shift.date, 
              'hour': shift.hour, 
              'id_person': str(shift.id_person),
