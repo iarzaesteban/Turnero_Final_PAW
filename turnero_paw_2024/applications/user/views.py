@@ -80,6 +80,7 @@ class UserRegisterView(FormView):
     success_url = '/register/'
 
     def form_valid(self, form):
+        current_user = self.request.user
         username = form.cleaned_data.get('username')
         if Users.objects.filter(username=username).exists():
             messages.error(self.request, 'El usuario ingresado ya está en uso')
@@ -126,8 +127,10 @@ class UserRegisterView(FormView):
         message = "El codigo de verificacion es " \
                         + verification_code + \
                             " la hora es " + date_str
-                            
-        send_mail(asunto, message, EMAIL_HOST_USER, [person.email,])
+        if current_user:       
+            send_mail(asunto, message, EMAIL_HOST_USER, [person.email,])
+        else:
+            send_mail(asunto, message, EMAIL_HOST_USER, EMAIL_HOST_USER)
         return HttpResponseRedirect(
             reverse('user-verification',
                     kwargs={'pk': user.id})

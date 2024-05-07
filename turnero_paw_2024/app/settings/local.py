@@ -3,8 +3,8 @@ import os
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '2c7d-2800-af0-150a-bba2-1282-b2e1-bf6a-74ed.ngrok-free.app']
-CSRF_TRUSTED_ORIGINS = ['https://2c7d-2800-af0-150a-bba2-1282-b2e1-bf6a-74ed.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '92e9-2800-af0-150a-bba2-e9d1-16e3-def6-5259.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://92e9-2800-af0-150a-bba2-e9d1-16e3-def6-5259.ngrok-free.app']
 
 DATABASES = {
     'default': {
