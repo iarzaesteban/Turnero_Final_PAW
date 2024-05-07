@@ -52,14 +52,14 @@ Contamos con dos tipos de usuarios:
 * Operadores (cuentan con usuarios y gestionan los turnos)
 * Clientes (no cuentan con usuario)
 
-# Clientes
+### Clientes
 - Pueden solicitar un turno sin contar con un usuario.
 - Pueden verificar el estado de su turno
 - Pueden cancelar su turno (2 días previo al día del turno)
 - No pueden contar con mas de dos turnos pendiente
 
 
-# Operadores
+### Operadores
 - Puden visualizar turnos pendientes
 - Pueden visualizar turnos pendientes y confirmados para el día actual
 - Pueden visualizar un turno específico
@@ -75,7 +75,7 @@ Contamos con dos tipos de usuarios:
 - Pueden cerrar sesion
 
 
-# General
+### General
 - Los turnos solo se pueden solicitar solo del mes actual hasta tres en adelante, por ejemplo si nos encotramos en enero, se podrá solicitar turno en enero, febrero o marzo.
 - Los turnos solo se pueden solicitar cada 30 minutos.
 - Si tengo un operador que atendie de 08:00AM a 17:00PM y otro de 09:00AM a 18:00PM por ejemplo, en el horario de las 08:00AM y 08:30AM solo se podrá haber un solo turno ya que solo se cuenta con un operador para atender esos horarios, en cambio en el horario de las 14:00hs, por ejemplo podra haber dos turnos, ya que tenemos a dos operadores para poder atender ambos turnos.
