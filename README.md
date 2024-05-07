@@ -82,3 +82,4 @@ Contamos con dos tipos de usuarios:
 - El footer es dinámico, contamos con una sección dentro de la webapp para actualizar el footer.
 - Si un cliente cancela un turno, se le enviará un mail al operador que tenia su turno para informarle de ello
 - Si el operador, cancela o acepta un turno se envia un mail al cliente con lo sucedido y la información si desea canecelar el turno
+- Los operadores en su primer login deberán cambiar la password y configurar sus horarios de atención
