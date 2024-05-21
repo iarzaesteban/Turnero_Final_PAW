@@ -24,6 +24,11 @@ button {
     cursor: pointer;
 }
 
+h2{
+    font-weight: bold;
+    margin-left: .3rem;
+}
+
 a {
     cursor: pointer;
 }

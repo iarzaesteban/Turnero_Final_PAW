@@ -18,62 +18,64 @@
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
-    <h2 class="users-attentions-times-title">Horarios de Atención de los Operadores</h2>
-    <section class="users-attentions-times-container">
-        {% if users %}
-            {% for user in users %}
-                <section class="users-attentions-times__section">
-                    <p>
-                        <strong>
-                            Usuario: 
-                        </strong> 
-                        {{ user.username }} 
-                    </p> 
-                    <p>
-                        <strong> 
-                            Horario de inicio de atención: 
-                        </strong> 
-                        {{ user.start_time_attention }} 
-                    </p>
-                    <p>
-                        <strong>
-                            Horario de finalización de atención:
-                        </strong> 
-                        {{ user.end_time_attention }}
-                    </p>
-                    <span class="users-attentions-times__btns">
-                        <a href="{% url 'view-user-shifts-today' user.username %}" >
-                                Sus Turnos Para hoy
-                        </a>
-                        <a href="{% url 'view-user-all-shifts' user.username %}" >
-                                Todos Sus Turnos
-                        </a>
+    <section class="users-attentions-times-container-section">
+        <h2 class="users-attentions-times-title">Horarios de Atención de los Operadores</h2>
+        <section class="users-attentions-times-container">
+            {% if users %}
+                {% for user in users %}
+                    <section class="users-attentions-times__section">
+                        <p>
+                            <strong>
+                                Usuario: 
+                            </strong> 
+                            {{ user.username }} 
+                        </p> 
+                        <p>
+                            <strong> 
+                                Horario de inicio de atención: 
+                            </strong> 
+                            {{ user.start_time_attention }} 
+                        </p>
+                        <p>
+                            <strong>
+                                Horario de finalización de atención:
+                            </strong> 
+                            {{ user.end_time_attention }}
+                        </p>
+                        <span class="users-attentions-times__btns">
+                            <a href="{% url 'view-user-shifts-today' user.username %}" >
+                                    Sus Turnos Para hoy
+                            </a>
+                            <a href="{% url 'view-user-all-shifts' user.username %}" >
+                                    Todos Sus Turnos
+                            </a>
+                        </span>
+                    </section>
+                {% endfor %}
+            {% else %}
+                <p>No existen otros operadores.</p>
+            {% endif %}
+        
+            {% if users %}
+                <section class="pagination-container">
+                    <span class="step-links">
+                        {% if users.has_previous %}
+                            <a href="?page=1">1</a>
+                            <a href="?page={{ users.previous_page_number }}"> < </a>
+                        {% endif %}
+                        
+                        <span class="current">
+                            Página {{ users.number }} de {{ users.paginator.num_pages }}
+                        </span>
+                        
+                        {% if users.has_next %}
+                            <a href="?page={{ users.next_page_number }}"> > </a>
+                            <a href="?page={{ users.paginator.num_pages }}">{{ users.paginator.num_pages }}</a>
+                        {% endif %}
                     </span>
                 </section>
-            {% endfor %}
-        {% else %}
-            <p>No existen otros operadores.</p>
-        {% endif %}
-    
-        {% if users %}
-            <section class="pagination-container">
-                <span class="step-links">
-                    {% if users.has_previous %}
-                        <a href="?page=1">1</a>
-                        <a href="?page={{ users.previous_page_number }}"> < </a>
-                    {% endif %}
-                    
-                    <span class="current">
-                        Página {{ users.number }} de {{ users.paginator.num_pages }}
-                    </span>
-                    
-                    {% if users.has_next %}
-                        <a href="?page={{ users.next_page_number }}"> > </a>
-                        <a href="?page={{ users.paginator.num_pages }}">{{ users.paginator.num_pages }}</a>
-                    {% endif %}
-                </span>
-            </section>
-        {% endif %}
+            {% endif %}
+        </section>
     </section>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>

@@ -20,66 +20,68 @@
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
     {% include 'includes/modal_update_shift.html' %}
-    <h2 class="users-attentions-times-title">Turnos del usuario {{ username }} confirmados</h2>
-    
-    <section class="users-attentions-times-container">
-        {% if not user_all_shifts %}
-            <h3>No posee turnos confirmados</h3>
-        {% endif %}
-        {% for shift in user_all_shifts %}
-        <section class="users-attentions-times__section">
-            <p>
-                <strong>
-                    Apellido y Nombre: 
-                </strong>
-                    {{ shift.id_person }} 
-            </p>
-            <p>
-                <strong>
-                    Estado: 
-                </strong>
-                    {{ shift.id_state.description }} 
-            </p>
-            <p>
-                <strong>
-                    Fecha y Hora:
-                </strong> 
-                {{ shift.date }} - {{ shift.hour }}
-            </p>
-            <span class="users-attentions-times__btns">
-                <a class="asignment-btn" 
-                    href="{% url 'user-confirm-shift' shift.id %}" >
-                    Asignarmelo
-                </a>
-            </span>
-        </section>
-        {% endfor %}
-
-        {% if user_all_shifts%}
-            <section class="pagination-container">
-                <span class="step-links">
-                    {% if user_all_shifts.has_previous %}
-                        <a href="?page=1">1</a>
-                        <a href="?page={{ user_all_shifts.previous_page_number }}"> < </a>
-                    {% endif %}
-                    
-                    <span class="current">
-                        Página {{ user_all_shifts.number }} de {{ user_all_shifts.paginator.num_pages }}
-                    </span>
-                    
-                    {% if user_all_shifts.has_next %}
-                        <a href="?page={{ user_all_shifts.next_page_number }}"> > </a>
-                        <a href="?page={{ user_all_shifts.paginator.num_pages }}">{{ user_all_shifts.paginator.num_pages }}</a>
-                    {% endif %}
+    <section class="users-attentions-times-container-section">
+        <h2 class="users-attentions-times-title">Turnos del usuario {{ username }} confirmados</h2>
+        
+        <section class="users-attentions-times-container">
+            {% if not user_all_shifts %}
+                <h3>No posee turnos confirmados</h3>
+            {% endif %}
+            {% for shift in user_all_shifts %}
+            <section class="users-attentions-times__section">
+                <p>
+                    <strong>
+                        Apellido y Nombre: 
+                    </strong>
+                        {{ shift.id_person }} 
+                </p>
+                <p>
+                    <strong>
+                        Estado: 
+                    </strong>
+                        {{ shift.id_state.description }} 
+                </p>
+                <p>
+                    <strong>
+                        Fecha y Hora:
+                    </strong> 
+                    {{ shift.date }} - {{ shift.hour }}
+                </p>
+                <span class="users-attentions-times__btns">
+                    <a class="asignment-btn" 
+                        href="{% url 'user-confirm-shift' shift.id %}" >
+                        Asignarmelo
+                    </a>
                 </span>
             </section>
-        {%endif%}
-                
+            {% endfor %}
+
+            {% if user_all_shifts%}
+                <section class="pagination-container">
+                    <span class="step-links">
+                        {% if user_all_shifts.has_previous %}
+                            <a href="?page=1">1</a>
+                            <a href="?page={{ user_all_shifts.previous_page_number }}"> < </a>
+                        {% endif %}
+                        
+                        <span class="current">
+                            Página {{ user_all_shifts.number }} de {{ user_all_shifts.paginator.num_pages }}
+                        </span>
+                        
+                        {% if user_all_shifts.has_next %}
+                            <a href="?page={{ user_all_shifts.next_page_number }}"> > </a>
+                            <a href="?page={{ user_all_shifts.paginator.num_pages }}">{{ user_all_shifts.paginator.num_pages }}</a>
+                        {% endif %}
+                    </span>
+                </section>
+            {%endif%}
+                    
+        </section>
+        <a href="{% url 'get-attentions-times' %}" 
+            class="users-attentions-times__close-btn">
+            Cerrar
+        </a>
     </section>
-    <a href="{% url 'get-attentions-times' %}" 
-        class="users-attentions-times__close-btn">
-        Cerrar
-    </a>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
     <script type="module" src="{% static 'js/modal_update_shift.js' %}" ></script>
