@@ -1,17 +1,6 @@
 {% load static %}
 <header id="header">
-    {% if show_index_link %}
-        <nav id="navbar" class="navbar">
-            <section id="_items" class="nav-items">
-                <a href="shift/home/" aria-label="home" >Solicitar Turno</a>
-            </section>
-        </nav>
-        <nav id="_toggle" class="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </nav>
-    {% endif %}
+    
     {% if show_nav %}
     {% if user.is_authenticated %}
         <nav id="navbar" class="navbar">
@@ -51,5 +40,8 @@
             <a href="{% url 'update-footer' %}" aria-label="update-footer">Actualizar Pie Página</a>
             <a href="{% url 'user-logout' %}" aria-label="signout">Cerrar Sesion</a>
         </section>
+    {% endif %}
+    {% if show_index_link %}
+        <a href="shift/home/" aria-label="home" class="request-shift">Solicitar Turno</a>
     {% endif %}
 </header>

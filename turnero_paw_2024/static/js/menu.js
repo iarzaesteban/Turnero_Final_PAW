@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const linksOutsideMenu = document.querySelectorAll('a.acept-btn, a.cancel-btn');
     
     const headerAvatarBtn = document.getElementById('header-avatar-btn');
+    const header = document.getElementById('header');
     const navItemsUser = document.querySelector('.nav-items-user');
 
+    header.style.justifyContent = 'flex-start';
     document.addEventListener('click', function(event) {
         if (headerAvatarBtn){
             if (event.target !== headerAvatarBtn && event.target !== _toggle && 
