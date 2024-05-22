@@ -2,27 +2,12 @@
     text-wrap: balance;
 }
 
-#form-code-verification-user{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: .1rem solid #ccc;
-    border-radius: .5rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-    margin: 0 .5rem .5rem;
-    padding: .5rem 0;
-}
-
 #messages p{
     margin: 1rem 0;
     font-weight: bold;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
-    #form-code-verification-user{
-        margin: 1rem 2rem;
-    }
-
     #form-code-verification-user button{
         margin-top: 1rem;
         width: 15rem;

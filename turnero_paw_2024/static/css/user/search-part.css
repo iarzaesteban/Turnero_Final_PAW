@@ -4,6 +4,12 @@
     margin: 0 auto;
 }
 
+#search-shift-section__form{
+    flex-direction: row;
+    border: none;
+    margin: 0;
+}
+
 #search-shift-section__input{
     height: 2rem;
     width: 15rem;

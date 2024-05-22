@@ -1,15 +1,3 @@
-#filter-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: .1rem solid #ccc;
-    border-radius: .5rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-    margin: 0 .5rem .5rem;
-    padding: .5rem 0;
-}
-
 #state {
     width: 15rem;
 }
