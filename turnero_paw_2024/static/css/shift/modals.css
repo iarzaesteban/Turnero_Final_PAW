@@ -96,11 +96,6 @@
 }
 
 @media only screen and (min-width: 1081px) {
-    .modal-content {
-        margin: 15% auto;
-        height: 25rem;
-    }
-
     #cancel-description{
         height: 15rem;
     }
@@ -111,12 +106,6 @@
         width: 100%;
         flex-direction: row;
         justify-content: space-evenly;
-    }
-
-
-    .modal-buttons button {
-        width: 12rem;
-        height: 4rem;
     }
 
 }
