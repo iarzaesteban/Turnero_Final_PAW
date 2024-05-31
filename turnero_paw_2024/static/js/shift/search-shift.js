@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search-shift-section__form');
     const shiftDetailModal = document.getElementById('shift-details-modal');
     const turnoModalBody = document.getElementById('shift-details-modal-body');
-    const closeModal = document.getElementById('shift-details-modal-content-close-btn');
+    const closeModal = document.getElementById('close-modal-btn');
 
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();

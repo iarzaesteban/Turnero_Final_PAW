@@ -11,34 +11,45 @@
 
 .modal-content {
     background-color: white;
-    margin: 50% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #CCC;
-    width: 60%;
+    width: 70%;
     text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
-.modal-content p{
+.modal-content > p {
     font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+#cancel-description{
+    width: 90%;
 }
 
 .modal-buttons {
     margin-top: 1rem;
+    width: 100%;
 }
 
 .modal-buttons button {
-    width: 10rem;
     margin: .5rem;
 }
 
-#cancel-button{
+#close-modal-btn, #cancel-button, .modal-form-content-btn-cancel{
     background-color: #d10314;
+    margin-bottom: .5rem;
+}
+
+#cancel-shift-modal.show {
+    display: flex;
 }
 
 #confirmation-modal.show {
-    display: block;
+    display: flex;
 }
 
 .spinner-button {
@@ -66,15 +77,46 @@
 }
   
 
-@media only screen and (min-width: 1081px) {
-    .modal-content {
-        margin: 20% auto;
-        width: 20rem;
-        height: 20rem;
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    .modal-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
     }
 
     .modal-buttons button {
-        width: 15rem;
-        height: 3rem;
+        width: 12rem;
+        height: 4rem;
     }
+
+    .spinner-button::after{
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+@media only screen and (min-width: 1081px) {
+    .modal-content {
+        margin: 15% auto;
+        height: 25rem;
+    }
+
+    #cancel-description{
+        height: 15rem;
+    }
+
+    .modal-buttons {
+        margin-top: 2rem;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+
+    .modal-buttons button {
+        width: 12rem;
+        height: 4rem;
+    }
+
 }

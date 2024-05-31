@@ -9,7 +9,7 @@ const lastNameInput = document.getElementById("apellidoInput");
 const nameInput = document.getElementById("nombreInput");
 const requestShiftBtn = document.getElementById("modal-form-content-request-shift-btn");
 const modalErrorText = document.getElementById('modal-email-error-text');
-const modalContent = document.getElementById('modal-content');
+const modalContent = document.getElementById('modal-content-request-appointment');
 const timeParagraph = document.getElementById('selectedTime');
 const dateParagraph = document.getElementById('selectedDate');
 const calendarContainer = document.getElementById('calendar-container');
@@ -152,7 +152,7 @@ function validateEmailFormat(email) {
     return regexEmail.test(email);
 }
 
-function validarCampos() {
+function validarFields() {
     const email = emailInput.value.trim();
     const apellido = lastNameInput.value.trim();
     const nombre = nameInput.value.trim();
@@ -160,9 +160,9 @@ function validarCampos() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    emailInput.addEventListener("input", validarCampos);
-    lastNameInput.addEventListener("input", validarCampos);
-    nameInput.addEventListener("input", validarCampos);
+    emailInput.addEventListener("input", validarFields);
+    lastNameInput.addEventListener("input", validarFields);
+    nameInput.addEventListener("input", validarFields);
 
     
 });

@@ -1,5 +1,5 @@
 <section id="appointmentModal" class="modal">
-    <section id="modal-content" class="modal-content">
+    <section id="modal-content-request-appointment" class="modal-content">
         <h2 class="modal-title">Solicitud de Turno</h2>
         <p id="selectedTime" tabindex="-1"></p>
         <p id="selectedDate" tabindex="-1"></p>
@@ -18,15 +18,16 @@
 
             <label class="modal-label" for="nombreInput">Ingrese su nombre:</label>
             <input type="text" class="modal-input" id="nombreInput" placeholder="Nombre">
-            
-            <button id="modal-form-content-close-btn" class="modal-form-content-btn-cancel">
-                Cancelar
-            </button>
-            <button id="modal-form-content-request-shift-btn" 
-                    class="modal-form-content-btn-confirm" 
-                    disabled>
-                Solicitar Turno
-            </button>
+            <span class="modal-buttons">
+                <button id="modal-form-content-close-btn" class="modal-form-content-btn-cancel">
+                    Cancelar
+                </button>
+                <button id="modal-form-content-request-shift-btn" 
+                        class="modal-form-content-btn-confirm" 
+                        disabled>
+                    Solicitar Turno
+                </button>
+            </span>
         </section>
     </section>
 </section>

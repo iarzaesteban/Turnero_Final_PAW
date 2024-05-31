@@ -32,6 +32,8 @@
     background-color: #3d6608;
     position: absolute;
     right: 1rem;
+    width: 2rem;
+    height: 3rem;
 }
 
 #user-avatar{

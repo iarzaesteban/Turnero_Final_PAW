@@ -15,9 +15,9 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/user/pagination.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="{% static 'css/shift/modal_shift_details.css' %}" 
+<link rel="preload" href="{% static 'css/shift/modals.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="{% static 'css/modal_update_shift_home.css' %}" 
+<link rel="preload" href="{% static 'css/shift/modals.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/footer.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -30,7 +30,6 @@
     {% include 'shift/modal_shift_datails.html' %}
     
         <section id="shifts-container">
-            
             <h2> Solicitud de turnos pendientes</h2>
             
                 {% for shift in pending_shifts %}

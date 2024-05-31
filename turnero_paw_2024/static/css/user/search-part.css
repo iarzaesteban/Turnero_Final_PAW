@@ -4,15 +4,14 @@
     margin: 0 auto;
 }
 
-#search-shift-section__form{
+#search-shift-section__form {
     flex-direction: row;
     border: none;
+    box-shadow: none;
     margin: 0;
 }
 
 #search-shift-section__input{
-    height: 2rem;
-    width: 15rem;
     margin: .5rem;
 }
 
@@ -21,11 +20,17 @@
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
-    #search-shift-section {
+    #search-shift-section__form {
         position: relative;
+        right: 7rem;
+        margin: 1rem 1rem;
+        padding: 0;
+        width: 30rem;
+    }
+    #search-shift-section {
         float: right;
-        margin-top: 1rem;
-        width: 22rem;
+        width: 25rem;
+        height: 3rem;
     }
 
     #search-shift-section button{
@@ -42,13 +47,20 @@
         width: 22rem;
     }
 
+    #search-shift-section__form {
+        position: relative;
+        right: 20rem;
+        margin: 1rem 1rem;
+        padding: 0;
+        width: 40rem;
+    }
+
     #shifts-container__section{
         margin: 0 20rem 1rem;
 
     }
 
     #search-shift-section button{
-        font-size: 1rem;
         padding: .6rem 1rem;
     }
 }
