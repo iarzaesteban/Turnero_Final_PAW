@@ -6,14 +6,9 @@
 .register-user{
     margin: 0 auto;
     display: flex;
-    background-color: #1d7723;
-    color: #fff;
-    width: 10rem;
-    height: 2.5rem;
     justify-content: center;
     align-items: center;
     border: .1rem solid #ccc;
-    border-radius: .5rem;
 }
 
 #form-login{
@@ -27,21 +22,12 @@
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #form-login{
-        font-size: 1.5rem;
         margin: 3rem 5rem 3rem;
         height: 22rem;
     }
     
     #form-login button{
         margin-top: .5rem;
-        width: 15rem;
-        font-size: 1.5rem;
-        padding: 1rem 0;
-    }
-
-    .register-user{
-        width: 20rem;
-        padding: 2rem 0;
     }
 }
 
@@ -55,16 +41,10 @@
     }
 
     #form-login button{
-        width: 20rem;
-        height: 3rem;
-        font-size: 1.5rem;
         margin: 3rem 0;
     }
 
     .register-user{
-        width: 20rem;
-        height: 3rem;
-        font-size: 1.5rem;
         margin-bottom: 5rem;
     }
 }
