@@ -40,6 +40,7 @@
 .footer-card a{
     text-decoration: underline;
     color: #ffffff;
+    background-color: #466959;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
