@@ -139,6 +139,10 @@
         height: .4rem;
         width: 2rem;
     }
+    
+    #header-avatar-btn{
+        right: 2rem;
+    }
 
     #header h1{
         font-size: 1.5rem;
@@ -181,6 +185,11 @@
     #header h1{
         font-size: 1.5rem;
         width: 20rem;
+    }
+    
+    #header-avatar-btn{
+        right: 4rem;
+        margin: 0 0 1rem;
     }
 
     .request-shift {
