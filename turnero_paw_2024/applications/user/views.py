@@ -1,29 +1,30 @@
 import datetime
-import json
-from openpyxl import Workbook
+import requests
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import JsonResponse
-from django.views.generic import View, ListView, TemplateView
-from django.views.generic.edit import FormView
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
-from .models import Users
-from applications.shift.models import Shift
+from django.views.generic import View, TemplateView
+from django.views.generic.edit import FormView
+from io import BytesIO
+from openpyxl import Workbook
+from PIL import Image
+
 from applications.aditional_information.models import AditionalInformation
-from . import forms
-from .helpers import generate_confirmation_code
 from app.settings.base import EMAIL_HOST_USER
 from applications.person.models import Person
+from applications.shift.models import Shift
 from applications.state.models import State
-from PIL import Image
-from io import BytesIO
+from . import forms
+from .helpers import generate_confirmation_code
+from .models import Users
 
 class LoginUser(FormView):
     template_name = 'login.html'
@@ -45,7 +46,7 @@ class LoginUser(FormView):
         else:
             messages.error(self.request, "Usuario o contraseña incorrectos")
             return self.form_invalid(form)
-    
+
 class LogoutView(View):
     def get(self, request, *args, **kargs):
         logout(request)

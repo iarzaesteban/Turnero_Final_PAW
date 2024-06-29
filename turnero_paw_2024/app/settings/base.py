@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'django_recaptcha',
     #MY APPS
     'applications.user',
     'applications.tests',
@@ -122,3 +123,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = get_secret('MAIL')
 EMAIL_HOST_PASSWORD = get_secret('PASSWORD_MAIL')
 EMAIL_PORT = 587
+
+# ReCaptcha v3
+RECAPTCHA_PUBLIC_KEY = "6Lc1owAqAAAAAPWgD-G3RHzmVxKMq-BwL2HxlCcs"
+RECAPTCHA_PRIVATE_KEY = "6Lc1owAqAAAAAC0DhfDeoLmSNSnEljl4zuic-bjx"
+RECAPTCHA_REQUIRED_SCORE = 0.85

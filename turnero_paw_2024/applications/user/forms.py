@@ -1,9 +1,9 @@
-from django.core.exceptions import ValidationError
+import requests
+from django.conf import settings
 from django import forms
 from .models import Users
 from django.contrib.auth import authenticate
-from applications.person.models import Person
-from applications.state.models import State
+
 class UserRegisterForm(forms.Form):
     username = forms.CharField(label='Nombre de usuario', max_length=50)
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
@@ -13,7 +13,6 @@ class UserRegisterForm(forms.Form):
     email = forms.EmailField(label='Email')
     picture = forms.ImageField(label='Imagen', required=False)
     
-
 class UserUpdateFooterForm(forms.Form):
     title = forms.CharField(label='Título', max_length=50)
     description = forms.CharField(label='Descripcion')
@@ -21,8 +20,11 @@ class UserUpdateFooterForm(forms.Form):
     icon = forms.ImageField(label='Icono', required=False)
     icon_base64 = forms.CharField(label='icon_base64', required=False)
     
-    
 class LoginForm(forms.Form):
+    recaptcha_token = forms.CharField(
+        widget=forms.HiddenInput()
+    )
+
     username = forms.CharField(
                             label='Usuario', 
                             required=True, 
@@ -42,10 +44,20 @@ class LoginForm(forms.Form):
         cleaned_data = super(LoginForm, self).clean()
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
+        recaptcha_token = self.cleaned_data['recaptcha_token']
+        recaptcha_response = requests.post(
+            'https://www.google.com/recaptcha/api/siteverify',
+            data={
+                'secret': settings.RECAPTCHA_PRIVATE_KEY,
+                'response': recaptcha_token
+            }
+        )
+        result = recaptcha_response.json()
+        if not result['success'] and result['error-codes']:
+            raise forms.ValidationError("Error de reCAPTCHA. Por favor, inténtelo de nuevo.")
         if not authenticate(username=username, password=password):
             raise forms.ValidationError("Usuario o contraseña incorrectos")
         return self.cleaned_data
-
 
 class UpdatePasswordForm(forms.Form):
     current_password = forms.CharField(
@@ -78,7 +90,6 @@ class SendEmailForm(forms.Form):
     subject = forms.CharField(label='Asunto', max_length=100, required=True)
     message = forms.CharField(label='Mensaje', widget=forms.Textarea, required=True)
     
-
 class VerificationForm(forms.Form):
     code_verification = forms.CharField(required=True)
 
