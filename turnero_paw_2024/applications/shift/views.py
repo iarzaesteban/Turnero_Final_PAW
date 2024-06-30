@@ -179,7 +179,9 @@ def confirm_shift(request):
         selected_date_time = data.get('dateTime')
         # Verificamos que el cliente no tenga mas de 2 turnos solicitados en estado pendiente
         if helpers.count_pending_shifts(email) >= 2:
-            return JsonResponse({'response': "error", "message": "La persona ya tiene más de 1 turno en estado pendiente"} )
+            return JsonResponse({
+                    'response': "error", 
+                    "message": "La persona ya tiene más de 1 turno en estado pendiente"} )
         
         if not helpers.person_exists(email):
             helpers.create_person(email, first_name, last_name)

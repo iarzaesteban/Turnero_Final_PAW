@@ -105,13 +105,21 @@ export function requestShift() {
                 const message = `Se ha solicitado un turno para ${data.shift.person} el día ${data.shift.day}, a las ${data.shift.hour}. El turno será evaluado por un operador y se le notificará a su casilla de mail.`;
                 const messageRequestShift = document.createElement('p');
                 messageRequestShift.textContent = message;
+
+                const closeButton = document.createElement('span');
+                closeButton.textContent = 'X';
+                closeButton.style.cursor = 'pointer';
+                closeButton.style.marginLeft = '10px';
+    
+                closeButton.addEventListener('click', function() {
+                    calendarContainer.removeChild(messageRequestShift);
+                });
+                
+                messageRequestShift.appendChild(closeButton);
                 const firstChild = calendarContainer.firstChild;
                 calendarContainer.insertBefore(messageRequestShift, firstChild);
                 closeModal()
                 restoreInfoSection()
-                setTimeout(function() {
-                    calendarContainer.removeChild(messageRequestShift);
-                }, 10000);
             } else if (data.response == "error"){
                 showErrorMessage(data.message);
             }
@@ -143,7 +151,7 @@ function showErrorMessage(errorMessage) {
     errorMessageParagraph.classList.add('modal-error-message-show');
     errorMessageParagraph.style.display = 'block';
     errorMessageParagraph.style.color = 'red';
-    modalContent.style.height = '40rem';
+    modalContent.style.height = '45rem';
     requestShiftBtn.disabled = true;
 }
 
