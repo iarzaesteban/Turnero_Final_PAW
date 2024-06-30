@@ -13,6 +13,7 @@ class Shift(models.Model):
     id_state = models.ForeignKey(State, on_delete=models.CASCADE)
     confirmation_code = models.CharField(max_length=50)
     confirmation_url = models.URLField(max_length=255)
+    verification_code = models.CharField(max_length=6, default='')
     last_updated = models.DateTimeField(auto_now=True)
     description = models.TextField(max_length=250, default='')
 

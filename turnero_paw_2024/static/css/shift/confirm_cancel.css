@@ -1,0 +1,40 @@
+.succes-message{
+    font-weight: bold;
+}
+
+.succes-message__subtitle{
+    text-align: center;
+    text-wrap: balance;
+}
+
+#cancel-description{
+    margin-top: 1rem;
+}
+
+a {
+    display: inline;
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    color: #235ac0;
+    font-style: italic;
+    font-size: 2rem;
+}
+
+.cancel-confirm-container__subtitle{
+    text-align: center;
+    text-wrap: balance;
+    margin-top: 1rem;
+}
+
+.succes-message-container__footer{
+    font-size: 2rem;
+}
+
+.error-message{
+    color: #f50202;
+}

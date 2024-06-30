@@ -92,6 +92,8 @@
     .spinner-button::after{
         width: 1rem;
         height: 1rem;
+        border: .4rem solid #dddddd;
+        border-top-color: #000;
     }
 }
 
@@ -106,6 +108,13 @@
         width: 100%;
         flex-direction: row;
         justify-content: space-evenly;
+    }
+
+    .spinner-button::after{
+        width: 1.5rem;
+        height: 1.5rem;
+        border: .5rem solid #dddddd;
+        border-top-color: #000;
     }
 
 }

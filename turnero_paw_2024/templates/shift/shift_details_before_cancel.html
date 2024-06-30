@@ -17,7 +17,6 @@
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' %}
-    {% include 'includes/modal_cancel_shift.html' %}
     <section id="shift-details-container">
         <h2>Detalles de su Turno</h2>
         {% if shift.id_state.short_description != 'cancelado' and shift.id_state.short_description != 'cumplido'%}
@@ -35,13 +34,7 @@
                     </strong> 
                     {{ shift.hour }}
                 </p>
-                <form id="cancel-shift-form" 
-                        class="shift-details-container__form" 
-                        action="{% url 'user-cancel-shift' shift.id %}" 
-                        method="POST">
-                    {% csrf_token %}
-                    <input type="submit" value="Cancelar Turno">
-                </form>
+                <button id="cancel-shift-button">Cancelar Turno</button>
             </span>
         {%else%}
             <h3>Este turno ya fue cancelado previamente</h3>
@@ -49,6 +42,7 @@
     </section>
     
     {% include 'includes/footer.html' %}
-    <script type="module" src="{% static 'js/shift/shift_details_before_cancel.js' %}" ></script>
+    <script src="{% static 'js/shift/shift_details_before_cancel.js' %}" defer></script>
+    {{ shift.confirmation_code|json_script:"confirmationCode" }} 
     <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 {% endblock content %}

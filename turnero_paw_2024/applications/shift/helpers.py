@@ -51,7 +51,11 @@ def is_mail(mail):
     if re.match(pattern, mail):
         return True
     else:
-        return False    
+        return False
+
+def send_mails(asunto, message, sender, receiver):
+    send_mail(asunto, message, sender, [receiver,])
+
 #Le enviamos un mail al cliente indicando que se ha recibido el turno. 
 def send_mail_to_receiver(user, shift, is_receiver):
     if is_receiver:

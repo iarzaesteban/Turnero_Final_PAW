@@ -1,6 +1,7 @@
 import datetime as dt
 import os.path
 import json
+import random
 from dateutil import parser
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -26,6 +27,8 @@ from applications.shift.models import Shift
 from applications.state.models import State
 from applications.person.models import Person
 from applications.user.models import Users
+from app.settings.base import EMAIL_HOST_USER
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(TemplateView):
@@ -150,7 +153,6 @@ def add_event_to_google_calendar(event_summary, event_description, start_datetim
             'useDefault': False,
         },
     }
-
     event = service.events().insert(calendarId='primary', body=event).execute()
     return event
 
@@ -210,7 +212,6 @@ def confirm_shift(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
-
 @csrf_exempt
 def cancel_shift(request):
     if request.method == 'GET':
@@ -218,6 +219,52 @@ def cancel_shift(request):
         shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
         return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+def send_confirmation_code(shift):
+    code = str(random.randint(100000, 999999))
+    shift.verification_code = code
+    shift.save()
+    helpers.send_mails(
+        'Código de Confirmación de Cancelación de Turno',
+        f'Su código de confirmación es: {code}',
+        EMAIL_HOST_USER,
+        shift.id_person.email,
+    )
+
+@csrf_exempt
+def initiate_cancel_shift(request):
+    if request.method == 'POST':
+        confirmation_code = request.POST.get('confirmation_code')
+        shift = get_object_or_404(Shift, confirmation_code=confirmation_code)
+        send_confirmation_code(shift)
+        return JsonResponse({'success': True, 'shift_id': shift.id})
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+def confirm_cancel_shift(request, shift_id):
+    shift = get_object_or_404(Shift, id=shift_id)
+    if request.method == 'POST':
+        verification_code = request.POST.get('verification_code')
+        cancel_description = request.POST.get('cancel_description')
+        if verification_code or cancel_description:
+            if verification_code:
+                if shift.verification_code == verification_code:
+                    shift.id_state = State.objects.get(short_description='cancelado')
+                    shift.save()
+                    return render(request, 'shift/confirm_cancel.html', 
+                                {'success_message': 'Se ha cancelado el turno de forma exitosa.', 
+                                'shift': shift})
+                else:
+                    return render(request, 'shift/confirm_cancel.html', {'error': 'Código incorrecto', 'shift': shift})
+            elif cancel_description:
+                shift.description = cancel_description
+                shift.save()
+                return render(request, 
+                              'shift/confirm_cancel.html',
+                              {'success_message': 'Se ha agregado la descripción al turno de forma exitosa.', 
+                              'shift': shift,
+                              'set_description': True})
+    return render(request, 'shift/confirm_cancel.html', {'shift': shift})
 
 def serialize_shifts(page_obj):
     return [{'date': shift.date,
@@ -289,7 +336,7 @@ class CancelShiftView(View):
             canceled_state = State.objects.get(short_description='cancelado')
             shift.id_state = canceled_state
             shift.description = description
-            shift.save()
+            #shift.save()
             helpers.send_mail_to_receiver(shift.id_user, shift, False)
             return JsonResponse({'redirect_url': '/shift/home/'})
             
