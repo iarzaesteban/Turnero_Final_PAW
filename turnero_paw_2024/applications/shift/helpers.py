@@ -3,8 +3,11 @@ import string
 import os
 import re
 from datetime import datetime
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.core.mail import send_mail
+
 from applications.person.models import Person
 from applications.shift.models import Shift
 from applications.state.models import State
@@ -53,8 +56,15 @@ def is_mail(mail):
     else:
         return False
 
-def send_mails(asunto, message, sender, receiver):
-    send_mail(asunto, message, sender, [receiver,])
+def send_mails(asunto, code, sender, receiver):
+    sub_title = "Código de verificación"
+    formatted_code = ''.join([f'<span class="digit">{digit}</span>' for digit in code])
+    message = f'<p>{formatted_code}</p>'
+    html_content = render_to_string('shift/email_template.html', {'sub_title': sub_title, 'message': message})
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(asunto, text_content, sender, [receiver])
+    email.attach_alternative(html_content, "text/html")
+    email.send()
 
 #Le enviamos un mail al cliente indicando que se ha recibido el turno. 
 def send_mail_to_receiver(user, shift, is_receiver):
@@ -63,21 +73,24 @@ def send_mail_to_receiver(user, shift, is_receiver):
         sender = EMAIL_HOST_USER
         receiver = shift.id_person.email
         asunto = "Respuesta de solicitud de turno."
-        message = ("Su solicitud de turno ha sido " +
+        sub_title = "Turno " + shift.id_state.short_description
+        message = ("Su solicitud de turno ha sido <strong>" +
            shift.id_state.short_description +
-           " por el usuario " + user.username + ".\n\n")
+           "</strong> por el operador " + user.username + ".<br><br>")
         if shift.id_state.short_description == "confirmado":
-            message += ("Su código de verificación es " + shift.confirmation_code +
-                        ", podra ingresarlo en la web " + 
-                        URL + "/shift/home/" +
-                        " para recordar su turno en caso de ser necesario.\n" +
-                        "En caso de querer cancelar su turno, puede hacerlo ingresando al siguiente enlace:\n" +
-                        shift.confirmation_url + "\n\n" +
-                        "Recuerde que debe hacerlo dos días previo al turno programado.\n\n" +
+            message += ("Su código de verificación es <strong>" + shift.confirmation_code +
+                        "</strong>, podrá ingresarlo en la " + 
+                        "<a href='" + URL + "/shift/home/" + "' > "+
+                        "web</a> para recordar su turno en caso de ser necesario.<br>" +
+                        "En caso de necesitar cancelar su turno, puede hacerlo ingresando " +
+                        "<a href='" + shift.confirmation_url + "' > "+
+                        "aquí</a> <br><br>" +
+                        "Recuerde que debe hacerlo dos días previo al turno programado.<br><br>" +
                         "Gracias, saludos!")
         else:
-            message += ("Si desea puede volver a solicitar su turno, para ello ingrese a la url " +
-                        URL + ".\n"+
+            message += ("Si desea puede volver a solicitar un nuevo turno, para ello ingrese " +
+                        "<a href='" + URL + "/shift/home/" + "' > "+
+                        "aquí</a> <br><br>" +
                         "Gracias, saludos!")
     else:
         person = Person.objects.get(id_user=user.id)
@@ -85,15 +98,20 @@ def send_mail_to_receiver(user, shift, is_receiver):
         hour_str = shift.hour.strftime('%H:%M:%S')
         sender = shift.id_person.email
         receiver = person.email
-        asunto = "Canecelación de turno."
+        asunto = "Cancelación de turno."
         message = ( shift.id_person.last_name + " " + shift.id_person.first_name +
                     " ha cancelado el turno que contaba para el día " +
-                date_str + " a las " + hour_str +"hs" + ".\n"
-                "Su email es "+ shift.id_person.email +".\n\n")
+                date_str + " a las " + hour_str +"hs" + ".<br>"
+                "Su email es "+ shift.id_person.email +".<br><br>")
         if shift.description != "":
-            message +=  ("Manifestó: '" + shift.description + "'.\n\n")            
+            message +=  ("Manifestó: '" + shift.description + "'.<br><br>")            
            
-    send_mail(asunto, message, sender, [receiver,])
+    html_content = render_to_string('shift/email_template.html', {'sub_title': sub_title, 'message': message})
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(asunto, text_content, sender, [receiver])
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+    #send_mail(asunto, message, sender, [receiver,])
     
 #Le enviamos un mail al operador indicando que se ha cancelado un turno.
 def send_mail_to_operator(user_mail, shift):
@@ -103,7 +121,12 @@ def send_mail_to_operator(user_mail, shift):
     message = shift.id_person.last_name + " " + shift.id_person.first_name + " ha cancelado el turno" \
             " que tenia confirmado para el dia " + date_str + " en el horario " + hour_str + "hs."
     
-    send_mail(asunto, message, EMAIL_HOST_USER, [user_mail,])
+    html_content = render_to_string('shift/email_template.html', {'message': message})
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(asunto, text_content, EMAIL_HOST_USER, [user_mail,])
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+    #send_mail(asunto, message, EMAIL_HOST_USER, [user_mail,])
     
 def generate_confirmation_code(length=15):
     characters = string.ascii_letters + string.digits

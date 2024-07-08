@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            font-size: 1.5rem;
+            text-align: center;
+            border: .1rem solid #ccc;
+            border-radius: .5rem;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+            margin: .5rem;
+            padding: .5rem;
+        }
+        #header{
+            background-color: #3d6608;
+            align-items: center;
+            padding: 1rem;
+        }
+        .sub-title {
+            margin-top: .5rem;
+            background: #f4f4f4;
+            text-align: center;
+            padding: .5rem;
+        }
+        .content {
+            padding: 20px;
+            background: #fff;
+        }
+        .digit {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <header id="header">
+            <h1 id="title">Sistemas de turnos Autoridad Registro UNLu</h1>
+        </header>
+        {% if sub_title %}
+            <section class="sub-title">
+                <h1>{{ sub_title }}</h1>
+            </section>
+        {% endif%}
+        <section class="content">
+            <p>{{ message|safe }}</p>
+        </section>
+    </div>
+</body>
+</html>

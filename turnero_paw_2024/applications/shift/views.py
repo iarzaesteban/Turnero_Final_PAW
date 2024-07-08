@@ -228,7 +228,7 @@ def send_confirmation_code(shift):
     shift.save()
     helpers.send_mails(
         'Código de Confirmación de Cancelación de Turno',
-        f'Su código de confirmación es: {code}',
+        f'{code}',
         EMAIL_HOST_USER,
         shift.id_person.email,
     )
