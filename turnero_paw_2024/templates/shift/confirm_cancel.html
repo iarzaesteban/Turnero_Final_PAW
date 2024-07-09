@@ -28,12 +28,10 @@
                         <p class="succes-message__subtitle"> Si desea agregar una descripción del porque de su cancelación al turno, 
                             por favor ingreselá a continuación
                         </p>
-                        <textarea 
-                            id="cancel-description" 
-                            rows="4" 
-                            cols="50" 
-                            placeholder="Agrega una descripción..." 
-                            name="cancel_description" required ></textarea>
+                        {{ form.cancel_description }}
+                        {% if error %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endif %}
                         <span id="char-count"><strong>200</strong> caracteres restantes</span>
                         <button type="submit">Guardar</button>
                     {% endif %}
@@ -65,8 +63,7 @@
                     </strong> 
                     {{ shift.hour }}
                 </p>
-                <label for="verification_code">Código de Verificación:</label>
-                <input type="text" name="verification_code" required>
+                {{ form.verification_code }}
                 <button type="submit">Cancelar Turno</button>
                 {% if error %}
                     <p class="error-message">{{ error }}</p>
