@@ -1,6 +1,14 @@
 FROM python:3.12.1-alpine3.18
 
-RUN apk update && apk add --no-cache gcc musl-dev postgresql-dev python3-dev libffi-dev chromium
+RUN apk update && apk add --no-cache \
+    gcc \
+    musl-dev \
+    postgresql-dev \
+    python3-dev \
+    libffi-dev \
+    chromium \
+    graphviz \
+    graphviz-dev
 
 WORKDIR /code/
 
