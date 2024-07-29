@@ -2,7 +2,7 @@
     margin-bottom: .5rem;
 }
 
-.confirm-shifts-container-container p{
+.confirm-shifts-container p{
     font-weight: bold;
     margin-left: .3rem;
 }
@@ -34,6 +34,18 @@
     background-color: #1d7723;
 }
 
+.confirm-shifts-container-span__button{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.confirm-shifts-container-span__button__back-btn{
+    background-color: #f3a41e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #confirm-shifts-container__section{
@@ -55,5 +67,14 @@
     #confirm-shifts-container-section__btn a{
         height: 3rem;
         width: 25rem;
+    }
+
+    .confirm-shifts-container-span__button{
+        margin-top: 2rem;
+    }
+
+    .confirm-shifts-container-span__button__back-btn{
+        width: 20rem;
+        height: 3rem;
     }
 }

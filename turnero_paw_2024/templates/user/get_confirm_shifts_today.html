@@ -21,7 +21,7 @@
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
     {% include 'includes/modal_update_shift.html' %}
     
-    <section class="confirm-shifts-container-container">
+    <section class="confirm-shifts-container">
         <h2 class="confirm-shifts-title">Turnos Confirmados Para Hoy</h2>
         {% for shift in list_shift %}
                 <section id="confirm-shifts-container__section">
@@ -82,6 +82,12 @@
                         </span>
                     </section>
                 {%endif%}
+        <span class="confirm-shifts-container-span__button">
+            <a href="{% url 'home-user' %}" 
+                class="confirm-shifts-container-span__button__back-btn">
+                Volver
+            </a>
+        </span>
     </section>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>

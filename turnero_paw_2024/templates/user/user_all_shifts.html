@@ -8,7 +8,7 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/header.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'"> 
-<link rel="preload" href="{% static 'css/user/user-all-shifts.css' %}" 
+<link rel="preload" href="{% static 'css/user/users_shifts.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/shift/modals.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -79,7 +79,7 @@
         </section>
         <a href="{% url 'get-attentions-times' %}" 
             class="users-attentions-times__close-btn">
-            Cerrar
+            Volver
         </a>
     </section>
     {% include 'includes/footer.html' %}
