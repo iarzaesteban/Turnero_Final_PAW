@@ -54,7 +54,6 @@
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #filter-form button, #export-button{
-        width: 15rem;
         margin-top: 2rem;
     }
 
@@ -90,6 +89,5 @@
 
     #filter-form button, #export-button{
         margin-top: 1.5rem;
-        width: 20rem;
     }
 }

@@ -37,7 +37,6 @@
 .users-attentions-times__btns a {
     background-color: #1d7723;
     border-radius: 4px;
-    width: 15rem;
     color: #fff;
     cursor: pointer;
     text-align: center;
@@ -51,7 +50,6 @@
     background-color: #f3a41e;
     color: #fff;
     border-radius: 4px;
-    width: 15rem;
     align-items: center;
     justify-content: center;
     margin: 2rem auto 0;
@@ -117,9 +115,6 @@
 }
 
 @media only screen and (min-width: 1081px) {
-    .users-attentions-times__btns a {
-        width: 20rem;
-    }
     .users-attentions-times-container{
         margin: 4rem 30rem 1rem !important;
     }
@@ -134,9 +129,5 @@
 
     .users-attentions-times-container-section-span__button{
         margin-top: 2rem;
-    }
-
-    .users-attentions-times-container-section__back-btn, .users-attentions-times__close-btn{
-        width: 20rem;
     }
 }

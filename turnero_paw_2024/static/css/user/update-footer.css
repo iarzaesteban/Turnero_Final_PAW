@@ -61,10 +61,6 @@
         margin: 1rem 2rem;
     }
 
-    #form-updates-footer button{
-        width: 20rem;
-    }
-
     .updates-footer-container-information__span button{
         width: 12rem;
     }
@@ -102,7 +98,6 @@
     }
 
     #form-updates-footer button{
-        width: 20rem;
         margin-top: 1rem;
     }
 }

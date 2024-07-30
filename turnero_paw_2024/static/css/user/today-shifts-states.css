@@ -39,7 +39,6 @@
     background-color: #f3a41e;
     color: #fff;
     border-radius: 4px;
-    width: 15rem;
     align-items: center;
     justify-content: center;
     margin: 2rem auto 0;
@@ -108,9 +107,5 @@
     #confirm-shifts-container-section__btns a{
         width: 10rem;
         height: 3rem;
-    }
-
-    .today-shifts-states__close-btn {
-        width: 20rem;
     }
 }

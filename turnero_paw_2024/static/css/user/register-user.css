@@ -35,7 +35,6 @@
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #form-register button{
         margin-top: 1rem;
-        width: 15rem;
     }
 
     .spinner-button::after{
@@ -53,7 +52,6 @@
 
     #form-register button{
         margin-top: 1rem;
-        width: 20rem;
     }
 
     .spinner-button::after{
