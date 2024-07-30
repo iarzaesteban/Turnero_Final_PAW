@@ -78,7 +78,6 @@
 .shifts-confirm-state-section__spam button{
     padding: 0;
     width: 10rem;
-    height: 3rem;
     font-weight: bold;
 }
 
@@ -131,7 +130,6 @@
     .shifts-confirm-state-section__spam button{
         margin-top: 1rem;
         width: 25rem;
-        height: 3rem;
     }
 
 }

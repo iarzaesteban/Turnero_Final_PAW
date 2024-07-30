@@ -38,7 +38,6 @@
     background-color: #1d7723;
     border-radius: 4px;
     width: 15rem;
-    height: 3rem;
     color: #fff;
     cursor: pointer;
     text-align: center;
@@ -53,7 +52,6 @@
     color: #fff;
     border-radius: 4px;
     width: 15rem;
-    height: 3rem;
     align-items: center;
     justify-content: center;
     margin: 2rem auto 0;
@@ -140,6 +138,5 @@
 
     .users-attentions-times-container-section__back-btn, .users-attentions-times__close-btn{
         width: 20rem;
-        height: 3rem;
     }
 }

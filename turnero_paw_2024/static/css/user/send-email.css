@@ -5,7 +5,6 @@
 .send-email-form__btn, .spinner {
     margin-top: 1rem;
     width: 15rem;
-    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;

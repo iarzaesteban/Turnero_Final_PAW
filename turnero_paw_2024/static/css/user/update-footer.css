@@ -22,6 +22,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
 }
 
 .updates-footer-container__information img{
@@ -45,7 +46,6 @@
 
 .updates-footer-container-information__span button{
     width: 8rem;
-    height: 2rem;
 }
 
 .btn-delete{
@@ -63,12 +63,10 @@
 
     #form-updates-footer button{
         width: 20rem;
-        height: 3rem;
     }
 
     .updates-footer-container-information__span button{
         width: 12rem;
-        height: 3rem;
     }
 
     .updates-footer-container{
@@ -88,7 +86,7 @@
     }
 
     .updates-footer-container__information{
-        height: 30rem;
+        height: 40rem;
     }
 
     .updates-footer-container__information p{
@@ -97,7 +95,6 @@
 
     .updates-footer-container-information__span button{
         width: 10rem;
-        height: 3rem;
     }
 
     #form-updates-footer{
@@ -106,7 +103,6 @@
 
     #form-updates-footer button{
         width: 20rem;
-        height: 3rem;
         margin-top: 1rem;
     }
 }

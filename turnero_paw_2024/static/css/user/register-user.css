@@ -54,7 +54,6 @@
     #form-register button{
         margin-top: 1rem;
         width: 20rem;
-        height: 3rem;
     }
 
     .spinner-button::after{
