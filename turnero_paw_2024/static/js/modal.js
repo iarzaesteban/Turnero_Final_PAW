@@ -103,8 +103,14 @@ export function requestShift() {
         .then(data => {
             if (data.shift){
                 const message = `Se ha solicitado un turno para ${data.shift.person} el día ${data.shift.day}, a las ${data.shift.hour}. El turno será evaluado por un operador y se le notificará a su casilla de mail.`;
+                const existingMessage = document.querySelector('.message-request-shift');
+
+                if (existingMessage) {
+                    calendarContainer.removeChild(existingMessage);
+                }
                 const messageRequestShift = document.createElement('p');
                 messageRequestShift.textContent = message;
+                messageRequestShift.classList.add('message-request-shift');
 
                 const closeButton = document.createElement('span');
                 closeButton.textContent = 'X';
