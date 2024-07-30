@@ -253,55 +253,59 @@ def confirm_cancel_shift(request, shift_id):
         if form.is_valid():
             verification_code = form.cleaned_data.get('verification_code')
             cancel_description = form.cleaned_data.get('cancel_description')
-            
-            if verification_code:
-                if shift.verification_code == verification_code:
-                    shift.id_state = State.objects.get(short_description='cancelado')
+            if shift.id_state.short_description != "cancelado":
+                if verification_code:
+                    if shift.verification_code == verification_code:
+                        shift.id_state = State.objects.get(short_description='cancelado')
+                        shift.save()
+                        return render(request, 'shift/confirm_cancel.html', {
+                            'success_message': 'Se ha cancelado el turno de forma exitosa.',
+                            'set_description': False,
+                            'shift': shift,
+                            'form': form
+                        })
+                    else:
+                        return render(request, 'shift/confirm_cancel.html', {
+                            'error': 'Código incorrecto',
+                            'set_description': False,
+                            'shift': shift,
+                            'form': form
+                        })
+
+                if cancel_description:
+                    if not re.match(r'^[a-zA-Z0-9\s.,/!?áéíóúÁÉÍÓÚñÑüÜ]+$', cancel_description):
+                        return render(request, 'shift/confirm_cancel.html', {
+                            'success_message': 'Se ha cancelado el turno de forma exitosa.',
+                            'error': 'La descripción contiene caracteres no permitidos.',
+                            'set_description': False,
+                            'shift': shift,
+                            'form': form
+                        })
+                    shift.description = cancel_description
                     shift.save()
                     return render(request, 'shift/confirm_cancel.html', {
-                        'success_message': 'Se ha cancelado el turno de forma exitosa.',
-                        'set_description': False,
+                        'success_message': 'Se ha agregado la descripción al turno de forma exitosa.', 
                         'shift': shift,
+                        'set_description': True,
                         'form': form
                     })
-                else:
-                    return render(request, 'shift/confirm_cancel.html', {
-                        'error': 'Código incorrecto',
-                        'set_description': False,
-                        'shift': shift,
-                        'form': form
-                    })
-            
-            if cancel_description:
-                if not re.match(r'^[a-zA-Z0-9\s.,/!?áéíóúÁÉÍÓÚñÑüÜ]+$', cancel_description):
+
+                if not cancel_description:
                     return render(request, 'shift/confirm_cancel.html', {
                         'success_message': 'Se ha cancelado el turno de forma exitosa.',
-                        'error': 'La descripción contiene caracteres no permitidos.',
-                        'set_description': False,
+                        'set_description': True,
                         'shift': shift,
                         'form': form
                     })
-                shift.description = cancel_description
-                shift.save()
-                return render(request, 'shift/confirm_cancel.html', {
-                    'success_message': 'Se ha agregado la descripción al turno de forma exitosa.', 
-                    'shift': shift,
-                    'set_description': True,
-                    'form': form
-                })
-            
-            if not cancel_description:
-                return render(request, 'shift/confirm_cancel.html', {
-                    'success_message': 'Se ha cancelado el turno de forma exitosa.',
-                    'set_description': True,
-                    'shift': shift,
-                    'form': form
-                })
+            else:
+                return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
 
     else:
         form = CancelShiftForm()
-
-    return render(request, 'shift/confirm_cancel.html', {'shift': shift, 'form': form})
+    if shift.id_state.short_description != "cancelado":
+        return render(request, 'shift/confirm_cancel.html', {'shift': shift, 'form': form})
+    else:
+        return render(request, 'shift/shift_details_before_cancel.html', {'shift': shift})
 
 
 def serialize_shifts(page_obj):

@@ -17,7 +17,7 @@
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' %}
-    
+    {% include 'includes/modal_update_shift.html' %}
         {% if success_message %}
             <h2>Cancelación de turno exitosa</h2>
             <section class="succes-message-container">
@@ -64,14 +64,20 @@
                     {{ shift.hour }}
                 </p>
                 {{ form.verification_code }}
-                <button type="submit">Cancelar Turno</button>
+
+                <button type="button" id="open-confirm-modal">Cancelar Turno</button>
                 {% if error %}
                     <p class="error-message">{{ error }}</p>
                 {% endif %}
+
+                <p id="modal-email-error-text" class="modal-email-error-text">
+                    Debe ingresar un código de verificación válido.
+                </p>
             </form>
         {% endif %}
-    
+
     {% include 'includes/footer.html' %}
     <script src="{% static 'js/shift/confirm_cancel_modal.js' %}" defer></script>
+    <script type="module" src="{% static 'js/modal_update_shift.js' %}" ></script>
     <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 {% endblock %}

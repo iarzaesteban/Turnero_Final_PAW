@@ -52,6 +52,16 @@
     display: flex;
 }
 
+.modal-email-error-text {
+    display: none;
+}
+
+.modal-email-error-text-show {
+    display: block;
+    color:  #fd1c1c;
+    margin: 0 0 1rem;
+}
+
 .spinner-button {
     transition: opacity 0.75s, visibility 0.75s;
 }

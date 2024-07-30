@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelButton = document.getElementById('cancel-button');
     const confirmButton = document.getElementById('confirm-button');
     const modalMessage = document.getElementById('modal-message');
+    const cancelDescription = document.getElementById('id_verification_code');
     const acceptLinks = document.querySelectorAll('.acept-btn');
     const cancelLinks = document.querySelectorAll('.cancel-btn');
     const asignmentLinks = document.querySelectorAll('.asignment-btn');
     const finalyShiftLink = document.querySelectorAll('.finaly-shift-btn');
-  
+    const openModalButton = document.getElementById('open-confirm-modal');
+    const form = document.getElementById('cancel-shift-form');
     function showModal(message) {
         modalMessage.textContent = message;
         modal.classList.add('show');
@@ -25,6 +27,28 @@ document.addEventListener('DOMContentLoaded', function() {
   
     function closeModal() {
         modal.classList.remove('show');
+    }
+
+    function showErrorMessage() {
+        const errorMessageParagraph = document.getElementById('modal-email-error-text');
+        if (errorMessageParagraph){
+            errorMessageParagraph.classList.add('modal-email-error-text-show');
+        }
+    }
+
+    if (openModalButton){
+        openModalButton.addEventListener('click', function() {
+            const cancelDesc = cancelDescription.value.trim();
+            event.preventDefault();
+            if (cancelDesc){
+                showModal("¿Estás seguro de que desea eliminar el turno?");
+                confirmButton.onclick = function() {
+                    form.submit();
+                };
+            }else{
+                showErrorMessage()
+            }
+        });
     }
 
     finalyShiftLink.forEach(function(link) {
