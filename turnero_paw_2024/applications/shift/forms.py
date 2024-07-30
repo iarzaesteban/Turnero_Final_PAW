@@ -16,7 +16,9 @@ class CancelShiftForm(forms.Form):
     )
 
     def clean_cancel_description(self):
+        cancel_description = self.cleaned_data.get('cancel_description', '')
         verification_code = self.cleaned_data.get('verification_code', '')
-        if verification_code is not None and verification_code.strip() != "":
-            return
-        
+        if verification_code:
+            return cancel_description
+                
+        return cancel_description
