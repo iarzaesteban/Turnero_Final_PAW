@@ -27,8 +27,6 @@
     color: #fff;
     border-radius: 4px;
     cursor: pointer;
-    width: 15rem;
-    height: 2rem;
     text-align: center;
     align-content: center;
     background-color: #1d7723;
@@ -51,22 +49,12 @@
     #confirm-shifts-container__section{
         width: 90%;
         margin: .5rem auto
-    }
-
-    #confirm-shifts-container-section__btn a{
-        height: 3rem;
-    }
-    
+    }    
 }
 
 @media only screen and (min-width: 1081px) {
     #confirm-shifts-container__section{
         margin: 0 30rem 1rem;
-    }
-
-    #confirm-shifts-container-section__btn a{
-        height: 3rem;
-        width: 25rem;
     }
 
     .confirm-shifts-container-span__button{

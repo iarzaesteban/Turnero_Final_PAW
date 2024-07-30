@@ -49,13 +49,7 @@
                                 Hora:
                             </strong> 
                                 {{ shift.hour }}
-                        </p>   
-                        <span id="confirm-shifts-container-section__btns">
-                            <a href="{% url 'user-confirm-shift' shift.id %}" 
-                                    class="acept-btn">Aceptar</a>
-                            <a href="{% url 'user-cancel-shift' shift.id %}" 
-                                    class="cancel-btn">Cancelar</a>
-                        </span>          
+                        </p>          
                 </section>
                 {% empty %}
                     <section id="confirm-shifts-container__section">

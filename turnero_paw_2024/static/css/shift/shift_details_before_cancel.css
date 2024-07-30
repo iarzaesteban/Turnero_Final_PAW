@@ -21,17 +21,4 @@
         margin: 1rem 2rem;
     }
 
-    #cancel-shift-button{
-        height: 3rem;
-        width: 20rem;
-    }
-
-}
-
-@media only screen and (min-width: 1081px) {
-    #cancel-shift-button{
-        height: 3rem;
-        width: 25rem;
-    }
-    
 }
