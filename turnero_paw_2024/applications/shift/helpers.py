@@ -68,15 +68,17 @@ def send_mails(asunto, code, sender, receiver):
 
 #Le enviamos un mail al cliente indicando que se ha recibido el turno. 
 def send_mail_to_receiver(user, shift, is_receiver):
+    date_str = shift.date.strftime('%d/%m/%Y')
+    hour_str = shift.hour.strftime('%H:%M:%S')
     if is_receiver:
         URL = os.environ.get('NGROK_URL', 'http://localhost:8000')
         sender = EMAIL_HOST_USER
         receiver = shift.id_person.email
         asunto = "Respuesta de solicitud de turno."
         sub_title = "Turno " + shift.id_state.short_description
-        message = ("Su solicitud de turno ha sido <strong>" +
-           shift.id_state.short_description +
-           "</strong> por el operador " + user.username + ".<br><br>")
+        message = ("Su solicitud de turno para el día "+ date_str +" a las "+ hour_str +
+                   "hs ha sido <strong>" +  shift.id_state.short_description +
+                    "</strong> por el operador " + user.username + ".<br><br>")
         if shift.id_state.short_description == "confirmado":
             message += ("Su código de verificación es <strong>" + shift.confirmation_code +
                         "</strong>, podrá ingresarlo en la " + 
@@ -94,8 +96,7 @@ def send_mail_to_receiver(user, shift, is_receiver):
                         "Gracias, saludos!")
     else:
         person = Person.objects.get(id_user=user.id)
-        date_str = shift.date.strftime('%d/%m/%Y')
-        hour_str = shift.hour.strftime('%H:%M:%S')
+        
         sender = shift.id_person.email
         receiver = person.email
         asunto = "Cancelación de turno."
