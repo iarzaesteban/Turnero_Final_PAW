@@ -27,8 +27,6 @@
     color: #fff;
     border-radius: 4px;
     cursor: pointer;
-    width: 15rem;
-    height: 2rem;
     text-align: center;
     align-content: center;
     background-color: #1d7723;
@@ -77,14 +75,6 @@
         width: 90%;
         margin: .5rem auto
     }
-
-    #confirm-shifts-container-section__btn a{
-        height: 3rem;
-    }
-
-    #confirm-shifts-container-section__btns a {
-        width: 10rem;
-    }
     
 }
 
@@ -93,16 +83,7 @@
         margin: 0 30rem 1rem;
     }
 
-    #confirm-shifts-container-section__btn a{
-        height: 3rem;
-        width: 25rem;
-    }
-
     #confirm-shifts-container-section__btns{
         margin-top: 1rem;
-    }
-
-    #confirm-shifts-container-section__btns a{
-        width: 15rem;
     }
 }

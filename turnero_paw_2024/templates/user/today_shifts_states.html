@@ -10,6 +10,8 @@
             as="style" onload="this.onload=null;this.rel='stylesheet'"> 
 <link rel="preload" href="{% static 'css/user/pagination.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{% static 'css/shift/modals.css' %}" 
+            as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/user/today-shifts-states.css' %}" 
             as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="{% static 'css/footer.css' %}" 
@@ -17,7 +19,8 @@
 {% endblock links %}
 {% block content %}
     {% include 'includes/header.html' with show_nav=True show_avatar_user=True %}
-    
+    {% include 'includes/modal_update_shift.html' %}
+
     <section class="confirm-shifts-container">
         <h2 class="confirm-shifts-title">{{ title }}</h2>
         {% for shift in list_shift %}
@@ -49,7 +52,20 @@
                                 Hora:
                             </strong> 
                                 {{ shift.hour }}
-                        </p>          
+                        </p>
+                        {% if shift.id_state.short_description != "confirmado"%} 
+                            <span id="confirm-shifts-container-section__btns">
+                                <a href="{% url 'user-confirm-shift' shift.id %}" 
+                                        class="acept-btn">Aceptar</a>
+                                <a href="{% url 'user-cancel-shift' shift.id %}" 
+                                        class="cancel-btn">Cancelar</a>
+                            </span>
+                        {% else %}
+                            <span id="confirm-shifts-container-section__btn">
+                                <a href="{% url 'user-complete-shift' shift.id %}" 
+                                        class="finaly-shift-btn">Finalizar Turno</a>
+                            </span>
+                        {%endif%}
                 </section>
                 {% empty %}
                     <section id="confirm-shifts-container__section">
@@ -83,5 +99,6 @@
     </section>
     {% include 'includes/footer.html' %}
     <script type="module" src="{% static 'js/menu.js' %}" ></script>
+    <script type="module" src="{% static 'js/modal_update_shift.js' %}" ></script>
     <script type="module" src="{% static 'js/includes/footer.js' %}" ></script>
 {% endblock content %}
