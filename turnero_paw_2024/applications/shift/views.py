@@ -258,6 +258,7 @@ def confirm_cancel_shift(request, shift_id):
                     if shift.verification_code == verification_code:
                         shift.id_state = State.objects.get(short_description='cancelado')
                         shift.save()
+                        helpers.send_mail_to_receiver(shift.id_user, shift, False)
                         return render(request, 'shift/confirm_cancel.html', {
                             'success_message': 'Se ha cancelado el turno de forma exitosa.',
                             'set_description': False,
@@ -378,7 +379,7 @@ class CancelShiftView(View):
             canceled_state = State.objects.get(short_description='cancelado')
             shift.id_state = canceled_state
             shift.description = description
-            #shift.save()
+            shift.save()
             helpers.send_mail_to_receiver(shift.id_user, shift, False)
             return JsonResponse({'redirect_url': '/shift/home/'})
             

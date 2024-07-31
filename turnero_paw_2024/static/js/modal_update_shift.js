@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (cancelDesc){
                 showModal("¿Estás seguro de que desea eliminar el turno?");
                 confirmButton.onclick = function() {
+                    confirmButton.textContent = "";
+                    showSpinner();
                     form.submit();
                 };
             }else{
