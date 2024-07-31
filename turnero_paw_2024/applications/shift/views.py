@@ -159,6 +159,38 @@ def add_event_to_google_calendar(event_summary, event_description, start_datetim
     event = service.events().insert(calendarId='primary', body=event).execute()
     return event
 
+def delete_event_from_google_calendar(event_id):
+    creds = get_credentials()
+    service = build('calendar', 'v3', credentials=creds)
+    try:
+        service.events().delete(calendarId='primary', eventId=event_id).execute()
+        return True
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return False
+
+def remove_event_from_google_calendar(day, hour, id):
+    creds = get_credentials()
+    service = build('calendar', 'v3', credentials=creds)
+
+    selected_datetime = datetime.combine(day, hour)
+
+    time_min = selected_datetime.replace(hour=0, minute=0, second=0, microsecond=0).isoformat() + 'Z'
+    time_max = (selected_datetime + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0).isoformat() + 'Z'
+
+    try:
+        events_result = service.events().list(calendarId='primary', timeMin=time_min, timeMax=time_max).execute()
+        events = events_result.get('items', [])
+        for event in events:
+            shift_id = json.loads(event['summary']).get('shift_id')
+            if shift_id and shift_id == id:
+                return delete_event_from_google_calendar(event['id'])
+
+        return False
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return False
 
 @csrf_exempt
 def get_list_dates(request):
@@ -259,6 +291,7 @@ def confirm_cancel_shift(request, shift_id):
                         shift.id_state = State.objects.get(short_description='cancelado')
                         shift.save()
                         helpers.send_mail_to_receiver(shift.id_user, shift, False)
+                        remove_event_from_google_calendar(shift.date, shift.hour, shift.id)
                         return render(request, 'shift/confirm_cancel.html', {
                             'success_message': 'Se ha cancelado el turno de forma exitosa.',
                             'set_description': False,
@@ -380,6 +413,7 @@ class CancelShiftView(View):
             shift.id_state = canceled_state
             shift.description = description
             shift.save()
+            remove_event_from_google_calendar(shift.date, shift.hour, shift.id)
             helpers.send_mail_to_receiver(shift.id_user, shift, False)
             return JsonResponse({'redirect_url': '/shift/home/'})
             
@@ -396,6 +430,7 @@ class CancelShiftView(View):
         try:
             canceled_state = State.objects.get(short_description='cancelado')
             shift.id_state = canceled_state
+            remove_event_from_google_calendar(shift.date, shift.hour, shift.id)
             if not isinstance(self.request.user, AnonymousUser):
                 user = self.request.user
                 shift.id_user = user
