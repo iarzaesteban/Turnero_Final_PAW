@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: center;
     border: .1rem solid #ccc;
+    width: 12rem;
 }
 
 #form-login{
@@ -21,6 +22,10 @@
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
+    .register-user{
+        width: 20rem;
+    }
+
     #form-login{
         margin: 3rem 5rem 3rem;
         height: 22rem;
@@ -46,5 +51,6 @@
 
     .register-user{
         margin-bottom: 5rem;
+        width: 30rem;
     }
 }

@@ -15,3 +15,6 @@ reset_db:
 		[ $$CONTINUE = "y" ] || [ $$CONTINUE = "Y" ] || (echo "Exiting."; exit 1;)
 		@$(DJANGO_EXEC) $(FLUSH)
 		@$(PYTHON_EXEC) $(LOADDATA)
+
+up:
+	@docker-compose up
