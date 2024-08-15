@@ -2,6 +2,10 @@
     margin-bottom: 2rem;
 }
 
+#send-email-form textarea{
+    height: 5rem;
+}
+
 .send-email-form__btn, .spinner {
     margin-top: 1rem;
     display: flex;
@@ -39,8 +43,18 @@
     100% { transform: rotate(360deg); }
 }
 
+@media only screen and (min-width: 768px) and (max-width: 1080px){
+    #send-email-form textarea{
+        height: 10rem;
+    }
+}
+
 @media only screen and (min-width: 1081px) {
     #send-email-form{
         margin: 0 30rem 1rem;
+    }
+
+    #send-email-form textarea{
+        height: 15rem;
     }
 }
