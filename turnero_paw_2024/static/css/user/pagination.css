@@ -14,14 +14,15 @@
 }
 
 .pagination-container span a {
+    display: flex;
     margin: .3rem;
     color: #fff;
     border-radius: 4px;
     cursor: pointer;
     width: 1.5rem;
     height: 1.5rem;
-    text-align: center;
-    align-content: center;
+    align-items: center;
+    justify-content: center;
     background-color: #000000;
 }
 
