@@ -23,12 +23,13 @@
 }
 
 #confirm-shifts-container-section__btn a{
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #fff;
     border-radius: 4px;
+    width: 10rem;
     cursor: pointer;
-    text-align: center;
-    align-content: center;
     background-color: #1d7723;
 }
 
@@ -38,18 +39,25 @@
     flex-direction: column;
 }
 
-.confirm-shifts-container-span__button__back-btn{
-    background-color: #f3a41e;
+.today-shifts-states__close-btn, .confirm-shifts-container-span__button__back-btn{
     display: flex;
+    background-color: #f3a41e;
+    color: #fff;
+    border-radius: 4px;
     align-items: center;
     justify-content: center;
+    margin: 4rem auto 0;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #confirm-shifts-container__section{
         width: 90%;
         margin: .5rem auto
-    }    
+    }
+    
+    #confirm-shifts-container-section__btn a{
+        width: 20rem;
+    }
 }
 
 @media only screen and (min-width: 1081px) {
@@ -59,5 +67,9 @@
 
     .confirm-shifts-container-span__button{
         margin-top: 2rem;
+    }
+
+    #confirm-shifts-container-section__btn a{
+        width: 25rem;
     }
 }
