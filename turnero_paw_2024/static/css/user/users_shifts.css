@@ -30,8 +30,7 @@
 
 .users-attentions-times__btns{
     display: flex;
-    flex-direction: column;
-    
+    flex-direction: column;    
 }
 
 .users-attentions-times__btns a {
@@ -43,6 +42,7 @@
     align-content: center;
     padding: .5rem;
     margin-top: 1rem;
+    width: 15rem;
 }
 
 .users-attentions-times__close-btn{
@@ -125,6 +125,10 @@
 
     .pagination-container {
         left: 16rem;
+    }
+
+    .users-attentions-times__btns a {
+        width: 20rem;
     }
 
     .users-attentions-times-container-section-span__button{
