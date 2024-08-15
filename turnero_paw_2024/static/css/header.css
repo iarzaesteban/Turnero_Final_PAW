@@ -60,7 +60,7 @@
     position: absolute;
     z-index: 1;
     top: -5rem;
-    right: -.8rem;
+    right: 6rem;
     display: flex;
     flex-direction: column;
     height: 2.2rem;
@@ -88,6 +88,7 @@
     border: 1px solid #000000;
     background-color: #279e1c;
     border-radius: .5rem;
+    width: 15rem;
 }
 
 .nav-toggle {
@@ -155,7 +156,11 @@
     #user-avatar{
         width: 2.5rem;
         height: 2.5rem;
-    }   
+    }
+
+    .nav-items-user a{
+        width: 20rem;
+    }
 
     .nav-items{
         top: 3rem;
@@ -163,7 +168,7 @@
 
     .nav-items-user{
         top: -4.5rem;
-        right: -3.5rem;
+        right: 1.5rem;
     }
 
     .nav-items a, .nav-items-user a {
@@ -223,6 +228,10 @@
 
     .close span {
         transform: rotate(45deg) translate(1px, -1px);
+    }
+
+    .nav-items-user a{
+        width: 25rem;
     }
 
     #header-avatar-btn.active + .nav-items-user {
