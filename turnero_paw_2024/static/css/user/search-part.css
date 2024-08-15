@@ -25,13 +25,17 @@
         right: 7rem;
         margin: 1rem 1rem;
         padding: 0;
-        width: 30rem;
+        width: 25rem;
     }
+
     #search-shift-section {
         float: right;
-        width: 25rem;
         height: 3rem;
     }
+
+    #search-shift-section__input{
+        width: 14rem;
+    }    
 
     #search-shift-section button{
         padding: .6rem 1rem;

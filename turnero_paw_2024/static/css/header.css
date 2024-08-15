@@ -60,7 +60,7 @@
     position: absolute;
     z-index: 1;
     top: -5rem;
-    right: .5rem;
+    right: -.8rem;
     display: flex;
     flex-direction: column;
     height: 2.2rem;
@@ -163,6 +163,7 @@
 
     .nav-items-user{
         top: -4.5rem;
+        right: -3.5rem;
     }
 
     .nav-items a, .nav-items-user a {
@@ -205,6 +206,7 @@
 
     .nav-items-user{
         top: -3.5rem;
+        right: 4rem;
     }
 
     .nav-items a, .nav-items-user a {
