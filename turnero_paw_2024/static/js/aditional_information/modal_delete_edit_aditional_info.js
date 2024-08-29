@@ -35,8 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // token para el metodo POST
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
     function showModal(id) {
-        
+        console.log("id es",id)    
         modal.classList.add('show');
         confirmButton.addEventListener('click', function() {
             closeModal();
@@ -73,38 +74,49 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal();
             
             const iconFile = editIconInput.files[0];
-            const reader = new FileReader();
-        
-            reader.onload = function(event) {
-                const base64Icon = event.target.result;
-        
-                fetch(`/aditionals/update-aditional-information/${id}/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken,
-                    },
-                    body: JSON.stringify({
-                        title: editTitleInput.value,
-                        description: editDescriptionInput.value,
-                        link: editLinkInput.value,
-                        icon_base64: base64Icon
-                    })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    setTimeout(() => window.location.reload(), 5000);                });
+            const updateData = {
+                title: editTitleInput.value,
+                description: editDescriptionInput.value,
+                link: editLinkInput.value,
+                icon_base64: icon
             };
         
             if (iconFile) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Icon = event.target.result;
+                    updateData.icon_base64 = base64Icon;
+                    sendUpdateRequest(id, updateData);
+                };
                 reader.readAsDataURL(iconFile);
             } else {
-                reader.readAsDataURL(new Blob());
+                sendUpdateRequest(id, updateData);
             }
+        });
+    }
+
+    function sendUpdateRequest(id, data) {
+        console.log("DATA ",data)
+        fetch(`/aditionals/update-aditional-information/${id}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({
+                title: data.title,
+                description: data.description,
+                link: data.link,
+                icon_base64: data.icon_base64
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            setTimeout(() => window.location.reload(), 5000);
         });
     }
 
@@ -115,7 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     deleteButtons.forEach(function(button) {
         button.addEventListener('click', function() {
-            const id = button.dataset.id;
+            const section = button.closest('.updates-footer-container__information');
+            const id = section.dataset.id;
+            console.log("button.dataset",button.dataset)
+            
             showModal(id);
         });
     });

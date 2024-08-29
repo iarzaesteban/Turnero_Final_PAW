@@ -20,7 +20,22 @@
     justify-content: space-around;
     align-items: center;
     width: 95%;
-    height: 16rem;
+    height: 15rem;
+    max-height: 16rem;
+    overflow-y: auto;
+}
+
+.footer-card::-webkit-scrollbar {
+    width: .5rem;
+}
+
+.footer-card::-webkit-scrollbar-track {
+    background: #4b4b4b;
+}
+
+.footer-card::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: 2px solid #000000;
 }
 
 .footer-card-icon {
@@ -48,11 +63,16 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     }
+
+    .footer-card {
+        max-height: 25rem;
+    }
 }
 
 @media only screen and (min-width: 1081px) { 
     .footer-card {
-        height: 25rem;
+        height: 20rem;
+        max-height: 25rem;
     }
     
     #footer-cards-container{

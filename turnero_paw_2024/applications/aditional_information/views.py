@@ -24,6 +24,7 @@ def update_aditional_information(request, pk):
     if request.method == 'POST':
         aditional_information = get_object_or_404(AditionalInformation, pk=pk)
         data = json.loads(request.body)
+        print(f"data ....... {data}")
         aditional_information.title = data['title']
         aditional_information.description = data['description']
         aditional_information.link = data['link']
