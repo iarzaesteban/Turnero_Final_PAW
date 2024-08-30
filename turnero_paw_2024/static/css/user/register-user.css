@@ -41,6 +41,7 @@
         width: .7rem;
         height: .7rem;
         border: .3rem solid #dddddd;
+        border-top-color: #000;
     }
 }
 
@@ -58,5 +59,6 @@
         width: 1rem;
         height: 1rem;
         border: .5rem solid #dddddd;
+        border-top-color: #000;
     }
 }
