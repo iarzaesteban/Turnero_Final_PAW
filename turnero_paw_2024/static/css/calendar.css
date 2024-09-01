@@ -123,6 +123,17 @@ table {
     color: white;
 }
 
+.spinner-button{
+    position: absolute;
+}
+
+.spinner-button::after {
+    display: flex;
+    margin: 13rem 40vw;
+    width: 5rem;
+    height: 5rem;
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #calendar-container{
@@ -161,6 +172,12 @@ table {
         height: 2rem;
         font-size: 1rem;
     }
+
+    .spinner-button::after {
+        margin: 13rem 41vw;
+        width: 5rem;
+        height: 5rem;
+    }
 }
 
 @media only screen and (min-width: 1081px) {
@@ -197,5 +214,11 @@ table {
 
     #info-section p{
         margin-left: .5rem;
+    }
+
+    .spinner-button::after {
+        margin: 13rem 42vw;
+        width: 10rem;
+        height: 10rem;
     }
 }

@@ -15,8 +15,8 @@ import {
     startTimeAttention,
     endTimeAttention,
     setCurrentMonth,
-    setCurrentYear,
-    calendarBody
+    calendarBody,
+    hideSpinner
 } from './index.js';
 
 import {
@@ -91,6 +91,7 @@ export function generateSchedules() {
     const infoSection = document.getElementById('info-section');
     infoSection.style.display = 'flex';
     infoSection.style.gap = "0";
+    hideSpinner();
 }
 
 function getWindowWidth() {

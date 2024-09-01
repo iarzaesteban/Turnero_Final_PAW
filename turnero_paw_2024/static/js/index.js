@@ -23,6 +23,10 @@ export let responseEvents = [];
 export let startTimeAttention = "";
 export let endTimeAttention = "";
 
+export const selectDayForShowSpinner = document.getElementById('spinner');
+export const sectionSelectDayForShowSpinner = document.getElementById('calendar-container__hide-show');
+
+
 export function setCurrentDay(newDay) {
     currentDay = newDay;
 }
@@ -62,6 +66,17 @@ export function setCurrentMonth(newCurrentMonth) {
 export function setCurrentYear(newCurrentYear) {
     currentYear = newCurrentYear;
 }
+
+export function showSpinner() {
+    selectDayForShowSpinner.classList.add("spinner-button");
+    sectionSelectDayForShowSpinner.style.opacity = ".1";
+}
+
+export function hideSpinner() {
+    selectDayForShowSpinner.classList.remove("spinner-button");
+    sectionSelectDayForShowSpinner.style.opacity = "1";
+}
+ 
 
 import {
     generateCalendar,

@@ -1,33 +1,34 @@
 {% include 'shift/modal_shift_datails.html' %}
 
 <section id="calendar-container" class="calendar-container">
-    <section id="calendar">
-        <h2>Seleccione el día y después el horario</h2>
-        <section id="calendar-controls">
-            <button id="prevMonth" aria-label="<"> < </button>
-                <select id="selectMonth" class="calendar-controls-select" aria-label="select-month">
-                </select>
-                <select id="selectYear" class="calendar-controls-select" aria-label="select-month">
-                </select>
-            <button id="nextMonth" aria-label=">"> > </button>
-        </section>
-        <table id="calendario">
-            <thead>
-                <tr>
-                    <th>Dom.</th>
-                    <th>Lun.</th>
-                    <th>Mar.</th>
-                    <th>Mie.</th>
-                    <th>Jue.</th>
-                    <th>Vie.</th>
-                    <th>Sab.</th>
-                </tr>
-            </thead>
-            <tbody id="calendario-cuerpo" tabindex="-1">
-            </tbody>
-        </table>
+    <span class="spinner" id="spinner"></span>
+    <section id="calendar-container__hide-show">
+        <section id="calendar">
+            <h2>Seleccione el día y después el horario</h2>
+            <section id="calendar-controls">
+                <button id="prevMonth" aria-label="<"> < </button>
+                    <select id="selectMonth" class="calendar-controls-select" aria-label="select-month">
+                    </select>
+                    <select id="selectYear" class="calendar-controls-select" aria-label="select-month">
+                    </select>
+                <button id="nextMonth" aria-label=">"> > </button>
+            </section>
+            <table id="calendario">
+                <thead>
+                    <tr>
+                        <th>Dom.</th>
+                        <th>Lun.</th>
+                        <th>Mar.</th>
+                        <th>Mie.</th>
+                        <th>Jue.</th>
+                        <th>Vie.</th>
+                        <th>Sab.</th>
+                    </tr>
+                </thead>
+                <tbody id="calendario-cuerpo" tabindex="-1">
+                </tbody>
+            </table>
     </section>
 {% include 'shift/calendar_info_section.html' %}
-
-{% include 'includes/footer.html' %}
 </section>
+{% include 'includes/footer.html' %}

@@ -5,7 +5,8 @@ import {
     daysWeek,
     firstDayWeek,
     calendarBody,
-    currentMonth
+    currentMonth,
+    showSpinner
 } from './index.js';
 
 import {
@@ -45,11 +46,12 @@ export function generateCalendar() {
 
 function createClickHandler(day) {
     return function() {
+        showSpinner();
         const days = document.querySelectorAll('td');
         days.forEach(d => d.classList.remove('selected'));
-
         setCurrentDay(day);
         this.classList.add('selected');
+        
         getGoogleCalendarEvents();
     };
 }

@@ -60,32 +60,7 @@
     display: block;
     color:  #fd1c1c;
     margin: 0 0 1rem;
-}
-
-.spinner-button {
-    transition: opacity 0.75s, visibility 0.75s;
-}
-
-.spinner-hidden{
-    display: none;
-}
-
-.spinner-button::after{
-    content: "";
-    display: inline-block;
-    width: .5rem;
-    height: .5rem;
-    border: .2rem solid #dddddd;
-    border-top-color: #000;
-    border-radius: 50%;
-    animation: spin 0.75s ease infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-  
+}  
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     .modal-buttons {
@@ -97,13 +72,6 @@
     .modal-buttons button {
         width: 12rem;
         height: 4rem;
-    }
-
-    .spinner-button::after{
-        width: 1rem;
-        height: 1rem;
-        border: .4rem solid #dddddd;
-        border-top-color: #000;
     }
 }
 
@@ -119,12 +87,4 @@
         flex-direction: row;
         justify-content: space-evenly;
     }
-
-    .spinner-button::after{
-        width: 1.5rem;
-        height: 1.5rem;
-        border: .5rem solid #dddddd;
-        border-top-color: #000;
-    }
-
 }
