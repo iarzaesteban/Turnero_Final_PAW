@@ -31,12 +31,12 @@
     
         <section id="shifts-container">
             <h2> Solicitud de turnos pendientes</h2>
-            
+                {% if error_message %}
+                    <p class="error-message">{{ error_message }}</p>
+                {% endif %}
                 {% for shift in pending_shifts %}
                 <section id="shifts-container__section">
-                        {% if error_message %}
-                            <p class="error-message">{{ error_message }}</p>
-                        {% endif %}
+                        
                         <p>
                             <strong>
                                 Solicitado por:

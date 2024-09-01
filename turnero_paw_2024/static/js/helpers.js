@@ -97,17 +97,23 @@ function getWindowWidth() {
     return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 }
 
-export function getClassDay(day) {
+export function getClassDay(day, dayOfWeek) {
     if (thisMonth === currentMonth) {
         if (day < currentDay) {
             return "anterior";
         } else if (day === currentDay) {
             return "actual";
+        } else if (dayOfWeek === 0 || dayOfWeek === 6) {
+            return "not-selected";
         } else {
             return "posterior";
         }
     } else {
-        return "posterior";
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            return "not-selected";
+        } else {
+            return "posterior";
+        }
     } 
 }
 

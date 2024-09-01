@@ -79,6 +79,10 @@
     font-weight: bold;
 }
 
+.error-message{
+    color: #d10314;
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 1080px){
     #shifts-container__section{

@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -457,9 +458,17 @@ class CancelShiftView(View):
 class CompleteShiftView(LoginRequiredMixin, View):
     def get(self, request, shift_id):
         shift = get_object_or_404(Shift, id=shift_id)
-        
         try:
             complete_state = State.objects.get(short_description='completado')
+            now = timezone.now()
+            shift_datetime = timezone.make_aware(datetime.combine(shift.date, shift.hour))
+            if shift_datetime > now:
+                error_message = 'No puedes completar un turno que aún no ha ocurrido.'
+                if not isinstance(self.request.user, AnonymousUser):
+                    list_shift = Shift.objects.filter(id_state__short_description='confirmado')
+                    return render(request, 'user/home_user.html', {
+                                                    'list_shift': list_shift, 
+                                                    'error_message': error_message})
             shift.id_state = complete_state
             if not isinstance(self.request.user, AnonymousUser):
                 user = self.request.user

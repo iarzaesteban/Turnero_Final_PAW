@@ -30,9 +30,10 @@ export function generateCalendar() {
                 cell.textContent = "";
             } else {
                 cell.textContent = day;
-                cell.classList.add(getClassDay(day, thisMonth));
+                const dayClass = getClassDay(day, j);
+                cell.classList.add(dayClass);
 
-                if (day >= currentDay || thisMonth != currentMonth) {
+                if (dayClass !== "not-selected" && (day >= currentDay || thisMonth != currentMonth)) {
                     cell.addEventListener("click", createClickHandler(day));
                 }
                     

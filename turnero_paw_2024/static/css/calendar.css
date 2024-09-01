@@ -100,8 +100,14 @@ table {
     margin-bottom: .5rem;
 }
 
-.anterior {
-    background-color: rgba(255, 0, 0, 0.3); 
+.anterior{
+    background-color: rgba(255, 0, 0, 0.3);
+    cursor: not-allowed;
+}
+
+.not-selected {
+    border: none;
+    cursor: not-allowed;
 }
 
 .actual {
