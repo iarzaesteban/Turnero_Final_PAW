@@ -1,14 +1,48 @@
 # Turnero_Final_PAW
 Sistema de geston de turnos AR unlu
 
-## Tecnilogías utilizadas:
-- Python
-- Django: Framework web utilizado en el backend.
-- HTML, CSS y JavaScript: Utilizados para el frontend.
+## Descripción del Proyecto: 
+Hemos desarrollado un sistema de turnero para la Autoridad de Registro de la Universidad Nacional de Luján (UNLu) utilizando tecnologías modernas y robustas para garantizar su eficiencia, escalabilidad y seguridad. Este sistema está diseñado para facilitar la gestión de turnos de manera ágil y confiable, optimizando los procesos administrativos y mejorando la experiencia de los usuarios.
+
+## Tecnologías Utilizadas:
+### Backend:
+- Django: Utilizamos Django como framework de desarrollo para el backend debido a su robustez, escalabilidad y capacidad de manejar aplicaciones complejas de manera eficiente.
+### Frontend:
+- HTML, CSS y JavaScript: La interfaz de usuario del sistema de turnos está desarrollada utilizando HTML para la estructura del contenido, CSS para el diseño y estilización, y JavaScript para la interacción dinámica y mejoras en la experiencia del usuario.
+### Contenedores:
+- Docker: Para garantizar que todos los servicios del sistema se ejecuten de manera consistente y aislada, utilizamos Docker. Docker nos permite empaquetar todas las dependencias y configuraciones necesarias en contenedores, facilitando la implementación y gestión del sistema.
+### Base de Datos:
+- PostgreSQL: Para el almacenamiento y gestión de datos.
+### Control de Versiones:
+- Git: Para el control de versiones y desarrollo del proyecto, utilizamos un repositorio Git. Esto nos permite gestionar cambios en el código de manera organizada, realizar seguimientos de versiones.
+### Seguridad:
+- ReCAPTCHA v3: Para asegurar la autenticidad de los usuarios y proteger el sistema contra accesos no autorizados y bots, implementamos ReCAPTCHA v3 en el proceso de inicio de sesión.
+- Token CSRF: Utilizamos tokens CSRF (Cross-Site Request Forgery) para proteger todas las solicitudes POST, PUT, DELETE, previniendo así ataques que intenten realizar acciones no autorizadas en nombre del usuario autenticado.
+- Encriptación de contraseñas: Las contraseñas de los usuarios se almacenan en la base de datos utilizando técnicas de encriptación para asegurar que no sean accesibles en texto plano, incrementando la seguridad de la información sensible.
+- ORM de Django: Utilizamos el ORM (Object-Relational Mapping) de Django para interactuar con la base de datos, lo que nos permite realizar consultas y operaciones de manera segura, evitando inyecciones SQL y mejorando la integridad de los datos.
+- Autenticación: Implementamos un sistema de autenticación robusto utilizando el middleware de autenticación de Django, que maneja la creación y manejo de sesiones de usuario de manera segura.
+- Sesiones: Las sesiones de usuario se manejan mediante el middleware de sesiones de Django, con configuraciones que aseguran que las sesiones expiren después de una hora de inactividad y al cerrar el navegador.
+
+### Funcionalidades Operadores:
+- El sistema cuenta con un sistema de login.
+- El sistema brindará la posibilidad de poder crear usuarios, para ello existe un mail de administración, que al crear un usuario, se enviará a dicho mail un código que te solicitará la web para poder crear el usuario y de esta forma evitar que cualquier persona cree un usuario.
+- El sistema permitirá a los operadores logueados aceptar los turnos, cancelarlos o finalizarlos.
+- Cuando el operador acepte un turno se le enviará al solicitante del turno un mail, indicando que se le aceptó el turno con una url que le permitirá cancelar el turno y un código para ingresarlo en la web y recordar los datos del turno. En el caso de que el operador cancele el turno, el sistema lo colocará nuevamente como disponible (al turno) y al solicitante, también, se le enviará un mail indicando dicho acontecimiento y la url para que pueda ingresar y solicitar un nuevo turno si así lo desea.
+- Luego de haber atendido al solicitante del turno, el operador podrá marcar el turno como finalizado, siempre y cuando haya pasado el día y horario del mismo, no antes. 
+- El sistema permitirá visualizar todos los turnos pendientes, además permitirá filtrar por aquellos turnos pendientes que sean para el día actual, y también filtrar por los turnos que se encuentren confirmados para el día actual.
+- El sistema permitirá visualizar los turnos confirmados que tenga otro operador y además podrá autoasignarselo.
+- El sistema permitirá visualizar los horarios de atención de los otros operadores que se encuentren cargados en el sistema.
+- El sistema permitirá a los operadores enviar mail.
+- El sistema permitirá visualizar reportes de los turnos, permitiendo filtrar por estado de los turnos, o por fecha desde y hasta, y además podrá exportarlo a un archivo excel.
+- El sistema permitirá modificar el horario de atención de un usuario/operador, cambiar su contraseña, cambiar su avatar/foto, crear un nuevo usuario, gestionar el footer o pie de página (crear, editar o borrar una card) y cerrar sesión.  
+
+### Funcionalidad del cliente:
+
+- El sistema permitirá solicitar un turno, un cliente podrá tener máximo 2 turnos en estado pendiente.
+- El sistema permitirá ingresar un código para que el cliente pueda recordar los datos de su turno.
+- El sistema permitirá cancelar un turno, y en el caso de que el cliente desee dejar un comentario de porque lo canceló, podrá realizarlo.
 
 
-## Requerimientos
-- Docker: Para la creación y gestión de contenedores.
 
 
 ## Instalación
@@ -40,46 +74,5 @@ Sistema de geston de turnos AR unlu
     ```bash
     docker-compose exec web python3 manage.py createsuperuser
 10. Ingresamos en el navegador:
-   http://localhost:8000 o https://c62d-2800-af0-150a-bba2-1282-b2e1-bf6a-74ed.ngrok-free.app
+   http://localhost:8000
 
-
-En caso de que la url del último tip no funciones, ponerse en contacto con el desarrollador y solicitar la URL pertinente.
-
-
-## Implementación
-
-Contamos con dos tipos de usuarios:
-* Operadores (cuentan con usuarios y gestionan los turnos)
-* Clientes (no cuentan con usuario)
-
-### Clientes
-- Pueden solicitar un turno sin contar con un usuario.
-- Pueden verificar el estado de su turno
-- Pueden cancelar su turno (2 días previo al día del turno)
-- No pueden contar con mas de dos turnos pendiente
-
-
-### Operadores
-- Puden visualizar turnos pendientes
-- Pueden visualizar turnos pendientes y confirmados para el día actual
-- Pueden visualizar un turno específico
-- Pueden aceptar, cancelar, confirmar y finalizar un turno
-- Pueden visualizar los turnos de otros operadores y asignarselos (si estan confirmados)
-- Pueden enviar mails
-- Pueden ver y emitir reportes
-- Pueden modificar su propio horario de atención
-- Pueden cambiar su contraseña
-- Pueden cambiar su avatar/foto
-- Pueden crear un usuario/operador
-- Pueden Actualizar el pie de página
-- Pueden cerrar sesion
-
-
-### General
-- Los turnos solo se pueden solicitar solo del mes actual hasta tres en adelante, por ejemplo si nos encotramos en enero, se podrá solicitar turno en enero, febrero o marzo.
-- Los turnos solo se pueden solicitar cada 30 minutos.
-- Si tengo un operador que atendie de 08:00AM a 17:00PM y otro de 09:00AM a 18:00PM por ejemplo, en el horario de las 08:00AM y 08:30AM solo se podrá haber un solo turno ya que solo se cuenta con un operador para atender esos horarios, en cambio en el horario de las 14:00hs, por ejemplo podra haber dos turnos, ya que tenemos a dos operadores para poder atender ambos turnos.
-- El footer es dinámico, contamos con una sección dentro de la webapp para actualizar el footer. Allí se podrá editar, modificar o borrar una card. Cada card cuenta con un título, una descripción, un ícono y un link (es opcional) 
-- Si un cliente cancela un turno, se le enviará un mail al operador que tenia su turno para informarle de ello
-- Si el operador, cancela o acepta un turno se envia un mail al cliente con lo sucedido y la información si desea canecelar el turno
-- Los operadores en su primer login deberán cambiar la password y configurar sus horarios de atención
