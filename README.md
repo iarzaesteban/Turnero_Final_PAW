@@ -76,3 +76,7 @@ Hemos desarrollado un sistema de turnero para la Autoridad de Registro de la Uni
 10. Ingresamos en el navegador:
    http://localhost:8000
 
+
+
+# En el caso de no tener las keys para googleCalendar, por favor comiquese con el administrador para solicitarselas. Para que funciones correctamente posicionarse en la raíz del repositorio y ubicar dichas credenciales en:
+ json_google/credential_keys.json
