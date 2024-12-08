@@ -40,27 +40,26 @@ class IndexView(TemplateView):
 
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
-CREDENTIALS_FILE = './json_google/credential_keys.json'
+CREDENTIALS_FILE = './json_google/credential_keyss.json'
 
 def get_credentials():
     creds = None
-
-    if not creds or not creds.valid:
-        # Carga las credenciales de la cuenta de servicio desde el archivo JSON
-        creds = service_account.Credentials.from_service_account_file(
-            CREDENTIALS_FILE, scopes=SCOPES
-        )
-
+    
+    # Carga las credenciales de la cuenta de servicio desde el archivo JSON
+    creds = service_account.Credentials.from_service_account_file(
+        CREDENTIALS_FILE, scopes=SCOPES
+    )
+   
     return creds
 
 def get_google_calendar_events(selected_date):
     creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    creds = get_credentials()
-
+    
     try:
+        # The file token.json stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        creds = get_credentials()
         events_get = []
         service = build("calendar", "v3", credentials=creds)
 
@@ -133,10 +132,19 @@ def get_google_calendar_events(selected_date):
                 "start_time_attention_user": start_time_attention_user,
                 "end_time_attention_user": end_time_attention_user}
 
-    except HttpError as error:
-        return {"events_get": events_get,
-                "start_time_attention_user": start_time_attention_user,
-                "end_time_attention_user": end_time_attention_user}
+    
+    except FileNotFoundError as e:
+        return {
+            "error": "No se encontró el archivo de credenciales. Por favor, contacte al administrador."
+        }
+    except HttpError as e:
+        return {
+            "error": "Hubo un problema al acceder a Google Calendar. Inténtelo más tarde."
+        }
+    except Exception as e:
+        return {
+            "error": f"Error inesperado: {str(e)}"
+        }
 
 def add_event_to_google_calendar(event_summary, event_description, start_datetime, end_datetime):
     event_timezone = 'America/Argentina/Buenos_Aires'
