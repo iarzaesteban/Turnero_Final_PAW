@@ -78,5 +78,5 @@ Hemos desarrollado un sistema de turnero para la Autoridad de Registro de la Uni
 
 
 
-# En el caso de no tener las keys para googleCalendar, por favor comiquese con el administrador para solicitarselas. Para que funciones correctamente posicionarse en la raíz del repositorio y ubicar dichas credenciales en:
- json_google/credential_keys.json
+### En el caso de no tener las keys para googleCalendar, por favor comiquese con el administrador para solicitarselas. Para que funciones correctamente posicionarse en la raíz del repositorio y ubicar dichas credenciales en: 
+json_google/credential_keys.json
