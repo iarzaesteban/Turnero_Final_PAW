@@ -29,5 +29,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
         return self.username   
 
     def retrieve_image(self):
+        """Devuelve la imagen de perfil en formato PIL.Image."""
         if self.picture:
-            return BytesIO(self.picture) 
+            return Image.open(BytesIO(self.picture))
+        return None

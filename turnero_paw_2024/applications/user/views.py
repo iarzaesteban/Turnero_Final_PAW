@@ -26,6 +26,9 @@ from . import forms
 from .helpers import generate_confirmation_code
 from .models import Users
 
+from .services import authenticate_and_login_user, send_verification_email, create_user
+
+
 class LoginUser(FormView):
     template_name = 'login.html'
     form_class = forms.LoginForm
@@ -34,27 +37,25 @@ class LoginUser(FormView):
     def form_valid(self, form):
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate_and_login_user(self.request, username, password)
         
-        if user is not None:
-            login(self.request, user)
+        if user:
             if not user.has_default_password:
                 return redirect('update-password')
             if not user.has_set_attention_times:
                 return redirect('set-attention-times')
-            return super(LoginUser, self).form_valid(form)
-        else:
-            messages.error(self.request, "Usuario o contraseña incorrectos")
-            return self.form_invalid(form)
+            return super().form_valid(form)
+        
+        messages.error(self.request, "Usuario o contraseña incorrectos")
+        return self.form_invalid(form)
 
 class LogoutView(View):
     def get(self, request, *args, **kargs):
         logout(request)
-
         return HttpResponseRedirect(
             reverse('user-login')
         )
-        
+# ME FALTA REFACTORIAR        
 class HomePage(LoginRequiredMixin, TemplateView):
     template_name = "user/home_user.html"
     login_url = reverse_lazy('user-login')
@@ -81,62 +82,16 @@ class UserRegisterView(FormView):
     success_url = '/register/'
 
     def form_valid(self, form):
-        current_user = self.request.user
-        username = form.cleaned_data.get('username')
-        if Users.objects.filter(username=username).exists():
-            messages.error(self.request, 'El usuario ingresado ya está en uso')
-            return super(UserRegisterView, self).form_valid(form)
+        try:
+            user, person = create_user(form.cleaned_data)
+            send_verification_email(user, person, self.request.user)
+            return HttpResponseRedirect(
+                reverse('user-verification', kwargs={'pk': user.id})
+            )
+        except ValueError as e:
+            messages.error(self.request, str(e))
+            return self.form_invalid(form)
         
-        email = form.cleaned_data.get('email')
-        if Person.objects.filter(email=email).exists():
-            messages.error(self.request, 'Este correo electrónico ya está en uso')
-            return super(UserRegisterView, self).form_valid(form)
-        
-        password = form.cleaned_data.get('password')
-        confirm_password = form.cleaned_data.get('confirm_password')
-        if password != confirm_password:
-            messages.error(self.request, 'Las contraseñas no coinciden')
-            return super(UserRegisterView, self).form_valid(form)
-        
-        verification_code = generate_confirmation_code()
-        picture = form.cleaned_data.get('picture')
-        output = BytesIO()
-        if picture:
-            img = Image.open(picture)
-            if img.mode != 'RGB':
-                img = img.convert('RGB')
-            img.save(output, format='JPEG', quality=70)
-        
-        user = Users.objects.create_user(
-            form.cleaned_data['username'],
-            form.cleaned_data['password'],
-            code_verification=verification_code,
-            picture=output.getvalue()
-        )
-
-        user.save()
-        
-        person = Person.objects.create(
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            email=form.cleaned_data['email'],
-            id_user=user
-        )
-        date = datetime.datetime.now()
-        date_str = date.strftime('%Y-%m-%d %H:%M:%S') 
-        asunto = "Confirmacion de mail"
-        message = "El codigo de verificacion es " \
-                        + verification_code + \
-                            " la hora es " + date_str
-        if current_user:       
-            send_mail(asunto, message, EMAIL_HOST_USER, [person.email,])
-        else:
-            send_mail(asunto, message, EMAIL_HOST_USER, EMAIL_HOST_USER)
-        return HttpResponseRedirect(
-            reverse('user-verification',
-                    kwargs={'pk': user.id})
-        )
-
 class CodeVerificationView(FormView):
     template_name = 'user/user_verification.html'
     form_class = forms.VerificationForm
