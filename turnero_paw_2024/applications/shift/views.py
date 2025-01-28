@@ -40,7 +40,7 @@ class IndexView(TemplateView):
 
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
-CREDENTIALS_FILE = './json_google/credential_keyss.json'
+CREDENTIALS_FILE = './json_google/credential_keys.json'
 
 def get_credentials():
     creds = None

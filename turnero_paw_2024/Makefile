@@ -18,3 +18,15 @@ reset_db:
 
 up:
 	@docker-compose up
+
+dbshell:
+	@docker-compose exec db_postgres psql -U turnero_user -d turnero_unlu
+
+createuser:
+	@$(DJANGO_EXEC) createsuperuser
+
+migrations:
+	@$(DJANGO_EXEC) makemigrations
+
+migrate:
+	@$(DJANGO_EXEC) migrate
