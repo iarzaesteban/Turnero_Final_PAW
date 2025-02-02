@@ -14,7 +14,9 @@ reset_db:
 		done ; \
 		[ $$CONTINUE = "y" ] || [ $$CONTINUE = "Y" ] || (echo "Exiting."; exit 1;)
 		@$(DJANGO_EXEC) $(FLUSH)
-		@$(PYTHON_EXEC) $(LOADDATA)
+		@$(DJANGO_EXEC) loaddata state 
+		@$(DJANGO_EXEC) loaddata role 
+		@$(DJANGO_EXEC) loaddata aditional_information
 
 up:
 	@docker-compose up
@@ -30,3 +32,6 @@ migrations:
 
 migrate:
 	@$(DJANGO_EXEC) migrate
+
+insert_data_demo:
+	@$(PYTHON_EXEC) deploy/data_demo/scripts/insert_data_demo.py

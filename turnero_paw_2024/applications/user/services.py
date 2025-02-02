@@ -2,9 +2,11 @@ import datetime
 from io import BytesIO
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
 from PIL import Image
 from .models import Users
 from applications.person.models import Person
+from applications.shift.models import Shift
 from app.settings.base import EMAIL_HOST_USER
 from .helpers import generate_confirmation_code
 
@@ -70,3 +72,9 @@ def send_verification_email(user, person, current_user=None):
     )
     recipient = [person.email] if current_user else [person.email, EMAIL_HOST_USER]
     send_mail(asunto, message, EMAIL_HOST_USER, recipient)
+
+def get_pending_shifts():
+    pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',
+                                              date__gte=datetime.date.today()).order_by('hour')
+    paginator = Paginator(pending_shifts, 5)
+    return pending_shifts, paginator

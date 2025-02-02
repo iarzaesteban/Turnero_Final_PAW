@@ -16,17 +16,17 @@ from django.views.generic.edit import FormView
 from io import BytesIO
 from openpyxl import Workbook
 from PIL import Image
-
 from applications.aditional_information.models import AditionalInformation
 from app.settings.base import EMAIL_HOST_USER
 from applications.person.models import Person
 from applications.shift.models import Shift
 from applications.state.models import State
 from . import forms
-from .helpers import generate_confirmation_code
 from .models import Users
-
-from .services import authenticate_and_login_user, send_verification_email, create_user
+from .services import authenticate_and_login_user, \
+                        send_verification_email, \
+                            create_user, \
+                                get_pending_shifts
 
 
 class LoginUser(FormView):
@@ -55,16 +55,15 @@ class LogoutView(View):
         return HttpResponseRedirect(
             reverse('user-login')
         )
-# ME FALTA REFACTORIAR        
+        
 class HomePage(LoginRequiredMixin, TemplateView):
     template_name = "user/home_user.html"
     login_url = reverse_lazy('user-login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',
-                                              date__gte=datetime.date.today()).order_by('hour')
-        paginator = Paginator(pending_shifts, 5)
+        pending_shifts, paginator = get_pending_shifts()
+
         page = self.request.GET.get('page')
         try:
             pending_shifts = paginator.page(page)
