@@ -1,10 +1,19 @@
 """
-Atributes in csv
-first_name = models.CharField(max_length=50)
-last_name = models.CharField(max_length=50)
-email = models.EmailField()
-id_user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
-Returns the inserts in table persons
+Atributes in persons.csv
+first_name 
+last_name
+email
+id_user
+
+Atributes in users.csv
+username
+email
+password
+start_time_attention
+end_time_attention
+
+
+Returns the inserts in table persons and users
 """
 import os
 import sys

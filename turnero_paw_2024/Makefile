@@ -35,3 +35,4 @@ migrate:
 
 insert_data_demo:
 	@$(PYTHON_EXEC) deploy/data_demo/scripts/insert_data_demo.py
+	@$(PYTHON_EXEC) deploy/data_demo/scripts/insert_shifts_demo.py

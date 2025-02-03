@@ -107,7 +107,7 @@ def get_google_calendar_events(selected_date):
         for start_time, count in start_time_count.items():
             formatted_start = parser.parse(start_time).strftime("%Y-%m-%d %H:%M:%S %p %Z")
             # Verificamos que si ya tenemos el mismo horario seteado para los horarios de atencion de 
-            # los todos operadores 
+            # todos los operadores 
             if count == count_users_attentions.count():
                 event_data = {
                     "formatted_start": formatted_start
@@ -221,7 +221,7 @@ def confirm_shift(request):
         first_name = data.get('name')
         last_name = data.get('last_name')
         selected_date_time = data.get('dateTime')
-        # Verificamos que el cliente no tenga mas de 2 turnos solicitados en estado pendiente
+        # Verificamos que el cliente no tenga más de 2 turnos solicitados en estado pendiente
         if helpers.count_pending_shifts(email) >= 2:
             return JsonResponse({
                     'response': "error", 
