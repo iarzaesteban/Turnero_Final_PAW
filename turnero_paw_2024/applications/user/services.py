@@ -75,6 +75,6 @@ def send_verification_email(user, person, current_user=None):
 
 def get_pending_shifts():
     pending_shifts = Shift.objects.filter(id_state__short_description='pendiente',
-                                              date__gte=datetime.date.today()).order_by('hour')
+                                              date__gte=datetime.date.today()).order_by('date','hour')
     paginator = Paginator(pending_shifts, 5)
     return pending_shifts, paginator
