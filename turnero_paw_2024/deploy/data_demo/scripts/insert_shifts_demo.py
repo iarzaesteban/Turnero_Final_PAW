@@ -126,9 +126,8 @@ def get_person_by_shift_state(shift_state):
     if shift_state == PENDING_SHIFT:
         # Anotar la cantidad de turnos en estado 'pendiente' que tiene cada persona
         persons = persons.annotate(
-            pending_shifts_count=Count('shift', filter=Q(shift__state__short_description=PENDING_SHIFT))
+            pending_shifts_count=Count('shift', filter=Q(shift__id_state_id__description=PENDING_SHIFT))
         ).filter(pending_shifts_count__lt=2)
-
     # Obtener la primera persona que cumple con los criterios
     person = persons.first()
 
@@ -184,7 +183,7 @@ for state in states:
         cancel_url = cancelation_url + f'?confirmation_code={confirmation_code}'
         
         #Si no es un estado pendiente seleccionar cualquier usuario que este activo con horarios de atención seteados
-        person = get_person_by_shift_state(state)
+        person = get_person_by_shift_state(state.description)
         if state.description != PENDING_SHIFT:
             user = get_random_user()
 
