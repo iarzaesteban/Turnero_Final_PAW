@@ -23,10 +23,7 @@ from applications.shift.models import Shift
 from applications.state.models import State
 from . import forms
 from .models import Users
-from .services import authenticate_and_login_user, \
-                        send_verification_email, \
-                            create_user, \
-                                get_pending_shifts
+from .services import *
 
 
 class LoginUser(FormView):
@@ -62,7 +59,7 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_shifts, paginator = get_pending_shifts()
+        pending_shifts, paginator = get_pending_shifts_paginate()
 
         page = self.request.GET.get('page')
         try:
@@ -104,7 +101,7 @@ class CodeVerificationView(FormView):
         return kwargs
     
     def form_valid(self, form):
-        Users.objects.filter(id=self.kwargs['pk']).update(is_active=True)
+        active_user(self.kwargs['pk'])
         return super(CodeVerificationView, self).form_valid(form)
 
 class UpdateFooterView(LoginRequiredMixin, FormView):
@@ -113,26 +110,16 @@ class UpdateFooterView(LoginRequiredMixin, FormView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        aditional_information = AditionalInformation.objects.all()
+        aditional_information = get_aditional_information()
         
         context['aditional_information'] = aditional_information
         return context
+    
     def post(self, request, *args, **kwargs):
         form = self.get_form()
 
         if form.is_valid():
-            title = form.cleaned_data['title']
-            description = form.cleaned_data['description']
-            link = form.cleaned_data['link']
-            icon_base64 = form.cleaned_data['icon_base64']            
-            
-            AditionalInformation.objects.create(
-                title=title,
-                description=description,
-                link=link,
-                icon=icon_base64
-            )
-
+            create_aditional_information(form)
             return JsonResponse({'success': True})
         
         return JsonResponse({'Error': True})
@@ -303,7 +290,7 @@ def list_shifts_filter_views(request):
             list_shifts =  Shift.objects.filter(id_state__short_description=state).order_by('date')
             query_number = 4
         
-        paginator = Paginator(list_shifts, 5)
+        paginator = make_pagination(data=list_shifts, number_rows=5)
         page_number = request.POST.get("page")
         page_obj = paginator.get_page(page_number)
         serialized_page = {
@@ -324,7 +311,7 @@ def list_shifts_filter_views(request):
         list_shifts = Shift.objects.filter(id_state__short_description='pendiente').order_by('date')
         query_number = 1   
     
-    paginator = Paginator(list_shifts, 5)
+    paginator = make_pagination(data=list_shifts, number_rows=5)
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -358,15 +345,8 @@ class SendEmailView(LoginRequiredMixin, FormView):
 @login_required
 def update_attentions_times(request):
     current_user = request.user
-    users = Users.objects.exclude(
-                username=current_user.username
-            ).exclude(
-                start_time_attention__isnull=True
-            ).exclude(
-                end_time_attention__isnull=True
-            )
-            
-    paginator = Paginator(users, 5)
+    users = get_rest_users_actives(exclude_user=current_user)
+    paginator = make_pagination(data=users, number_rows=5)
     page = request.GET.get('page')
     try:
         users = paginator.page(page)
@@ -380,10 +360,9 @@ def update_attentions_times(request):
 @login_required
 def get_confirm_shifts_today(request):
     today = datetime.datetime.now()
-    list_shift = Shift.objects.filter(
-                            id_state__short_description="confirmado",
-                            date=today).order_by("hour")
-    paginator = Paginator(list_shift, 5)
+    list_shift = get_confirms_shifts_today(date= today, order_by="hour")
+    
+    paginator = make_pagination(data=list_shift, number_rows=5)
     page_number = request.GET.get("page")
     try:
         list_shift = paginator.page(page_number)
@@ -397,12 +376,8 @@ def get_confirm_shifts_today(request):
 @login_required
 def view_user_shifts_today(request, username):
     # obtenemos todos los turnos confirmados para hoy del usuario seleccionado
-    user_shifts_today = Shift.objects.filter(
-                                id_user__username=username, 
-                                id_state__short_description='confirmado',
-                                date=datetime.date.today())
-    
-    paginator = Paginator(user_shifts_today, 5)
+    user_shifts_today = get_shifts_user_confirm(username=username, only_today=True)
+    paginator = make_pagination(data=user_shifts_today, number_rows=5)
     page_number = request.GET.get("page")
     try:
         user_shifts_today = paginator.page(page_number)
@@ -416,13 +391,9 @@ def view_user_shifts_today(request, username):
 @login_required
 def view_user_all_shifts(request, username):
     # Obtenemos los turnos confirmados por el usuario seleccionado 
-    # del dia actial en adelante
-    user_all_shifts = Shift.objects.filter(
-                        id_user__username=username, 
-                        id_state__short_description='confirmado',
-                        date__gte=datetime.date.today())
-    
-    paginator = Paginator(user_all_shifts, 5)
+    # del dia actual en adelante
+    user_all_shifts = get_shifts_user_confirm(username, False) 
+    paginator = make_pagination(data=user_all_shifts, number_rows=5)
     page_number = request.GET.get("page")
     try:
         user_all_shifts = paginator.page(page_number)
@@ -437,8 +408,7 @@ def view_user_all_shifts(request, username):
 @login_required
 def export_to_excel(request):
     if request.method == 'GET':
-        shifts = Shift.objects.filter(id_state__short_description='pendiente').order_by('date')
-        
+        shifts = get_pending_shifts('date')
         wb = Workbook()
         ws = wb.active
         ws.title = "Reporte de Turnos"
