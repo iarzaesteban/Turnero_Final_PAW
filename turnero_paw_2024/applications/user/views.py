@@ -1,30 +1,25 @@
 import datetime
-import requests
-from django.conf import settings
+from openpyxl import Workbook
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import View, TemplateView
 from django.views.generic.edit import FormView
-from io import BytesIO
-from openpyxl import Workbook
-from PIL import Image
+
 from applications.aditional_information.models import AditionalInformation
 from app.settings.base import EMAIL_HOST_USER
-from applications.person.models import Person
 from applications.shift.models import Shift
 from applications.state.models import State
 from . import forms
+from .helpers import process_picture, serialize_shifts
 from .models import Users
-from .services import *
-
 
 class LoginUser(FormView):
     template_name = 'login.html'
@@ -34,7 +29,7 @@ class LoginUser(FormView):
     def form_valid(self, form):
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
-        user = authenticate_and_login_user(self.request, username, password)
+        user = Users.authenticate_and_login_user(self.request, username, password)
         
         if user:
             if not user.has_default_password:
@@ -59,7 +54,7 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pending_shifts, paginator = get_pending_shifts_paginate()
+        pending_shifts, paginator = Shift.get_pending_shifts_paginate()
 
         page = self.request.GET.get('page')
         try:
@@ -79,8 +74,8 @@ class UserRegisterView(FormView):
 
     def form_valid(self, form):
         try:
-            user, person = create_user(form.cleaned_data)
-            send_verification_email(user, person, self.request.user)
+            user, person = Users.create_user(form.cleaned_data)
+            Users.send_verification_email(user, person, self.request.user)
             return HttpResponseRedirect(
                 reverse('user-verification', kwargs={'pk': user.id})
             )
@@ -101,7 +96,7 @@ class CodeVerificationView(FormView):
         return kwargs
     
     def form_valid(self, form):
-        active_user(self.kwargs['pk'])
+        Users.active_user(self.kwargs['pk'])
         return super(CodeVerificationView, self).form_valid(form)
 
 class UpdateFooterView(LoginRequiredMixin, FormView):
@@ -110,7 +105,7 @@ class UpdateFooterView(LoginRequiredMixin, FormView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        aditional_information = get_aditional_information()
+        aditional_information = AditionalInformation.get_aditional_information()
         
         context['aditional_information'] = aditional_information
         return context
@@ -119,7 +114,7 @@ class UpdateFooterView(LoginRequiredMixin, FormView):
         form = self.get_form()
 
         if form.is_valid():
-            create_aditional_information(form)
+            AditionalInformation.create_aditional_information(form)
             return JsonResponse({'success': True})
         
         return JsonResponse({'Error': True})
@@ -137,14 +132,10 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
             messages.error(self.request, 'Las contraseñas no coinciden')
             return super(UpdatePasswordView, self).form_valid(form)
             
-        user = authenticate(username=current_user.username,
-                            password=form.cleaned_data['current_password'])
+        user = Users.autenticate_user(user=current_user, password=form.cleaned_data['current_password']) 
         try:
             if user:
-                current_user.set_password(new_password)
-                if not current_user.has_default_password:
-                    current_user.has_default_password = True
-                current_user.save()
+                Users.change_user_password(user=user, new_password=new_password)
                 logout(self.request)
 
                 return HttpResponseRedirect(
@@ -175,19 +166,14 @@ class UpdatePictureView(LoginRequiredMixin, FormView):
         picture = form.cleaned_data.get('picture')
         try:
             if picture:
-                img = Image.open(picture)
-                if img.mode != 'RGB':
-                    img = img.convert('RGB')
-                output = BytesIO()
-                img.save(output, format='JPEG', quality=70)
-                current_user.picture = output.getvalue()
-                output.close()
-                
-            current_user.save()
-            messages.success(self.request, 'La fotografía se ha actualizado correctamente.')
-            return redirect('update-picture') 
+                if process_picture(picture=picture, user=current_user):
+                    messages.success(self.request, 'La fotografía se ha actualizado correctamente.')
+                    return redirect('update-picture') 
+               
+                messages.error(self.request, 'Por favor ingrese una imagen correcta')
+                return super().form_invalid(form)
         except Exception as e:
-            messages.error(self.request, 'Por favor ingrese una imagen correcta')
+            messages.error(self.request, 'Por favor ingrese una imagen correcta o distinta a la anterior')
             return super().form_invalid(form)
 
     def form_invalid(self, form):
@@ -204,21 +190,16 @@ class UpdateAttentionTimePage(LoginRequiredMixin, FormView):
         end_time = form.cleaned_data['end_time_attention']
         
         user = self.request.user
-        if not user.has_set_attention_times:
-            user.has_set_attention_times = True
-            user.start_time_attention = start_time
-            user.end_time_attention = end_time
-            user.save()
+        if not Users.user_have_set_attentions_time(user=user): 
+            Users.set_attentions_times_user(user=user, start_time=start_time, end_time=end_time)
             return redirect('home-user')
         
-        if (user.start_time_attention == start_time and user.end_time_attention == end_time):
+        if Users.user_has_attentions_time_different(user=user, start_time=start_time, end_time=end_time):
             messages.warning(self.request, 'Por favor seleccione un horario de inicio o fin de atención diferente.')
             return super(UpdateAttentionTimePage, self).form_valid(form)
         
-        user.start_time_attention = start_time
-        user.end_time_attention = end_time
-        user.save()
-
+        Users.set_attentions_times_user(user=user, start_time=start_time, end_time=end_time)
+        
         messages.success(self.request, 'Horarios actualizados correctamente.')
         return super(UpdateAttentionTimePage, self).form_valid(form)
 
@@ -240,32 +221,10 @@ class UpdateAttentionTimePage(LoginRequiredMixin, FormView):
         return context
       
 
-def first_get(state, start_date, end_date):
-    list_shifts= None
-    query_number = 1
-    if state and start_date and end_date:
-        list_shifts = Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date]).order_by('date')
-        query_number = 2
-    elif start_date and end_date and not state:
-        list_shifts = Shift.objects.filter(date__range=[start_date, end_date]).order_by('date')
-        query_number = 3
-    elif state:
-        list_shifts = Shift.objects.filter(id_state__short_description=state).order_by('date')
-        query_number = 4
-    
-    return list_shifts, query_number
-
-def serialize_shifts(page_obj):
-    return [{'date': shift.date, 
-             'hour': shift.hour, 
-             'id_person': str(shift.id_person),
-             'operador': shift.id_person.id_user.username if shift.id_user else 'Sin Asignar',
-             'state': shift.id_state.description} for shift in page_obj]
-
 @login_required
 def list_shifts_filter_views(request):
     list_shifts = None
-    states = State.objects.all()
+    states = State.get_all_states()
     start_date = request.POST.get('start-date')
     state = request.POST.get('state')
     end_date = request.POST.get('end-date')
@@ -277,20 +236,18 @@ def list_shifts_filter_views(request):
         
     get_query_number_int = int(get_query_number) if get_query_number else None
     
-    list_shifts, query_number = first_get(state, start_date, end_date)
+    list_shifts, query_number = Shift.first_get(state, start_date, end_date)
     
     if(get_query_number_int != 1 or query_number != 1):
-        if query_number == 2 or get_query_number_int == 2:
-            list_shifts =  Shift.objects.filter(id_state__short_description=state, date__range=[start_date, end_date]).order_by('date')
-            query_number = 2
-        elif query_number == 3 or get_query_number_int == 3:
-            list_shifts =  Shift.objects.filter(date__range=[start_date, end_date]).order_by('date')
-            query_number = 3
-        elif query_number == 4 or get_query_number_int == 4:
-            list_shifts =  Shift.objects.filter(id_state__short_description=state).order_by('date')
-            query_number = 4
         
-        paginator = make_pagination(data=list_shifts, number_rows=5)
+        list_shifts, query_number =  Shift.get_shift_state_range_dates(
+                                            query_number=query_number, 
+                                            get_query_number_int=get_query_number_int,
+                                            state=state,
+                                            start_date=start_date,
+                                            end_date=end_date)
+        
+        paginator = Shift.make_pagination(data=list_shifts, number_rows=5)
         page_number = request.POST.get("page")
         page_obj = paginator.get_page(page_number)
         serialized_page = {
@@ -308,10 +265,10 @@ def list_shifts_filter_views(request):
                              'query_number': query_number})
 
     else:
-        list_shifts = Shift.objects.filter(id_state__short_description='pendiente').order_by('date')
+        list_shifts = Shift.get_pending_shifts(["date", "hour"])
         query_number = 1   
     
-    paginator = make_pagination(data=list_shifts, number_rows=5)
+    paginator = Shift.make_pagination(data=list_shifts, number_rows=5)
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -345,8 +302,8 @@ class SendEmailView(LoginRequiredMixin, FormView):
 @login_required
 def update_attentions_times(request):
     current_user = request.user
-    users = get_rest_users_actives(exclude_user=current_user)
-    paginator = make_pagination(data=users, number_rows=5)
+    users = Users.get_reset_users_actives(exclude_user=current_user)
+    paginator = Shift.make_pagination(data=users, number_rows=5)
     page = request.GET.get('page')
     try:
         users = paginator.page(page)
@@ -360,9 +317,9 @@ def update_attentions_times(request):
 @login_required
 def get_confirm_shifts_today(request):
     today = datetime.datetime.now()
-    list_shift = get_confirms_shifts_today(date= today, order_by="hour")
+    list_shift = Shift.get_confirms_shifts_today(date= today, order_by="hour")
     
-    paginator = make_pagination(data=list_shift, number_rows=5)
+    paginator = Shift.make_pagination(data=list_shift, number_rows=5)
     page_number = request.GET.get("page")
     try:
         list_shift = paginator.page(page_number)
@@ -376,8 +333,8 @@ def get_confirm_shifts_today(request):
 @login_required
 def view_user_shifts_today(request, username):
     # obtenemos todos los turnos confirmados para hoy del usuario seleccionado
-    user_shifts_today = get_shifts_user_confirm(username=username, only_today=True)
-    paginator = make_pagination(data=user_shifts_today, number_rows=5)
+    user_shifts_today = Shift.get_shifts_user_confirm(username=username, only_today=True)
+    paginator = Shift.make_pagination(data=user_shifts_today, number_rows=5)
     page_number = request.GET.get("page")
     try:
         user_shifts_today = paginator.page(page_number)
@@ -392,8 +349,8 @@ def view_user_shifts_today(request, username):
 def view_user_all_shifts(request, username):
     # Obtenemos los turnos confirmados por el usuario seleccionado 
     # del dia actual en adelante
-    user_all_shifts = get_shifts_user_confirm(username, False) 
-    paginator = make_pagination(data=user_all_shifts, number_rows=5)
+    user_all_shifts = Shift.get_shifts_user_confirm(username, False) 
+    paginator = Shift.make_pagination(data=user_all_shifts, number_rows=5)
     page_number = request.GET.get("page")
     try:
         user_all_shifts = paginator.page(page_number)
@@ -408,7 +365,7 @@ def view_user_all_shifts(request, username):
 @login_required
 def export_to_excel(request):
     if request.method == 'GET':
-        shifts = get_pending_shifts('date')
+        shifts = Shift.get_pending_shifts('date')
         wb = Workbook()
         ws = wb.active
         ws.title = "Reporte de Turnos"

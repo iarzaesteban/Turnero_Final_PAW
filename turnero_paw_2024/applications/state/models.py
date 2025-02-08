@@ -8,3 +8,6 @@ class State(models.Model):
 
     def __str__(self):
         return self.short_description
+    
+    def get_all_states():
+        return State.objects.all()

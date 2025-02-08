@@ -36,3 +36,19 @@ class AditionalInformation(models.Model):
     def delete_information(self):
         """Elimina la instancia."""
         self.delete()
+
+    def get_aditional_information():
+        return AditionalInformation.objects.all()
+    
+    def create_aditional_information(form):
+        title = form.cleaned_data['title']
+        description = form.cleaned_data['description']
+        link = form.cleaned_data['link']
+        icon_base64 = form.cleaned_data['icon_base64']            
+        
+        AditionalInformation.objects.create(
+            title=title,
+            description=description,
+            link=link,
+            icon=icon_base64
+        )
