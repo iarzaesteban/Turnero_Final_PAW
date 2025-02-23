@@ -1,11 +1,13 @@
 import datetime
 from django.core.paginator import Paginator
 from django.db import models
+from django.contrib.auth.models import AnonymousUser
+
 from applications.person.models import Person
 from applications.user.models import Users
 from applications.state.models import State
-from .constants import PENDING_SHIFT, CONFIRM_SHIFT
-
+from .constants import PENDING_SHIFT, CONFIRM_SHIFT, CANCEL_SHIFT
+from . import helpers
 class Shift(models.Model):
     date = models.DateField()
     hour = models.TimeField()
@@ -43,7 +45,7 @@ class Shift(models.Model):
                             datetime.date.today()).order_by('date', 'hour')
 
 
-    def get_pending_shifts(order_by):
+    def get_pending_shifts(order_by=None):
         if order_by is not None:
             return Shift.objects.filter(id_state__short_description=PENDING_SHIFT).order_by(*order_by)
         return Shift.objects.filter(id_state__short_description=PENDING_SHIFT)
@@ -84,3 +86,137 @@ class Shift(models.Model):
             query_number = 4
 
         return list_shifts, query_number
+    
+
+    def count_pending_shifts(email):
+        pending_state_id = State.objects.filter(short_description="pendiente").values_list('id', flat=True).first()
+
+        pending_shifts_count = Shift.objects.filter(id_person__email=email, id_state=pending_state_id).count()
+
+        return pending_shifts_count
+
+    
+    def create_shift(selected_date_time, email, confirmation_code, cancelation_url):
+        person_instance = Person.get_person(email=email)
+        split_selected_date = selected_date_time.split()
+        
+        shift = Shift.objects.create(
+            date=split_selected_date[0],
+            hour=split_selected_date[1],
+            id_person=person_instance,
+            id_state=State.objects.get(short_description=PENDING_SHIFT),
+            confirmation_code=confirmation_code,
+            confirmation_url=cancelation_url
+        )
+        
+        return shift
+    
+    
+    def cancel_shift(shift):
+        shift.id_state = State.get_cancel_shifts()
+        shift.save()
+        helpers.send_mail_to_receiver(shift.id_user, shift, False)
+        helpers.remove_event_from_google_calendar(shift.date, shift.hour, shift.id)
+        return shift
+    
+    
+    def add_shift_description(shift, cancel_description):
+        shift.description = cancel_description
+        shift.save()
+
+
+    def is_shift_canceled(shift):
+        return shift.id_state.short_description != CANCEL_SHIFT
+    
+
+    def get_today_shifts(state, today, request):
+        if state == CONFIRM_SHIFT:
+            list_shift = Shift.objects.filter(
+                                    date=today,
+                                    id_user=request.user.id, 
+                                    id_state__short_description=state).order_by("hour")
+        else:
+            list_shift = Shift.objects.filter(
+                                    date=today,
+                                    id_state__short_description=state).order_by("hour")
+            
+        return list_shift
+    
+
+    def update_id_user_shift(shift, user):
+        if shift.id_user:
+            if user != shift.id_user:
+                shift.id_user = user
+                shift.save()
+                return 'home-user'
+        confirmed_state = State.objects.get(short_description=CONFIRM_SHIFT)
+        shift.id_state = confirmed_state
+        shift.id_user = user
+        shift.save()
+        helpers.send_mail_to_receiver(user, shift, True)
+        return 'home-user'
+    
+
+    def get_shift(id):
+        return Shift.objects.filter(id=id).first() 
+    
+
+    def update_cancel_shift(shift, description=None, method=None, operator_user=None):
+        if method == "POST":
+            canceled_state = State.get_cancel_shifts()
+
+            shift.id_state = canceled_state
+            shift.description = description
+            shift.save()
+            helpers.remove_event_from_google_calendar(shift.date, shift.hour, shift.id)
+            helpers.send_mail_to_receiver(shift.id_user, shift, False)
+            return '/shift/home/'
+        
+        if method == "GET":
+            canceled_state = State.get_cancel_shifts()
+            shift.id_state = canceled_state
+            helpers.remove_event_from_google_calendar(shift.date, shift.hour, shift.id)
+            if not isinstance(operator_user, AnonymousUser):
+                shift.id_user = operator_user
+                shift.save()
+                helpers.send_mail_to_receiver(operator_user, shift, True)
+                return 'home-user'
+            shift.save()
+            person = Person.get_person_by_id_user(id_user=shift.id_user)
+            helpers.send_mail_to_operator(person.email, shift)
+            return '/shift/home/'
+        
+
+    def get_confirm_shifts():
+        return Shift.objects.filter(id_state__short_description='confirmado')
+    
+
+    def get_shifts_by_search_value(id=None, confirmation_code=None):
+        if id and not confirmation_code:
+            return Shift.objects.filter(id_person=id).first()
+        
+        Shift.objects.filter(confirmation_code=confirmation_code).first()
+
+    
+    def get_details_shift(search_value):
+        
+        if helpers.is_mail(search_value):
+            person = Person.get_first_person(email=search_value)
+            if person:
+                shift = Shift.get_shifts_by_search_value(id=person.id)
+        else:
+            shift = Shift.get_shifts_by_search_value(confirmation_code=search_value).first()
+
+        return shift
+    
+
+    def update_shift_completed(shift, user):
+        complete_state = State.get_complete_shifts()
+        shift.id_state = complete_state
+        if not isinstance(user, AnonymousUser):
+            user = user
+            shift.id_user = user
+            shift.save()
+        shift.save()
+        
+        return 'get-confirm-shifts-today'

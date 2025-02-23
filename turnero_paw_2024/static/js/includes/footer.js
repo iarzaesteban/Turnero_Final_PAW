@@ -16,8 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const icon = document.createElement('img');
                 icon.classList.add('footer-card-icon');
-                icon.src = info.icon;
-                icon.alt = info.title
+                
+                if (info.icon) {
+                    icon.src = info.icon;
+                    icon.alt = info.title;
+                } else {
+                    icon.src = "/static/assets/not-image.png";
+                    icon.alt = "not-image";
+                }
 
                 const content = document.createElement('span');
                 content.classList.add('footer-card-content');

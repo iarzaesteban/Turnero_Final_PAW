@@ -16,3 +16,12 @@ class Person(models.Model):
     
     def create_person(person_data):
         return Person.objects.create(**person_data)
+    
+    def get_person(email):
+        return Person.objects.get(email=email)
+    
+    def get_person_by_id_user(id_user):
+        return Person.objects.get(id_user=id_user)
+
+    def get_first_person(email):
+        return Person.objects.filter(email=email).first()

@@ -3,6 +3,7 @@ from PIL import Image
 from io import BytesIO
 from app.settings.base import EMAIL_HOST_USER
 from django.db import models
+from django.db.models import Min, Max
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
@@ -45,6 +46,16 @@ class Users(AbstractBaseUser, PermissionsMixin):
             login(request, user)
         return user
 
+
+    def get_users_with_attentions_times():
+        return Users.objects.filter(has_set_attention_times=True)
+    
+
+    def get_min_max_time_attentions_users():
+        return Users.objects.aggregate(
+            earliest_start_time=Min('start_time_attention'),
+            latest_end_time=Max('end_time_attention')
+        )
 
     def create_user(form_data):
         """Crea un usuario y una persona asociados."""
@@ -145,3 +156,4 @@ class Users(AbstractBaseUser, PermissionsMixin):
         user.start_time_attention = start_time
         user.end_time_attention = end_time
         user.save()
+

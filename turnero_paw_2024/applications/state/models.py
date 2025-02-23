@@ -11,3 +11,9 @@ class State(models.Model):
     
     def get_all_states():
         return State.objects.all()
+    
+    def get_cancel_shifts():
+        return State.objects.get(short_description='cancelado')
+    
+    def get_complete_shifts():
+        return State.objects.get(short_description='completado')
