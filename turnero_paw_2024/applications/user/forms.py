@@ -29,15 +29,18 @@ class LoginForm(forms.Form):
                             label='Usuario', 
                             required=True, 
                             widget=forms.TextInput(
-                                        attrs={
-                                            'placeholder': 'Usuario'
-                                            }))
+                                         attrs={
+                                            'placeholder': 'Usuario',
+                                            'itemprop': 'username',
+                                            'itemscope': 'itemscope',
+                                        }))
     password = forms.CharField(
                             label='Contraseña', 
                             required=True, 
                             widget=forms.PasswordInput(
                                         attrs={
-                                            'placeholder': 'Contraseña'
+                                            'placeholder': 'Contraseña',
+                                            'itemprop': 'password'
                                             }))
    
     def clean(self):

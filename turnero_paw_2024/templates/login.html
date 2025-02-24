@@ -20,8 +20,8 @@
 {% block content %}
     {% include 'includes/header.html' with show_index_link=True %}
     
-    <form id="form-login" method="post" data-recaptcha-id="{{ form.recaptcha_token.id_for_label }}">
-            {% csrf_token %}
+    <form id="form-login" method="post" data-recaptcha-id="{{ form.recaptcha_token.id_for_label }}" itemscope itemtype="https://schema.org/Action">
+        {% csrf_token %}
             <label for="username">Usuario:</label>
             {{ form.username }}
 
@@ -31,7 +31,7 @@
                 <section id="messages">
                     {% for field, error in form.errors.items %}
                             {% for message in error %}
-                                <p class="message">{{ message }}</p>
+                                <p class="message" itemprop="error">{{ message }}</p>
                             {% endfor %}
                     {% endfor %}
                 </section>

@@ -1,10 +1,13 @@
 {% include 'shift/modal_shift_datails.html' %}
 
-<section id="calendar-container" class="calendar-container">
+<section id="calendar-container" class="calendar-container" itemscope itemtype="https://schema.org/Service">
+    <meta itemprop="name" content="Turnos Online">
+    <meta itemprop="provider" content="Universidad Nacional de Luján">
+
     <span class="spinner" id="spinner"></span>
     <section id="calendar-container__hide-show">
-        <section id="calendar">
-            <h2>Seleccione el día y después el horario</h2>
+        <section id="calendar" itemscope itemtype="https://schema.org/Schedule">
+            <h2 itemprop="name">Seleccione el día y después el horario</h2>
             <section id="calendar-controls">
                 <button id="prevMonth" aria-label="<"> < </button>
                     <select id="selectMonth" class="calendar-controls-select" aria-label="select-month">
@@ -25,7 +28,7 @@
                         <th>Sab.</th>
                     </tr>
                 </thead>
-                <tbody id="calendario-cuerpo" tabindex="-1">
+                <tbody id="calendario-cuerpo" tabindex="-1" itemprop="event">
                 </tbody>
             </table>
     </section>
